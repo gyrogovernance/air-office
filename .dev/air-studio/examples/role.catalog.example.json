@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "description": "Initial role catalog seed. The implementation must validate this catalog and enforce it against actual paths. It is not a preexisting checker configuration.",
+  "source_scope": ["apps/*/src/", "packages/*/src/", "packages/*/tests/", "tools/*/src/", "tests/"],
+  "typescript_subject_pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$",
+  "forbidden_subjects": ["misc", "stuff", "helpers", "utils", "common", "manager", "new", "final", "v2-final"],
+  "roles": [
+    { "id": "entity", "extensions": ["ts"], "layers": ["domain"] },
+    { "id": "policy", "extensions": ["ts"], "layers": ["domain"] },
+    { "id": "event", "extensions": ["ts"], "layers": ["domain"] },
+    { "id": "port", "extensions": ["ts"], "layers": ["application"] },
+    { "id": "use-case", "extensions": ["ts"], "layers": ["application"] },
+    { "id": "adapter", "extensions": ["ts"], "layers": ["adapters/service", "runtime"] },
+    { "id": "route", "extensions": ["ts"], "layers": ["adapters/service", "composition"] },
+    { "id": "service", "extensions": ["ts"], "layers": ["composition", "runtime"] },
+    { "id": "component", "extensions": ["tsx"], "layers": ["adapters/ui", "ui-kit", "composition"] },
+    { "id": "hook", "extensions": ["ts"], "layers": ["adapters/ui"] },
+    { "id": "store", "extensions": ["ts"], "layers": ["adapters/ui"] },
+    { "id": "public", "extensions": ["ts"], "layers": ["public"], "required_runtime_qualifier": true },
+    { "id": "composition", "extensions": ["ts", "tsx"], "layers": ["composition"] },
+    { "id": "entry", "extensions": ["ts", "tsx"], "layers": ["composition", "tool"] },
+    { "id": "command", "extensions": ["ts"], "layers": ["tool"] },
+    { "id": "generated", "extensions": ["ts"], "layers": ["generated"] },
+    { "id": "unit.test", "extensions": ["ts", "tsx"], "layers": ["tests"] },
+    { "id": "contract.test", "extensions": ["ts"], "layers": ["tests"] },
+    { "id": "integration.test", "extensions": ["ts"], "layers": ["tests"] },
+    { "id": "browser.test", "extensions": ["ts"], "layers": ["tests/browser"] },
+    { "id": "desktop.test", "extensions": ["ts"], "layers": ["tests/desktop"] }
+  ],
+  "non_typescript_patterns": {
+    "rust": "^[a-z][a-z0-9]*(?:_[a-z0-9]+)*_(?:adapter|port|service|protocol|policy|entity)\\.rs$",
+    "python": "^(?:test_)?[a-z][a-z0-9]*(?:_[a-z0-9]+)*_(?:adapter|handler|protocol|policy|entity|service)\\.py$",
+    "migration": "^[0-9]{4}-[a-z0-9-]+\\.migration\\.sql$",
+    "schema": "^[a-z0-9-]+\\.schema\\.json$",
+    "styles": "^[a-z0-9-]+\\.(?:styles|tokens)\\.css$"
+  },
+  "conventional_names": ["main.rs", "lib.rs", "mod.rs", "main.py", "__init__.py", "package.json", "README.md", "AGENTS.md", "Cargo.toml", "Cargo.lock", "pyproject.toml", "uv.lock", "index.html", "module.manifest.json", "worker.manifest.json"],
+  "excluded_categories_requiring_registration": ["third-party", "generated-contracts", "user-content", "intentionally-invalid-test-fixtures"],
+  "additional_checks": ["role-to-directory", "case-collisions", "windows-reserved-paths", "path-portability", "unknown-roles", "expired-exceptions"]
+}

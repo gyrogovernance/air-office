@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "id": "example-native-smoke-not-run",
+  "check_id": "installed-native-smoke",
+  "status": "not-run",
+  "target": { "os": "unspecified", "architecture": "unspecified", "os_version": null },
+  "source": { "commit": null, "tree_sha256": null },
+  "inputs": [],
+  "tool_versions": {},
+  "started_at": null,
+  "finished_at": null,
+  "exit_code": null,
+  "selected_test_count": null,
+  "scenario_ids": ["A-012", "T-020"],
+  "artifacts": [],
+  "reason": "Illustrative schema example only. No implementation or native smoke test has been executed."
+}
