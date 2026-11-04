@@ -19,9 +19,9 @@ AI-assisted research sits alongside your own reading and writing. You can bring 
 
 AIR Office is developed by [Gyro Governance Lab](http://gyrogovernance.com/) as part of its work on AI safety and existential risk preparedness. Selected review tools come from the Lab’s [AI Inspector](https://github.com/gyrogovernance/apps) work.
 
-[![AIR Office workspace](assets/media/workspace.webp)](assets/media/air-office-readme.mp4)
+https://github.com/user-attachments/assets/7c27e76c-3a91-4cf2-96c0-92cfe5e2d0a5
 
-[Watch the AIR Office overview video](assets/media/air-office-readme.mp4)
+![AIR Office workspace with notes, files, and local AI chat](assets/media/workspace.webp)
 
 ---
 
@@ -53,19 +53,22 @@ Reference collections include the EU AI Act, the NIST AI Risk Management Framewo
 
 Create agents with a model, instructions, tools, skills, and Knowledge. Save prompts for recurring tasks and skills for multi-step work. Fellowship brings ongoing Programs and Projects together with contributions based on that work; Craft contains curated Standards and Products and lets you package reusable resources.
 
-|                                                                                          |                                                                                                                                            |
-| ---------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
-| ![AIR Office Teams directory of research and review agents](assets/media/agents.webp)    | ![AIR Office Market for discovering models and reusable workspace resources](assets/media/market.webp)                                     |
-| **Teams** lets you inspect agents, start a conversation, or open an agent in the editor. | **Market** brings models and reusable resources together. Installs are editable copies, and automation templates arrive paused for review. |
+|                                                                                          |                                                                                          |
+| ---------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| ![AIR Office Teams directory of research and review agents](assets/media/agents.webp)    | ![AIR Office Calendar with events and scheduled automations](assets/media/automations.webp) |
+| **Teams** lets you inspect agents, start a conversation, or open an agent in the editor. | **Calendar** organizes events and recurring work, with automations listed beside the month. |
 
 ### ✨ Also in the workspace
 
-Calendar organizes events and recurring work, while Playground gives you a separate place to try prompts and model settings. Configure web search, page fetch, and memory for chat, or use image and audio features with compatible providers.
+**Market** brings models and reusable resources together. Installs are editable copies, and automation templates arrive paused for review.
 
-|                                                                         |                                                        |
-| ----------------------------------------------------------------------- | ------------------------------------------------------ |
-| ![AIR Office automations and schedules](assets/media/automations.webp)  | ![AIR Office Arcade](assets/media/arcade.webp)         |
-| **Automations** run saved prompts on a schedule and retain run history. | **Arcade** offers bundled games for a break from work. |
+![AIR Office Market for discovering models and reusable workspace resources](assets/media/market.webp)
+
+**Arcade** offers bundled games for a break from work.
+
+![AIR Office Arcade](assets/media/arcade.webp)
+
+Playground gives you a separate place to try prompts and model settings. Configure web search, page fetch, and memory for chat, or use image and audio features with compatible providers.
 
 ---
 
