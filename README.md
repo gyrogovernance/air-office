@@ -19,7 +19,7 @@ AI-assisted research sits alongside your own reading and writing. You can bring 
 
 AIR Office is developed by [Gyro Governance Lab](http://gyrogovernance.com/) as part of its work on AI safety and existential risk preparedness. Selected review tools come from the Lab’s [AI Inspector](https://github.com/gyrogovernance/apps) work.
 
-https://github.com/user-attachments/assets/7c27e76c-3a91-4cf2-96c0-92cfe5e2d0a5
+https://github.com/user-attachments/assets/61d7cbe9-bb68-46e0-ad66-3773e6bb0aa7
 
 ---
 
@@ -89,6 +89,14 @@ You can enable tools and connectors in Settings. In chat, choose whether command
 Desktop alpha on Windows first; macOS and Linux packaging follow. Features may change. This is not legal, policy, or safety advice: treat model output as draft and check it against your sources.
 
 Local disk for workspace data. Local models are optional. Cloud providers and connectors need their own accounts or API keys.
+
+**Build the product** (installer), not the web UI alone:
+
+```powershell
+bun run build:desktop:windows
+```
+
+`bun run build` compiles only the web frontend. `bun run dev` is for development. Packaging compiles the Bun service into a sidecar and bundles it with the Tauri host—see [DESKTOP-BUILD.md](DESKTOP-BUILD.md#dev-vs-product-pipeline). Agents packaging or accepting releases should load the skills listed under [Agent skills for production packaging](DESKTOP-BUILD.md#agent-skills-for-production-packaging) instead of inventing a parallel pipeline.
 
 [Changelog](CHANGELOG.md) · [Releases](https://github.com/gyrogovernance/air-office/releases) · [Issues](https://github.com/gyrogovernance/air-office/issues) · [Gyro Governance Lab](http://gyrogovernance.com/)
 
