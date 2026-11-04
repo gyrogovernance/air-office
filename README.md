@@ -21,8 +21,6 @@ AIR Office is developed by [Gyro Governance Lab](http://gyrogovernance.com/) as 
 
 https://github.com/user-attachments/assets/7c27e76c-3a91-4cf2-96c0-92cfe5e2d0a5
 
-![AIR Office workspace with notes, files, and local AI chat](assets/media/workspace.webp)
-
 ---
 
 ## What you can do
@@ -32,6 +30,8 @@ https://github.com/user-attachments/assets/7c27e76c-3a91-4cf2-96c0-92cfe5e2d0a5
 Organize notes, conversations, and connected folders into Programs and Projects. Build searchable Knowledge collections from reports, papers, legislation, and standards, then bring them into chat. Write briefs and memos in rich-text Notes, and return to earlier exchanges through chat history and search.
 
 Use the workspace to prepare briefings and consultation responses, compare proposals with governance frameworks, or review model evaluations. Ask for a synthesis, question weakly supported points, and develop a briefing while the sources and discussion remain open beside it.
+
+![AIR Office workspace with notes, files, and local AI chat](assets/media/workspace.webp)
 
 ### 🔍 Review a draft with dedicated tools
 
