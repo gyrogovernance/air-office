@@ -2,105 +2,136 @@
 
 # AIR Office
 
-An AI-native workspace for agentic research, policy analysis, and knowledge management, focused on mitigating risks from transformative AI and advancing existential risk preparedness.
+An AI-native desktop workspace for agentic research and knowledge management, built to maximize counterfactual impact in existential risk preparedness and transformative AI safety.
 
-[![Alpha](https://img.shields.io/badge/release-alpha-0b0c0e?style=flat-square)](CHANGELOG.md)
-[![Version](https://img.shields.io/badge/version-0.1.0-555555?style=flat-square)](CHANGELOG.md)
-[![License: MIT](https://img.shields.io/badge/license-MIT-2ea44f?style=flat-square)](LICENSE)
-[![Desktop](https://img.shields.io/badge/desktop-Windows-0078D4?style=flat-square)](#alpha-release)
-[![Local-first](https://img.shields.io/badge/data-local--first-555555?style=flat-square)](#your-models-and-your-data)
-[![Bun](https://img.shields.io/badge/runtime-Bun-fbf0df?style=flat-square&logo=bun&logoColor=000000)](https://bun.sh)
+![Alpha](https://img.shields.io/badge/release-alpha-0b0c0e?style=flat-square)
+![Version](https://img.shields.io/badge/version-0.1.0-555555?style=flat-square)
+![License: MIT](https://img.shields.io/badge/license-MIT-2ea44f?style=flat-square)
+![Desktop](https://img.shields.io/badge/desktop-Windows-0078D4?style=flat-square)
+![Local-first](https://img.shields.io/badge/data-local--first-555555?style=flat-square)
 
-[What you can do](#what-you-can-do) · [Your data](#your-models-and-your-data) · [Alpha release](#alpha-release) · [Community](#community) · [Citation](#citation)
-
-AIR Office brings sources, AI conversations, and working documents into one workspace for people who prepare analysis on transformative AI and its consequences. It is built for researchers, policy analysts, and governance teams who need to examine evidence, develop a position, and carry their work from first reading through to a brief that can be shared with decision-makers.
-
-AI-assisted research sits alongside your own reading and writing. You can bring document collections into a conversation, use review tools, and work through multi-step tasks while retaining responsibility for the questions, corrections, and final judgement. Exchanges stay beside your notes and sources, so the reasoning behind a conclusion remains available for colleagues, reviewers, and policymakers.
-
-AIR Office is developed by [Gyro Governance Lab](http://gyrogovernance.com/) as part of its work on AI safety and existential risk preparedness. Selected review tools come from the Lab’s [AI Inspector](https://github.com/gyrogovernance/apps) work.
-
-https://github.com/user-attachments/assets/61d7cbe9-bb68-46e0-ad66-3773e6bb0aa7
+[About](#about) · [Capabilities & Services](#capabilities--services) · [Products & Workflows](#products--workflows) · [Security & Privacy](#security--privacy) · [Alpha release](#alpha-release) · [Community](#community) · [Citation](#citation)
 
 ---
 
-## What you can do
+## About
 
-### 📚 Research with your sources in one place
+**Alignment Infrastructure Routes (AIR) Office is human-capacity-building infrastructure for AI safety researchers, engineers, and governance teams working on transformative AI and its consequences. It keeps investigation, writing, review methods, and reusable tools in one durable and user-friendly workplace.**
 
-Organize notes, conversations, and connected folders into Programs and Projects. Build searchable Knowledge collections from reports, papers, legislation, and standards, then bring them into chat. Write briefs and memos in rich-text Notes, and return to earlier exchanges through chat history and search.
+https://github.com/user-attachments/assets/2fba87a3-5de3-4c72-8804-43e607348d84
 
-Use the workspace to prepare briefings and consultation responses, compare proposals with governance frameworks, or review model evaluations. Ask for a synthesis, question weakly supported points, and develop a briefing while the sources and discussion remain open beside it.
+AIR Office is developed by [Gyro Governance Lab](http://gyrogovernance.com/) as part of its work on AI safety and existential risk preparedness.
 
-![AIR Office workspace with notes, files, and local AI chat](assets/media/workspace.webp)
+### Theory of Change
 
-### 🔍 Review a draft with dedicated tools
+Mitigating risks from transformative AI requires rapid, high-rigor research and governance, yet safety teams currently rely on fragmented, cloud-dependent AI tools that erode human oversight, lack provenance, and expose sensitive work. AIR Office addresses this bottleneck by providing free, open-source, local-first desktop infrastructure tailored for AI safety and policy workflows. By integrating grounded knowledge collections, automated auditing tools, and structured memory, the workspace prevents AI-induced epistemic drift while keeping humans in final control. Furthermore, embedded Fellowship and Market protocols allow independent researchers to package their methods into reusable community tools, compounding ecosystem capacity and accelerating high-trust safety interventions that would not occur using general-purpose commercial tools.
 
-Five review tools come from AI Inspector, the Gyro Governance Lab browser extension for evaluation and governance. They are available as Actions and in chat for models that support tool calling.
+---
 
-- **Policy Auditing** connects claims to evidence and flags unsupported claims.
-- **Policy Reporting** prepares attributed reports with recommendations and limitations.
-- **Meta-Evaluation** reviews provenance and accountability using [The Human Mark](http://gyrogovernance.com/).
-- **Text Sanitization** explains and removes hidden characters and formatting problems.
-- **Quality Improvement** reviews structure, evidence, alternatives, and uncertainty.
+## Capabilities & Services
 
-You can also create Actions from ordered instruction steps and run them on a schedule.
+![AIR Office Apps](assets/media/apps.webp)
 
-The final judgement stays with you. You can question a finding, ask for the passage that supports it, or request another revision in the same conversation, and conclusions and citations should still be checked against the original material before they are relied upon.
-
-Reference collections include the EU AI Act, the NIST AI Risk Management Framework and Generative AI Profile, the OECD AI Principles, and The Human Mark. Each collection records its edition and source. You can add your own research and guidance alongside them.
-
-### 🛠️ Repeat good work without starting over
-
-Create agents with a model, instructions, tools, skills, and Knowledge. Save prompts for recurring tasks and skills for multi-step work. Fellowship brings ongoing Programs and Projects together with contributions based on that work; Craft contains curated Standards and Products and lets you package reusable resources.
+- 🏛️ **Integrated AI Safety Fellowship and Crafts.** Develop research and workflows into reusable infrastructure and contribute them to the community through our frictionless embedded protocols.
+- 🛒 **Market.** Discover reusable resources (Policy documentation, AI Skills, etc), and add them to your AI chat with one click.
+- 🤖 **AI Teams.** Reach out to our pre-configured selection of agents, or create your own.
+- 💻 **Code.** Run diagnostic tools, scripts, and edit your code without leaving the app, through our own integrated VS Code workbench.
+- 📅 **Calendar.** Keep events and run recurring AI automations.
+- ⚖️ **Compare.** Run two models side by side on the same prompt.
+- 🔎 **Chat.** Edit local files, search the web, and run AI safety diagnostics directly from the chat interface.
+- 🖼️ **Media.** Generate images and capture microphone or camera input when the work needs it.
+- 🕹️ **Arcade.** Release stress and recover from occupational overburn by playing arcade video games.
 
 |                                                                                          |                                                                                          |
 | ---------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
-| ![AIR Office Teams directory of research and review agents](assets/media/agents.webp)    | ![AIR Office Calendar with events and scheduled automations](assets/media/automations.webp) |
-| **Teams** lets you inspect agents, start a conversation, or open an agent in the editor. | **Calendar** organizes events and recurring work, with automations listed beside the month. |
-
-### ✨ Also in the workspace
-
-**Market** brings models and reusable resources together. Installs are editable copies, and automation templates arrive paused for review.
+| ![AIR Office Fellowship](assets/media/Fellowship.webp)    | ![AIR Office Calendar](assets/media/automations.webp) |
+| ![AIR Office Teams](assets/media/agents.webp)    | ![AIR Office Notes](assets/media/notes.webp) |
 
 ![AIR Office Market for discovering models and reusable workspace resources](assets/media/market.webp)
 
-**Arcade** offers bundled games for a break from work.
-
 ![AIR Office Arcade](assets/media/arcade.webp)
 
-Playground gives you a separate place to try prompts and model settings. Configure web search, page fetch, and memory for chat, or use image and audio features with compatible providers.
+---
+
+## Products & Workflows
+
+### Grounded Knowledge Management
+
+Build searchable Knowledge collections from reports, papers, specifications, legislation, and standards, then ask your AI agent for grounded answers and follow up drafts. Rich-text Notes hold literature synthesis, evaluation write-ups, design docs, memos, and chat history, all at direct reach by you and your favorite AI automations.
+
+![AIR Office workspace with notes, files, and local AI chat](assets/media/workspace.webp)
+
+> Seeded reference standards include the **EU AI Act**, the **NIST AI Risk Management Framework**, the **NIST Generative AI Profile**, and the **OECD AI Principles**. Companion collections for development and evaluation work cover **UN SDG goals**, **OECD-DAC evaluation**, and **UNDP DPI** guidance, with NGO Playbook evidence notes available alongside them. Each collection records its edition and source, and you can add your own research and guidance beside them.
+
+### Specialized AI Actions
+
+Actions are ordered AI workflows you create, adapt, or schedule for review, reporting, preparation, or any multi-step method your practice needs. 
+
+![AIR Office actions](assets/media/actions.webp)
+
+**AI safety and governance startup kit:**
+- **✍️ Quality Improvement** reviews structure, evidence, alternatives, and uncertainty.
+- **🔎 Policy Auditing** connects claims to evidence and flags unsupported claims.
+- **📋 Policy Reporting** prepares attributed reports with recommendations and limitations.
+- **🧭 Meta-Evaluation** reviews provenance and accountability.
+- **✨ Text Sanitization** removes AI slop and fixes formatting problems.
 
 ---
 
-## Your models and your data
-
-Chats, notes, and workspace records stay on your computer. You choose where workspace data is stored and which local folders to connect for research files.
-
-Use local AI for privacy-sensitive work, with inference on your computer. Full agent capabilities are available for compatible models. Hosted providers receive the content needed for each request; configured external tools and web services can also send data over the network.
-
-The desktop application is designed for local use without account registration. Conversations and notes can be exported when you need portable copies. Connecting a local folder authorizes access to that folder; disconnecting it does not delete its files.
-
-You can enable tools and connectors in Settings. In chat, choose whether commands and tools that change data ask for approval or are allowed to run. Connector discovery alone does not enable its tools.
+***Actions are ported from our Chrome Extension [AI Inspector](https://gyrogovernance.com/#inspector).***
 
 ---
 
-## Alpha release
+> While humans remain responsible for continuous oversight and final judgement, AIR Office helps your AI be aware of that and leverage its capacity for aligned augmentation.
 
-Desktop alpha on Windows first; macOS and Linux packaging follow. Features may change. This is not legal, policy, or safety advice: treat model output as draft and check it against your sources.
+---
 
-Local disk for workspace data. Local models are optional. Cloud providers and connectors need their own accounts or API keys.
+### Frontier AI Safety Research Tools by Gyro Governance Lab
 
-**Build the product** (installer), not the web UI alone:
+Two Lab methods sit at the center of how AIR Office treats authority, agency, and lasting human direction in AI-assisted work.
 
-```powershell
-bun run build:desktop:windows
-```
+- **🤚 The Human Mark:** A structural taxonomy of AI safety risks. [Learn More](https://gyrogovernance.com/#thm)
 
-`bun run build` compiles only the web frontend. `bun run dev` is for development. Packaging compiles the Bun service into a sidecar and bundles it with the Tauri host—see [DESKTOP-BUILD.md](DESKTOP-BUILD.md#dev-vs-product-pipeline). Agents packaging or accepting releases should load the skills listed under [Agent skills for production packaging](DESKTOP-BUILD.md#agent-skills-for-production-packaging) instead of inventing a parallel pipeline.
+- **🎓 Gyroscopic Reasoning [NEW]:** A formal protocol for AI alignment. [Learn More](https://gyrogovernance.com/#gyroscope)
 
-[Changelog](CHANGELOG.md) · [Releases](https://github.com/gyrogovernance/air-office/releases) · [Issues](https://github.com/gyrogovernance/air-office/issues) · [Gyro Governance Lab](http://gyrogovernance.com/)
+### Community Playbooks
 
-Bug reports: app version, OS, model, and steps to reproduce. Strip API keys and private document content.
+Craft Standards package skills, agents, and Actions you can enable for structured work instead of ad-hoc prompting. Two shipped playbooks are ready to adopt:
+
+- **🛡️ Security Playbook:** OWASP-grounded assessment methods for AI agents, applications, and code, with companion security Reference packs. [Learn More](https://owasp.github.io/secure-agent-playbook/)
+- **🌍 NGO Playbook:** Program design, SDG alignment, monitoring and evaluation, and funding strategy skills adapted from NGO Agent Skills by Lijie Zhou, with related development Reference packs. [Learn More](https://github.com/LijieZhou/ngo-agent-skills)
+
+---
+
+## Security & Privacy
+
+### Local-First Data Sovereignty
+
+Workspace records stay on your computer. Choose local models for on-machine inference or cloud providers for their models and tools. Hosted providers and enabled connectors receive only what each request needs.
+
+Export conversations and notes when you need portable copies. Connecting a folder authorizes that root, and disconnecting it does not delete its files. In Settings and chat you control which tools run and whether changes ask for approval first.
+
+### Release Audit
+
+AIR Office is open source, and its code can be publically inspected. Before a release is accepted, we check the shipped software with open-source tools for secrets that should never ship, known problems in third-party libraries, license and dependency policy issues in native code, and risky patterns in our own source and in shipped Lab skills. A review that did not finish does not count as a clean result. To report a security issue, see [SECURITY.md](SECURITY.md).
+
+The release review uses:
+
+- [TruffleHog:](https://github.com/trufflesecurity/trufflehog) Identifies leaked secrets and credentials.
+- [Trivy:](https://trivy.dev/) Detects vulnerabilities, misconfigurations, and software bills of materials.
+- [Semgrep:](https://semgrep.dev/) Scans source code for security flaws using custom patterns.
+- [CodeQL:](https://codeql.github.com/) Performs deep semantic analysis on source code.
+- [SkillSpector:](https://github.com/NVIDIA/SkillSpector) Evaluates shipped Lab skills.
+
+---
+
+## Alpha Release
+
+![AIR Office Dark Mode](assets/media/welcome_dark.webp)
+
+AIR Office is in alpha. Features may change, and the software can be unstable.
+
+If you want to report a problem, open an [issue](https://github.com/gyrogovernance/air-office/issues). Include the app version, the OS, the model, and the steps to reproduce, and strip API keys and private document content.
 
 ---
 
@@ -110,14 +141,14 @@ Bug reports: app version, OS, model, and steps to reproduce. Strip API keys and 
 - [Code of Conduct](CODE_OF_CONDUCT.md)
 - [Security policy](SECURITY.md)
 - [Changelog](CHANGELOG.md)
-- [License](LICENSE) (MIT)
+- [License](LICENSE)
 - [Third-party notices](THIRD-PARTY-NOTICES.md)
 
 ---
 
 ## Citation
 
-If you use AIR Office in academic or policy work, please cite it.
+If you use AIR Office in academic or policy work please cite it.
 
 ```bibtex
 @software{air_office_2026,
@@ -131,7 +162,7 @@ If you use AIR Office in academic or policy work, please cite it.
 }
 ```
 
-Korompilias, B., & Gyro Governance Lab. (2026). *AIR Office* (Version 0.1.0) [Computer software]. https://github.com/gyrogovernance/air-office
+Korompilias B. and Gyro Governance Lab. 2026. *AIR Office* Version 0.1.0. Computer software. https://github.com/gyrogovernance/air-office
 
 A machine-readable record is also provided in [CITATION.cff](CITATION.cff).
 
@@ -141,4 +172,3 @@ A machine-readable record is also provided in [CITATION.cff](CITATION.cff).
 
 Including framework references does not imply endorsement by their publishers. Third-party software, fonts, artwork, and runtimes are attributed in [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md).
 
-![AIR Office welcome screen and workspace navigation](assets/media/welcome.webp)

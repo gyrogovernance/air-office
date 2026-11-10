@@ -514,6 +514,10 @@ function makeTile(g, index) {
 // DEMO_GAMES / FEATURED_GAMES / isFeatured are derived from per-game demo/hero
 // flags in games.js (loaded before this script). Used by buildDemoOrder below.
 
+// TEMPORARY promo pin for video showcase: keep the hero cabinet on one game and
+// stop auto-shuffle. Set back to null when the shoot is done.
+const PROMO_HERO_FILE = null;
+
 let heroFile = null;
 let _demoOrder = [];   // DEMO_GAMES shuffled once per page load
 let _demoIndex = 0;    // position in _demoOrder currently shown in the cabinet
@@ -528,6 +532,11 @@ function loadFrame(frame, url) {
 // game. "Show a different game" then steps through this shuffled order, wrapping
 // at the end — so clicking it repeatedly walks past every game before repeating.
 function buildDemoOrder() {
+    if (PROMO_HERO_FILE && gameByFile[PROMO_HERO_FILE]) {
+        _demoOrder = [PROMO_HERO_FILE];
+        _demoIndex = 0;
+        return;
+    }
     // Featured games lead (shuffled among themselves so a different one can open
     // each visit), then the rest of the demo games (also shuffled, featured de-duped).
     const featured = shuffledCopy(FEATURED_GAMES.filter(f => gameByFile[f]), Math.random);
@@ -738,13 +747,16 @@ function buildHero() {
     wrap.querySelector('.hero-hit').addEventListener('click', launch);
     wrap.querySelector('.hero-coin').addEventListener('click', launch);
     // Steps through the shuffled demo order, wrapping — repeated clicks cycle all.
-    wrap.querySelector('.hero-shuffle').addEventListener('click', () => advanceDemo());
+    const shuffleBtn = wrap.querySelector('.hero-shuffle');
+    shuffleBtn.addEventListener('click', () => advanceDemo());
+    if (PROMO_HERO_FILE) shuffleBtn.hidden = true;
     // Hovering the cabinet pauses + resets the auto-advance countdown.
     wrap.addEventListener('mouseenter', () => { heroHover = true; });
     wrap.addEventListener('mouseleave', () => { heroHover = false; });
     // Touch devices stay on the initial hero — no auto-rotation, so don't start
     // the countdown/advance timer at all (the 🔀 button is also hidden there).
-    if (!_heroTimerStarted && !isTouch) { _heroTimerStarted = true; setInterval(tickHeroTimer, 250); }
+    // Promo pin also freezes the cabinet so a video shoot stays on one game.
+    if (!_heroTimerStarted && !isTouch && !PROMO_HERO_FILE) { _heroTimerStarted = true; setInterval(tickHeroTimer, 250); }
     // Show the current game in the shuffled order once the element is in the DOM
     // (builds the shuffle on first run; preserves position when returning here).
     setTimeout(() => {
