@@ -12,9 +12,9 @@ Notable changes to AIR Office. Format based on [Keep a Changelog](https://keepac
 
 ---
 
-## [0.1.0] - 2026-10-10 to 2026-11-09
+## [0.1.0-AIR_Office_Alpha] - 2026-10-10 to 2026-11-11
 
-First public alpha. A local-first desktop workplace with notes, knowledge, chat and agents, local and cloud models, research Actions and Lab methods, Windows packaging, and a pinned security review for releases.
+First public alpha. A local-first desktop workplace with notes, knowledge, chat and agents, local and cloud models, research Actions and Lab methods, desktop apps for Windows and Mac (Apple Silicon and Intel), and a pinned security review for releases.
 
 ### Workspace
 
@@ -48,7 +48,7 @@ First public alpha. A local-first desktop workplace with notes, knowledge, chat 
 
 - Local inference runs through embedded Lemonade; cloud and other compatible connections keep their own protocols.
 - Settings manages connections and stored credentials without exposing secrets in the UI.
-- Windows desktop packaging uses Tauri with a Bun service sidecar.
+- Desktop apps ship for Windows and Mac (Apple Silicon and Intel).
 
 ### UI
 
