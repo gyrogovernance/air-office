@@ -64,6 +64,6 @@ First public alpha. A local-first desktop workplace with notes, knowledge, chat 
 - Public README, citation files, contributing and conduct docs, security policy, license, and third-party notices.
 - Third-party notices credit the OWASP Secure Agent Playbook and companion licenses (CC BY, CC BY-SA, Apache 2.0, MIT, Arcanum PI Taxonomy).
 
-[0.1.0]: https://github.com/gyrogovernance/air-office/releases/tag/v0.1.0
+[0.1.0-AIR_Office_Alpha]: https://github.com/gyrogovernance/air-office/releases/tag/0.1.0-AIR_Office_Alpha
 
 ---

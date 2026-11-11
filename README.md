@@ -7,7 +7,7 @@ An AI-native desktop workspace for agentic research and knowledge management, bu
 ![Alpha](https://img.shields.io/badge/release-alpha-0b0c0e?style=flat-square)
 ![Version](https://img.shields.io/badge/version-0.1.0-555555?style=flat-square)
 ![License: MIT](https://img.shields.io/badge/license-MIT-2ea44f?style=flat-square)
-![Desktop](https://img.shields.io/badge/desktop-Windows-0078D4?style=flat-square)
+![Desktop](https://img.shields.io/badge/desktop-Windows%20%7C%20macOS-0078D4?style=flat-square)
 ![Local-first](https://img.shields.io/badge/data-local--first-555555?style=flat-square)
 ![Microsoft Copilot SDK](https://img.shields.io/badge/agent-Microsoft%20Copilot%20SDK-111827?style=flat-square)
 
@@ -132,9 +132,19 @@ The release review uses:
 
 ![AIR Office Dark Mode](assets/media/welcome_dark.webp)
 
-AIR Office is in alpha. Features may change, and the software can be unstable.
+**[0.1.0-AIR_Office_Alpha](https://github.com/gyrogovernance/air-office/releases/tag/0.1.0-AIR_Office_Alpha)** is the first public desktop build.
+
+| Platform | Download |
+| --- | --- |
+| Windows (x64) | [AIR-Office-Setup-0.1.0-x64.exe](https://github.com/gyrogovernance/air-office/releases/download/0.1.0-AIR_Office_Alpha/AIR-Office-Setup-0.1.0-x64.exe) |
+| macOS Apple Silicon | [AIR-Office-0.1.0-arm64.dmg](https://github.com/gyrogovernance/air-office/releases/download/0.1.0-AIR_Office_Alpha/AIR-Office-0.1.0-arm64.dmg) |
+| macOS Intel | [AIR-Office-0.1.0-x64.dmg](https://github.com/gyrogovernance/air-office/releases/download/0.1.0-AIR_Office_Alpha/AIR-Office-0.1.0-x64.dmg) |
+
+These builds are unsigned alpha packages. On macOS you may need to open the app from System Settings → Privacy & Security after the first launch. Features may change, and the software can be unstable.
 
 If you want to report a problem, open an [issue](https://github.com/gyrogovernance/air-office/issues). Include the app version, the OS, the model, and the steps to reproduce, and strip API keys and private document content.
+
+Full notes: [CHANGELOG.md](CHANGELOG.md).
 
 ---
 
