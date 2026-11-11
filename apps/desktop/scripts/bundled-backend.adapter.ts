@@ -57,8 +57,18 @@ export async function prepareBundledTextBackend(target: string, resourcesRoot: s
     const resolved = await call('/v1/install/dry-run', { recipe: 'llamacpp', backend });
     if (resolved.recipe !== 'llamacpp' || resolved.backend !== backend || resolved.repo !== 'ggml-org/llama.cpp' || resolved.version !== 'b11393' || resolved.supported !== true || typeof resolved.filename !== 'string' || !/^[\w.-]+\.zip$|^[\w.-]+\.tar\.gz$/u.test(resolved.filename)) throw new Error('The pinned text backend resolution differs from the expected release.');
     if (platform === 'darwin' && arch === 'x64' && resolved.filename !== 'llama-b11393-bin-macos-x64.tar.gz') throw new Error('Intel Mac packaging requires the pinned macos-x64 llama.cpp archive.');
-    const releaseResponse = await fetchImpl(`https://api.github.com/repos/ggml-org/llama.cpp/releases/tags/${resolved.version}`, { headers: { Accept: 'application/vnd.github+json' }, signal: AbortSignal.timeout(30000) });
-    if (!releaseResponse.ok) throw new Error('Backend release integrity metadata is unavailable.');
+    // Actions runners share a low unauthenticated GitHub API quota; use the job
+    // token when present so packaging can read pinned release digests reliably.
+    const githubToken = process.env.GITHUB_TOKEN || process.env.GH_TOKEN;
+    const releaseResponse = await fetchImpl(`https://api.github.com/repos/ggml-org/llama.cpp/releases/tags/${resolved.version}`, {
+      headers: {
+        Accept: 'application/vnd.github+json',
+        'X-GitHub-Api-Version': '2022-11-28',
+        ...(githubToken ? { Authorization: `Bearer ${githubToken}` } : {}),
+      },
+      signal: AbortSignal.timeout(30000),
+    });
+    if (!releaseResponse.ok) throw new Error(`Backend release integrity metadata is unavailable (HTTP ${releaseResponse.status}).`);
     const release = await releaseResponse.json() as { assets?: Array<{ name: string; size: number; digest: string; browser_download_url: string }> };
     const asset = release.assets?.find((item) => item.name === resolved.filename);
     if (!asset || !/^sha256:[a-f0-9]{64}$/u.test(asset.digest) || asset.size <= 0 || asset.size > 100 * 1024 ** 2) throw new Error('Backend archive has no bounded authoritative SHA-256.');

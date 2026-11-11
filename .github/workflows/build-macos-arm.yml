@@ -70,6 +70,9 @@ jobs:
         run: bun install --frozen-lockfile
 
       - name: Build desktop product (Apple Silicon DMG/zip)
+        env:
+          # Authenticated GitHub API reads for pinned llama.cpp release digests.
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: bun run build:desktop:mac:arm
 
       - name: Stage Mac installer helper

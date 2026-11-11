@@ -32,12 +32,15 @@ test('records cross-target backend omission without starting a process or fetchi
 
 test('uses pinned dry-run response fields and records backend install request', async () => {
   const root = fixture();
-  const calls: Array<{ url: string; body?: string }> = [];
+  const calls: Array<{ url: string; body?: string; authorization?: string | null }> = [];
   const child = { exitCode: null, exited: Promise.resolve(0), kill() {} };
+  const previous = process.env.GITHUB_TOKEN;
+  process.env.GITHUB_TOKEN = 'fixture-actions-token';
   const fetchImpl = (async (input: RequestInfo | URL, init?: RequestInit) => {
     const url = String(input);
     const body = typeof init?.body === 'string' ? init.body : undefined;
-    calls.push({ url, body });
+    const headers = new Headers(init?.headers);
+    calls.push({ url, body, authorization: headers.get('authorization') });
     if (url.endsWith('/v1/health')) return Response.json({ status: 'ok' });
     if (url.endsWith('/v1/install/dry-run')) return Response.json({ recipe: 'llamacpp', backend: 'cpu', arch: '', repo: 'ggml-org/llama.cpp', version: 'b11393', filename: 'llama-b11393-bin-win-cpu-x64.zip', url: 'https://example.invalid/archive.zip', supports_split_archive: false, supported: true });
     if (url.endsWith('/v1/install')) return Response.json({ status: 'ok' });
@@ -50,5 +53,10 @@ test('uses pinned dry-run response fields and records backend install request', 
     });
     expect(calls.some((call) => call.url.endsWith('/v1/install/dry-run') && call.body?.includes('"recipe":"llamacpp"'))).toBe(true);
     expect(calls.some((call) => call.url.endsWith('/v1/install') && call.body?.includes('"stream":false'))).toBe(true);
-  } finally { rmSync(root, { recursive: true, force: true }); }
+    expect(calls.some((call) => call.url.includes('api.github.com') && call.authorization === 'Bearer fixture-actions-token')).toBe(true);
+  } finally {
+    if (previous === undefined) delete process.env.GITHUB_TOKEN;
+    else process.env.GITHUB_TOKEN = previous;
+    rmSync(root, { recursive: true, force: true });
+  }
 });
