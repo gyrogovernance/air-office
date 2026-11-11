@@ -1,0 +1,82 @@
+# Dependencies
+node_modules/
+
+# Upstream checkout used only to regenerate the OWASP Craft Standard (PIN.txt + generated crafts/frameworks are committed).
+packages/lab-pack/data/owasp-secure-agent-playbook/.src/
+packages/lab-pack/data/ngo-agent-skills/.src/
+
+# Local vendor cache. Keep only the pinned patch archives and notes for clean-checkout installs.
+.vendor/**
+!.vendor/
+!.vendor/*.tgz
+!.vendor/primp-*.tar.gz
+!.vendor/*-VENDOR-PATCH.md
+.vendor/code-server-*.tar.gz
+
+# Build outputs
+**/dist/
+**/dist-static-demo/
+# LittleJS Arcade ships its engine under assets/arcade/dist (not a build output).
+!assets/arcade/dist/
+!assets/arcade/dist/**
+**/target/
+**/.vite/
+coverage/
+*.tsbuildinfo
+apps/desktop/resources/
+apps/desktop/binaries/
+apps/desktop/out/
+apps/desktop/.electron-host/
+
+# Optional local secrets (this repo does not ship .env workflows)
+.env
+.env.*
+
+# Logs and temporary files
+*.log
+.tmp/
+tmp/
+.audit/
+_temp_*
+
+# Local editor / agent / OS / sync files
+.DS_Store
+Thumbs.db
+Desktop.ini
+.vscode/
+.cursor/
+.idea/
+.stfolder/
+# Local agent material (skills, MCP, rules). Not part of the product tree.
+.agents/
+AGENTS.md
+.aichignore
+skills-lock.json
+
+# Local study checkouts, plans, task history, verification piles, and agent skill locks
+.dev/
+verification/
+# Legacy root tasks/ if recreated; canonical location is .dev/tasks/
+tasks/
+
+# Python / test scratch
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.tox/
+.venv/
+venv/
+# Playwright artifacts (configured under tests/ via playwright.config.ts)
+tests/test-results/
+tests/playwright-report/
+tests/blob-report/
+test-results/
+playwright-report/
+blob-report/
+
+# Managed worker build environments (covered globally by .venv/; keep explicit worker build dirs)
+workers/web-search/build/
+workers/documents/build/
+workers/documents/.runtime-venv/

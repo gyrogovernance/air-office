@@ -1,0 +1,4 @@
+{
+  "schema_version": 1, "id": "contracts", "title": "Shared transport contracts", "purpose": "Defines stable, runtime-neutral contracts exchanged by the initial local editing slice.", "kind": "foundation", "lifecycle": "active",
+  "ownership": { "entities": [], "table_prefixes": [] }, "entrypoints": { "service": "src/file.contracts.service.public.ts" }, "foundation_dependencies": [], "required_ports": [], "contracts": ["file-operation", "chat-stream", "chat-run", "document-source", "knowledge-retrieval", "job-lifecycle"], "events": { "emits": [], "consumes": [] }, "feature_ids": [], "scenario_ids": [], "documentation": [".dev/air-office/02-architecture.plan.md"]
+}

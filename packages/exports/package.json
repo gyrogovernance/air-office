@@ -1,0 +1,5 @@
+{
+ "name": "@office/exports", "version": "0.1.0", "private": true, "type": "module",
+ "dependencies": { "@office/contracts": "workspace:*" },
+ "exports": { "./file": "./src/file/file.exports.public.ts", "./service": "./src/exports.service.public.ts", "./domain": "./src/exports.domain.public.ts" }
+}

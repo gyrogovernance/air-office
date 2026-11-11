@@ -1,0 +1,25 @@
+.stage-page:is([data-active-stage='media'], [data-active-stage='market'], [data-active-stage='fellowship'], [data-active-stage='glossary'], [data-active-stage='search']) {
+  padding: 0 0 calc(var(--space-2) * 2 + 38px);
+}
+
+.stage-page .workspace-hero-page {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0 0 32px;
+}
+
+.workspace-hero-page > :not(.workspace-hero) {
+  width: min(calc(100% - 24px), 1120px);
+  margin-inline: auto;
+}
+
+.workspace-hero-page > .workspace-hero + * {
+  margin-block-start: 12px;
+}
+
+[data-workspace='media'] .workspace-hero { --workspace-hero-tint: var(--violet-9); }
+[data-workspace='market'] .workspace-hero { --workspace-hero-tint: var(--green-9); }
+[data-workspace='guides'] .workspace-hero { --workspace-hero-tint: var(--green-9); }
+[data-workspace='search'] .workspace-hero { --workspace-hero-tint: var(--orange-9); }
+[data-workspace='fellowship'] .workspace-hero { --workspace-hero-tint: var(--violet-9); }

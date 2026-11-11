@@ -4,8 +4,10 @@ Vendored from https://github.com/KilledByAPixel/LittleJSArcade at commit
 `c14102b706a5f1bbedbbe5087706d6425660300c` on 19 October 2026.
 
 The launcher, games, templates, engine distributions and images are bundled
-as static assets for offline play. AIR Office mounts the launcher in an iframe
-inside its existing stage. Switching away unmounts the console and stops its
+as static assets for offline play. The LittleJS engine builds live in
+`assets/arcade/dist/` (tracked explicitly; the repo-wide `**/dist/` ignore does
+not apply there). AIR Office mounts the launcher in an iframe inside its
+existing stage. Switching away unmounts the console and stops its
 games and audio; scores and preferences retain upstream localStorage behavior.
 An unfinished round is not saved by AIR Office.
 

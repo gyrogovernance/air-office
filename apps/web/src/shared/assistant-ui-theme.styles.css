@@ -1,0 +1,679 @@
+/* Map assistant-ui / shadcn semantic tokens onto AIR Office surfaces.
+   Elements keep their shipped class names; Tailwind v4 reads --color-* from @theme. */
+
+@import "tw-shimmer";
+
+/*
+  Token bridge between AIR, HeroUI, and shadcn/assistant-ui Elements.
+
+  - HeroUI `muted` = muted text. shadcn `muted` = sunken surface. Keep the
+    global muted token as text; remap the surface sense only inside the
+    assistance thread (and any portaled Elements chrome that inherits it).
+  - shadcn `foreground` = strong ink for controls and body copy in Elements.
+    AIR `--text-body` is softer reading gray — do not feed it to foreground
+    or icon buttons wash out (scroll-to-bottom, action bars, outline chips).
+  - shadcn `accent` = quiet hover plate. AIR `--accent` stays the brand blue
+    for HeroUI / `var(--accent)`. Tailwind `--color-accent*` must not point
+    at brand, or Elements hover/active states go blue-on-white.
+*/
+@theme inline {
+  --color-background: var(--surface-app);
+  --color-foreground: var(--text-strong);
+  --color-card: var(--surface-raised);
+  --color-card-foreground: var(--text-strong);
+  --color-popover: var(--surface-raised);
+  --color-popover-foreground: var(--text-strong);
+  --color-primary: var(--slate-12);
+  --color-primary-foreground: var(--slate-1);
+  --color-secondary: var(--surface-inset);
+  --color-secondary-foreground: var(--text-strong);
+  --color-muted: var(--text-muted);
+  --color-muted-foreground: var(--text-muted);
+  --color-accent: var(--surface-hover);
+  --color-accent-foreground: var(--text-strong);
+  --color-destructive: var(--danger);
+  --color-border: var(--line-soft);
+  --color-input: var(--line-soft);
+  --color-ring: var(--focus);
+  --radius-sm: calc(var(--radius-lg) - 4px);
+  --radius-md: calc(var(--radius-lg) - 2px);
+  --radius-lg: var(--radius-lg);
+  --radius-xl: calc(var(--radius-lg) + 4px);
+}
+
+:root,
+:root[data-theme='light'] {
+  --background: var(--surface-app);
+  --foreground: var(--text-strong);
+  --card: var(--surface-raised);
+  --card-foreground: var(--text-strong);
+  --popover: var(--surface-raised);
+  --popover-foreground: var(--text-strong);
+  --primary: var(--slate-12);
+  --primary-foreground: var(--slate-1);
+  --secondary: var(--surface-inset);
+  --secondary-foreground: var(--text-strong);
+  --muted: var(--text-muted);
+  --muted-foreground: var(--text-muted);
+  --destructive: var(--danger);
+  --border: var(--line-soft);
+  --input: var(--line-soft);
+  --ring: var(--focus);
+  --radius: var(--radius-lg);
+}
+
+:root[data-theme='dark'],
+:root.dark {
+  --background: var(--surface-app);
+  --foreground: var(--text-strong);
+  --card: var(--surface-raised);
+  --card-foreground: var(--text-strong);
+  --popover: var(--surface-raised);
+  --popover-foreground: var(--text-strong);
+  --primary: var(--slate-1);
+  --primary-foreground: var(--slate-12);
+  --secondary: var(--surface-inset);
+  --secondary-foreground: var(--text-strong);
+  --muted: var(--text-muted);
+  --muted-foreground: var(--text-muted);
+  --destructive: var(--danger);
+  --border: var(--line-soft);
+  --input: var(--line-soft);
+  --ring: var(--focus);
+  --color-primary: var(--slate-1);
+  --color-primary-foreground: var(--slate-12);
+}
+
+/*
+  Thread-local: muted becomes a sunken plate for Elements `bg-muted`.
+  Remap only --color-accent* (Tailwind). Leave AIR --accent as brand blue
+  for HeroUI / compose chrome nested in the thread.
+*/
+.assistance-thread-view {
+  --color-muted: var(--surface-inset);
+  --muted: var(--surface-inset);
+  --color-muted-foreground: var(--text-muted);
+  --muted-foreground: var(--text-muted);
+  --color-accent: var(--surface-hover);
+  --color-accent-foreground: var(--text-strong);
+  --color-foreground: var(--text-strong);
+  --foreground: var(--text-strong);
+}
+
+.assistance-thread-view .aui-thread-root {
+  min-height: 0;
+  height: 100%;
+  background: transparent;
+}
+
+/* Clear the floating rail nav; sticky composer owns the bottom edge. */
+.chat-mode #rail-right-chat-scroll,
+.rail-chat-host #rail-right-chat-scroll,
+.stage-chat #rail-right-chat-scroll {
+  padding-top: calc(var(--rail-nav-height, 76px) + 8px);
+  scroll-padding-top: calc(var(--rail-nav-height, 76px) + 8px);
+  scroll-padding-bottom: var(--thread-composer-clearance, 12rem);
+  /* StageScrollbar owns the visible thumb; hide the native bar Elements enables. */
+  scrollbar-width: none;
+}
+
+.chat-mode #rail-right-chat-scroll::-webkit-scrollbar,
+.rail-chat-host #rail-right-chat-scroll::-webkit-scrollbar,
+.stage-chat #rail-right-chat-scroll::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+}
+
+/* Sticky footer stays transparent: the composer shell carries ui-frost glass.
+   Keep it above the message column. The rail shell-bottom-frost still fades
+   message content behind the composer (including its left edge). */
+.assistance-thread-view .aui-thread-viewport-footer {
+  background: transparent;
+  z-index: 6;
+}
+
+/*
+  Message surface ladder (must stay distinct in both themes).
+  Light: inset user, raised assistant, translucent inset tool plates.
+  Dark: global --surface-raised and --surface-inset both resolve to slate-4,
+  so the thread owns its own steps.
+*/
+.assistance-thread-view {
+  --thread-user-bubble: var(--surface-inset);
+  --thread-assistant-bubble: var(--surface-raised);
+  --thread-tool-plate: color-mix(in oklab, var(--surface-inset) 55%, transparent);
+  --thread-tool-card: var(--surface-app);
+  --thread-bubble-rim: color-mix(in oklab, var(--line-soft) 70%, transparent);
+  --thread-tool-rim: color-mix(in oklab, var(--line-soft) 55%, transparent);
+}
+
+:is(:root[data-theme='dark'], :root.dark) .assistance-thread-view {
+  --thread-user-bubble: var(--slate-3);
+  --thread-assistant-bubble: var(--slate-6);
+  --thread-tool-plate: var(--slate-4);
+  --thread-tool-card: var(--slate-3);
+  --thread-bubble-rim: color-mix(in oklab, var(--white-a4) 80%, transparent);
+  --thread-tool-rim: color-mix(in oklab, var(--white-a3) 90%, transparent);
+}
+
+/* User bubble: quieter. Assistant: higher contrast opaque plate. */
+.assistance-thread-view .aui-user-message-content {
+  background: var(--thread-user-bubble);
+  box-shadow: inset 0 0 0 1px var(--thread-bubble-rim);
+}
+
+.assistance-thread-view .aui-user-message-content > p {
+  margin: 0;
+  width: 100%;
+}
+
+.assistance-thread-view [data-slot='aui_assistant-message-content'] {
+  background: var(--thread-assistant-bubble);
+  box-shadow:
+    inset 0 0 0 1px var(--thread-bubble-rim),
+    0 1px 2px color-mix(in oklab, var(--slate-12) 6%, transparent);
+}
+
+.chat-mode > .assistance-thread-view,
+.rail-chat-host > .assistance-thread-view {
+  padding-bottom: 0;
+}
+
+/*
+  Composer lives in the sticky footer after this group, so do not add a
+  clearance margin here (that doubled the gap). scroll-padding-bottom on the
+  viewport still keeps anchored messages clear of the sticky shell.
+*/
+.assistance-thread-view [data-slot='aui_message-group'] {
+  margin-bottom: 0;
+  padding-bottom: 0.5rem;
+}
+
+.aui-composer-action-wrapper {
+  width: 100%;
+}
+
+.compose-extra-row {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  min-width: 0;
+  width: 100%;
+}
+
+.compose-extra-tools,
+.compose-extra-end {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  flex: 0 0 auto;
+}
+
+.compose-extra-models {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  min-width: 0;
+  flex: 1 1 auto;
+  container-type: inline-size;
+  container-name: compose-models;
+}
+
+.compose-extra-models .compose-model--agent {
+  flex: 0 0 auto;
+}
+
+.compose-extra-models .compose-model--agent .app-select {
+  width: auto;
+  padding-inline: 6px;
+}
+
+.compose-extra-models .compose-model--model {
+  flex: 1 1 auto;
+  min-width: 0;
+  max-width: none;
+}
+
+.compose-extra-models .compose-model--model .app-select-icon {
+  flex-shrink: 0;
+}
+
+/* Narrow composer: model trigger collapses to the provider logo (+ chevron). */
+@container compose-models (max-width: 8.5rem) {
+  .compose-model--model {
+    flex: 0 0 auto;
+  }
+
+  .compose-model--model .app-select {
+    width: auto;
+    padding-inline: 6px;
+  }
+
+  .compose-model--model .app-select-text {
+    display: none;
+  }
+}
+
+.compose-attach-notes {
+  font-size: 0.75rem;
+}
+
+/*
+  Radius ladder inside the assistant bubble:
+  bubble (--composer-radius) → tool plate (--message-inner-radius) →
+  nested paper/field (--message-card-radius). Elements ship rounded-2xl /
+  rounded-xl which overshoot the outer clip.
+*/
+.assistance-thread-view [data-slot='aui_assistant-message-content'] :is(
+  [data-slot='todo-list'],
+  [data-slot='web-search'],
+  [data-slot='sources'],
+  [data-slot='memory-chips'],
+  [data-slot='retrieval-chunks'],
+  [data-slot='tool-fallback-root'],
+  [data-slot='tool-group-root'],
+  [data-slot='reasoning-root'],
+  [data-slot='code-runner'],
+  [data-slot='code-diff'],
+  [data-slot='schedule-card'],
+  [data-slot='document-reference'],
+  [data-slot='file-tree'],
+  [data-slot='link-preview'],
+  [data-slot='task-card'],
+  [data-slot='approval-card'],
+  [data-slot='web-preview'],
+  [data-slot='reviewable-diff'],
+  [data-slot='terminal-block'],
+  [data-slot='data-table'],
+  [data-slot='image-generation'],
+  [data-slot='audio-player'],
+  [data-slot='video-player'],
+  .aui-md-table-wrapper
+) {
+  max-width: none;
+  width: 100%;
+  border-radius: var(--message-inner-radius, 14px);
+}
+
+/* Soft tool plates (lists / search / reasoning) keep the quiet inset fill. */
+.assistance-thread-view [data-slot='aui_assistant-message-content'] :is(
+  [data-slot='todo-list'],
+  [data-slot='web-search'],
+  [data-slot='sources'],
+  [data-slot='memory-chips'],
+  [data-slot='retrieval-chunks'],
+  [data-slot='tool-fallback-root'],
+  [data-slot='reasoning-root'],
+  [data-slot='code-runner'],
+  [data-slot='code-diff']
+) {
+  padding: 8px 10px;
+  background: var(--thread-tool-plate);
+  box-shadow: inset 0 0 0 1px var(--thread-tool-rim);
+}
+
+.assistance-thread-view [data-slot='aui_assistant-message-content'] [data-slot='reasoning-root'] {
+  margin-bottom: 0;
+  border-color: var(--thread-tool-rim);
+}
+
+/*
+  Narrow rail: drop the wide start indent (ps-6 under the brain icon column).
+  Use the full plate width so reasoning reads as one tight column, not a
+  right-shifted strip with empty space on the left.
+*/
+.assistance-thread-view [data-slot='reasoning-trigger'] {
+  max-width: none;
+  width: 100%;
+  padding-block: 4px;
+  gap: 6px;
+}
+
+.assistance-thread-view [data-slot='reasoning-text'] {
+  /* Top clears the always-on fade scrim; bottom matches the tight side inset. */
+  padding-inline-start: 0;
+  padding-block: 12px 4px;
+}
+
+.assistance-thread-view [data-slot='reasoning-fade'] {
+  height: 1.25rem;
+}
+
+.assistance-thread-view .aui-reasoning-text-content {
+  gap: 0.5rem;
+}
+
+.assistance-thread-view .aui-reasoning-text-content.space-y-4 > :not([hidden]) ~ :not([hidden]) {
+  margin-block-start: 0.5rem;
+}
+
+.assistance-thread-view [data-slot='reasoning-text'] .aui-md-p {
+  margin-block: 0.35em;
+}
+
+.assistance-thread-view [data-slot='reasoning-text'] .aui-md-p:first-child {
+  margin-block-start: 0;
+}
+
+.assistance-thread-view [data-slot='reasoning-text'] .aui-md-p:last-child {
+  margin-block-end: 0;
+}
+
+/*
+  Paper cards (schedule / document / file-tree / link-preview / …) already paint
+  their own fill via Elements `paper`. Keep the fill, only fix radius + rim.
+*/
+.assistance-thread-view [data-slot='aui_assistant-message-content'] :is(
+  [data-slot='schedule-card'],
+  [data-slot='document-reference'],
+  [data-slot='file-tree'],
+  [data-slot='link-preview'],
+  [data-slot='task-card'],
+  [data-slot='approval-card'],
+  [data-slot='web-preview'],
+  [data-slot='reviewable-diff'],
+  [data-slot='terminal-block'],
+  [data-slot='data-table'],
+  [data-slot='audio-player']
+) {
+  background: var(--thread-tool-card);
+  border-color: var(--thread-tool-rim);
+  box-shadow: inset 0 0 0 1px var(--thread-tool-rim);
+}
+
+/*
+  One step further for chips nested *inside* a tool widget. Do not include
+  tool-group-root here: its children are the paper cards themselves and must
+  keep --message-inner-radius from the rule above.
+*/
+.assistance-thread-view [data-slot='aui_assistant-message-content'] :is(
+  [data-slot='todo-list'],
+  [data-slot='web-search'],
+  [data-slot='sources'],
+  [data-slot='memory-chips'],
+  [data-slot='retrieval-chunks'],
+  [data-slot='tool-fallback-root'],
+  [data-slot='code-runner'],
+  [data-slot='code-diff'],
+  [data-slot='schedule-card'],
+  [data-slot='document-reference'],
+  [data-slot='file-tree'],
+  [data-slot='link-preview'],
+  [data-slot='task-card'],
+  [data-slot='approval-card'],
+  [data-slot='web-preview'],
+  [data-slot='reviewable-diff']
+) :is([class*='rounded-2xl'], [class*='rounded-xl'], .bg-background.border) {
+  border-radius: var(--message-card-radius, 8px);
+}
+
+/*
+  Image generation keeps rounded-2xl on an inner paper frame (the slot root is
+  only a column). That frame is the visual plate — use the inner message radius.
+*/
+.assistance-thread-view [data-slot='aui_assistant-message-content'] [data-slot='image-generation'] > :is(
+  [class*='rounded-2xl'],
+  .bg-background.border
+) {
+  border-radius: var(--message-inner-radius, 14px);
+}
+
+/* Retrieval / sources nested paper rows. */
+.assistance-thread-view [data-slot='aui_assistant-message-content'] :is(
+  [data-slot='retrieval-chunks'],
+  [data-slot='sources']
+) .bg-background {
+  background: var(--thread-tool-card);
+  border-color: var(--thread-tool-rim);
+}
+
+.assistance-thread-view [data-slot='aui_assistant-message-content'] [data-slot='tool-group-root'] {
+  padding-inline: 2px;
+}
+
+.assistance-thread-view [data-slot='aui_assistant-message-content'] [data-slot='tool-group-content'] {
+  gap: 0.65rem;
+}
+
+.assistance-thread-view [data-slot='aui_assistant-message-content'] [data-slot='todo-list'] ul {
+  gap: 0.375rem;
+}
+
+/*
+  Blockless prose sits inset from the tool plates (which span the bubble
+  content width) and keeps a little bottom air before the next block or rim.
+*/
+.assistance-thread-view [data-slot='aui_assistant-message-content'] .aui-md {
+  padding: 2px 10px 10px;
+}
+
+/*
+  Elements ship page-scale type (text-base / text-xl, my-3, leading-relaxed).
+  The rail is narrow; match the pre-Elements .thread-message density: --text-sm
+  body, inherited markdown, tighter block rhythm.
+*/
+.assistance-thread-view [data-slot='aui_assistant-message-content'],
+.assistance-thread-view .aui-user-message-content {
+  font-size: var(--text-sm);
+  line-height: 1.5;
+}
+
+.assistance-thread-view [data-slot='aui_assistant-message-content'] .aui-md,
+.assistance-thread-view [data-slot='aui_assistant-message-content'] .aui-md :where(
+  p,
+  li,
+  ul,
+  ol,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  code,
+  pre,
+  blockquote,
+  td,
+  th,
+  a,
+  strong,
+  em
+) {
+  font-size: inherit;
+  line-height: inherit;
+}
+
+.assistance-thread-view [data-slot='aui_assistant-message-content'] .aui-md :where(
+  .aui-md-p,
+  .aui-md-ul,
+  .aui-md-ol,
+  .aui-md-blockquote,
+  .aui-md-hr,
+  .aui-md-table-wrapper
+) {
+  margin-block: 0.5rem;
+}
+
+.assistance-thread-view [data-slot='aui_assistant-message-content'] .aui-md :where(
+  .aui-md-ul,
+  .aui-md-ol
+) {
+  margin-inline-start: 1.1rem;
+}
+
+.assistance-thread-view [data-slot='aui_assistant-message-content'] .aui-md :where(.aui-md-li) {
+  margin-top: 0.2rem;
+}
+
+.assistance-thread-view [data-slot='aui_assistant-message-content'] .aui-md-h1 {
+  margin-block: 0.65rem 0.35rem;
+  font-size: 1.15em;
+  line-height: 1.35;
+}
+
+.assistance-thread-view [data-slot='aui_assistant-message-content'] .aui-md-h2 {
+  margin-block: 0.6rem 0.3rem;
+  font-size: 1.1em;
+  line-height: 1.35;
+}
+
+.assistance-thread-view [data-slot='aui_assistant-message-content'] .aui-md-h3,
+.assistance-thread-view [data-slot='aui_assistant-message-content'] .aui-md-h4 {
+  margin-block: 0.55rem 0.25rem;
+  font-size: 1.05em;
+  line-height: 1.35;
+}
+
+.assistance-thread-view [data-slot='aui_assistant-message-content'] .aui-md-h5,
+.assistance-thread-view [data-slot='aui_assistant-message-content'] .aui-md-h6 {
+  margin-block: 0.45rem 0.2rem;
+  font-size: 1em;
+  line-height: 1.35;
+}
+
+.assistance-thread-view [data-slot='aui_assistant-message-content'] .aui-md-pre {
+  font-size: 0.92em;
+  line-height: 1.45;
+  padding: 0.65rem 0.75rem;
+}
+
+.assistance-thread-view [data-slot='aui_assistant-message-content'] .aui-md-th,
+.assistance-thread-view [data-slot='aui_assistant-message-content'] .aui-md-td {
+  padding: 0.35rem 0.55rem;
+}
+
+/* Inline code: do not use Tailwind bg-muted here. That token is a sunken
+   surface for chips in Elements, and a muted text color for HeroUI — either
+   way the chip must keep a distinct fill and stronger type than the prose. */
+.assistance-thread-view [data-slot='aui_assistant-message-content'] .aui-md-inline-code {
+  background: var(--surface-inset);
+  color: var(--text-strong);
+  box-shadow: inset 0 0 0 1px var(--line-soft);
+}
+
+.assistance-thread-view [data-slot='aui_assistant-message-content'] .aui-md-table-wrapper {
+  padding: 0;
+  overflow: hidden;
+  background: var(--thread-tool-plate);
+  border: 1px solid var(--line-soft);
+  box-shadow: none;
+}
+
+/*
+  Code header + pre must share one nested shell. A blanket border-radius on
+  `pre` made the body fully rounded, so the language bar looked like a stray
+  table top floating above it.
+*/
+.assistance-thread-view [data-slot='aui_assistant-message-content'] .aui-code-header-root {
+  margin-top: 0.75rem;
+  border-radius: var(--message-inner-radius, 14px) var(--message-inner-radius, 14px) 0 0;
+  background: var(--thread-tool-plate);
+  border-color: var(--thread-tool-rim);
+}
+
+.assistance-thread-view [data-slot='aui_assistant-message-content'] .aui-md-pre {
+  margin-top: 0;
+  border-radius: 0 0 var(--message-inner-radius, 14px) var(--message-inner-radius, 14px);
+  background: var(--thread-tool-plate);
+  border-color: var(--thread-tool-rim);
+}
+
+/* Wrapper paints the outer rim (including above the title row). Cells only
+   draw internal grid lines so rounded overflow cannot clip the top edge. */
+.assistance-thread-view [data-slot='aui_assistant-message-content'] .aui-md-th,
+.assistance-thread-view [data-slot='aui_assistant-message-content'] .aui-md-td {
+  border-color: var(--line-soft);
+  border-style: solid;
+  border-width: 0 1px 1px 0;
+}
+
+.assistance-thread-view [data-slot='aui_assistant-message-content'] .aui-md-th:last-child,
+.assistance-thread-view [data-slot='aui_assistant-message-content'] .aui-md-td:last-child {
+  border-right-width: 0;
+}
+
+.assistance-thread-view [data-slot='aui_assistant-message-content'] .aui-md-tr:last-child > .aui-md-td {
+  border-bottom-width: 0;
+}
+
+.assistance-thread-view [data-slot='aui_assistant-message-content'] .aui-md-th {
+  background: color-mix(in oklab, var(--thread-tool-card) 70%, var(--thread-tool-plate));
+}
+
+.assistance-thread-view [data-slot='aui_assistant-message-content'] .aui-md-th:first-child {
+  border-top-left-radius: var(--message-inner-radius, 14px);
+}
+
+.assistance-thread-view [data-slot='aui_assistant-message-content'] .aui-md-th:last-child {
+  border-top-right-radius: var(--message-inner-radius, 14px);
+}
+
+.assistance-thread-view [data-slot='aui_assistant-message-content'] .aui-md-tr:last-child > .aui-md-td:first-child {
+  border-bottom-left-radius: var(--message-inner-radius, 14px);
+}
+
+.assistance-thread-view [data-slot='aui_assistant-message-content'] .aui-md-tr:last-child > .aui-md-td:last-child {
+  border-bottom-right-radius: var(--message-inner-radius, 14px);
+}
+
+.assistance-thread-view [data-slot='aui_composer-shell'] {
+  /* Keep typed text clear of the frosted corner arcs. */
+  padding: var(--composer-padding, 10px);
+  gap: 0.5rem;
+}
+
+.assistance-thread-view [data-slot='aui_composer-shell'] .aui-composer-input {
+  padding-inline: 0.4rem;
+  font-size: var(--text-sm);
+  line-height: 1.45;
+}
+
+/*
+  Scroll-to-bottom: Elements ship `p-4` on a size-6 control, which collapses the
+  SVG to 0×width (empty disk). Drop shadcn outline colors entirely and paint with
+  AIR ink/surfaces so light and dark stay opposite (never white-on-white / dark-on-dark).
+*/
+.assistance-thread-view .aui-thread-scroll-to-bottom.aui-button-icon {
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  color: var(--slate-12);
+  background-color: var(--slate-1);
+  border: 1px solid var(--slate-6);
+  box-shadow: var(--shadow-pop, 0 4px 16px color-mix(in oklab, var(--slate-12) 8%, transparent));
+}
+
+.assistance-thread-view .aui-thread-scroll-to-bottom.aui-button-icon:hover,
+.assistance-thread-view .aui-thread-scroll-to-bottom.aui-button-icon:focus-visible {
+  color: var(--slate-12);
+  background-color: var(--slate-3);
+}
+
+:is(:root[data-theme='dark'], :root.dark) .assistance-thread-view .aui-thread-scroll-to-bottom.aui-button-icon {
+  color: var(--slate-12);
+  background-color: var(--slate-4);
+  border-color: var(--slate-7);
+}
+
+:is(:root[data-theme='dark'], :root.dark) .assistance-thread-view .aui-thread-scroll-to-bottom.aui-button-icon:hover,
+:is(:root[data-theme='dark'], :root.dark) .assistance-thread-view .aui-thread-scroll-to-bottom.aui-button-icon:focus-visible {
+  color: var(--slate-12);
+  background-color: var(--slate-6);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .assistance-thread-view .aui-thread-scroll-to-bottom.aui-button-icon {
+    color: var(--slate-12);
+    background-color: var(--slate-4);
+    border-color: var(--slate-7);
+  }
+}
+
+.assistance-thread-view .aui-thread-scroll-to-bottom-icon {
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
+  color: inherit;
+  stroke: currentColor;
+}

@@ -1,0 +1,14 @@
+{
+  "name": "@office/chat",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@office/contracts": "workspace:*",
+    "@office/vault": "workspace:*"
+  },
+  "exports": {
+    "./domain": "./src/chat.domain.public.ts",
+    "./service": "./src/chat.service.public.ts"
+  }
+}

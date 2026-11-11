@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://air-office.dev/contracts/methods-bundle.schema.json",
+  "title": "AIR Office methods bundle",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["format", "version", "definitions"],
+  "properties": {
+    "format": { "const": "air-office.methods" },
+    "version": { "const": 1 },
+    "definitions": { "type": "array", "items": { "$ref": "#/$defs/definition" } }
+  },
+  "$defs": {
+    "identity": { "type": "string", "minLength": 1, "pattern": "^\\S(?:[\\s\\S]*\\S)?$" },
+    "identityList": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/identity" } },
+    "base": {
+      "type": "object",
+      "required": ["id", "name", "instructions", "updatedAt"],
+      "properties": {
+        "id": { "$ref": "#/$defs/identity" },
+        "name": { "type": "string", "minLength": 1, "maxLength": 120, "pattern": "\\S" },
+        "instructions": { "type": "string" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      }
+    },
+    "preset": {
+      "allOf": [
+        { "$ref": "#/$defs/base" },
+        {
+          "type": "object",
+          "required": ["model", "settings", "knowledgeCollectionIds", "skillIds", "toolIds"],
+          "properties": {
+            "model": { "$ref": "#/$defs/identity" },
+            "provider": { "$ref": "#/$defs/identity" },
+            "settings": {
+              "type": "object", "additionalProperties": false,
+              "properties": {
+                "temperature": { "type": "number", "minimum": 0, "maximum": 2 },
+                "maxOutputTokens": { "type": "integer", "minimum": 1, "maximum": 9007199254740991 }
+              }
+            },
+            "knowledgeCollectionIds": { "$ref": "#/$defs/identityList" },
+            "skillIds": { "$ref": "#/$defs/identityList" },
+            "toolIds": { "$ref": "#/$defs/identityList" }
+          }
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "prompt": {
+      "allOf": [
+        { "$ref": "#/$defs/base" },
+        {
+          "type": "object", "required": ["variables"],
+          "properties": { "variables": { "type": "array", "uniqueItems": true, "items": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" } } }
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "skill": {
+      "allOf": [
+        { "$ref": "#/$defs/base" },
+        {
+          "type": "object", "required": ["description"],
+          "properties": { "description": { "type": "string", "maxLength": 500 } }
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "definition": {
+      "oneOf": [
+        { "type": "object", "additionalProperties": false, "required": ["kind", "value"], "properties": { "kind": { "const": "preset" }, "value": { "$ref": "#/$defs/preset" } } },
+        { "type": "object", "additionalProperties": false, "required": ["kind", "value"], "properties": { "kind": { "const": "prompt" }, "value": { "$ref": "#/$defs/prompt" } } },
+        { "type": "object", "additionalProperties": false, "required": ["kind", "value"], "properties": { "kind": { "const": "skill" }, "value": { "$ref": "#/$defs/skill" } } }
+      ]
+    }
+  }
+}

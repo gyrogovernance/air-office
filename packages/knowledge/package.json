@@ -1,0 +1,9 @@
+{
+ "name":"@office/knowledge","version":"0.1.0","private":true,"type":"module",
+ "dependencies":{"@office/contracts":"workspace:*"},
+ "exports": {
+  "./domain": "./src/knowledge.domain.public.ts",
+  "./service": "./src/knowledge.service.public.ts",
+  "./ui": "./src/knowledge.ui.public.ts"
+ }
+}

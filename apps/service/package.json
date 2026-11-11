@@ -1,0 +1,29 @@
+{
+ "name": "@office/service",
+ "version": "0.1.0",
+ "private": true,
+ "type": "module",
+ "dependencies": {
+  "@office/runtime": "workspace:*",
+  "@office/providers": "workspace:*",
+  "@office/contracts": "workspace:*",
+  "@office/chat": "workspace:*",
+  "@office/files": "workspace:*",
+  "@office/documents": "workspace:*",
+  "@office/knowledge": "workspace:*",
+  "@office/jobs": "workspace:*",
+  "@office/exports": "workspace:*",
+  "@office/editor": "workspace:*",
+  "@office/methods": "workspace:*",
+  "@office/lab-pack": "workspace:*",
+  "@office/tools": "workspace:*",
+  "@office/memory": "workspace:*",
+  "@office/automations": "workspace:*",
+  "@office/calendar": "workspace:*",
+  "@office/workspace": "workspace:*",
+  "@office/vault": "workspace:*"
+ },
+ "scripts": {
+  "dev": "bun run src/application.entry.ts"
+ }
+}

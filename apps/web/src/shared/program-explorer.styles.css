@@ -1,0 +1,434 @@
+.program-explorer {
+  /* Mode actions sit beside the Library title; only search/files toolbars need pad. */
+  --explorer-chrome-pad: 0px;
+  position: relative;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+  min-width: 0;
+  font-size: 13px;
+  padding: 0;
+  overflow: hidden;
+}
+.program-explorer[data-library-view='files'] {
+  --explorer-chrome-pad: 28px;
+}
+.program-explorer[data-library-view='search'] {
+  --explorer-chrome-pad: 44px;
+}
+/* Float over the tree like the right-rail Threads chrome; tree scrolls underneath. */
+.explorer-chrome {
+  position: absolute;
+  top: calc(var(--rail-nav-height, 76px) + 8px);
+  left: 10px;
+  right: 10px;
+  z-index: 6;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  pointer-events: none;
+}
+.explorer-chrome > * {
+  pointer-events: auto;
+}
+.explorer-scroll {
+  flex: 1;
+  min-height: 0;
+  min-width: 0;
+  box-sizing: border-box;
+  /* Side inset keeps row borders/focus from clipping against the scrollport. */
+  padding: calc(var(--rail-nav-height, 76px) + 8px + var(--explorer-chrome-pad)) 10px 16px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+.explorer-scroll::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+}
+.explorer-more,
+.explorer-disclosure {
+  border: 0;
+  background: transparent;
+  color: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  cursor: pointer;
+  border-radius: 6px;
+}
+.explorer-more svg {
+  width: 16px;
+  height: 16px;
+}
+/* HeroUI SearchField owns the field paint; this class is layout only. */
+.explorer-search {
+  margin: 0;
+  width: 100%;
+}
+.explorer-search-options {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+  padding: 4px 8px 8px;
+  color: var(--text-muted);
+  font-size: 11px;
+}
+.explorer-search-options label {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.explorer-tree {
+  position: relative;
+  outline: none;
+  min-height: 80px;
+}
+.explorer-view-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+  padding: 0;
+  min-height: 0;
+}
+.explorer-view-toolbar .tabs__list[data-orientation='horizontal'] {
+  width: max-content;
+  min-width: 0;
+  padding: 1px;
+}
+.explorer-view-toolbar .tabs__tab {
+  width: auto;
+  height: 22px;
+  padding-inline: 7px;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1;
+}
+.program-explorer .library-new-bar.document-action-bar,
+.program-explorer .library-refresh-bar.document-action-bar {
+  height: 24px;
+}
+/* Optical Regular rim from the mini-scene sample; keep the cluster transparent. */
+.program-explorer .library-new-bar .lg-toolbar-cluster,
+.program-explorer .library-refresh-bar .lg-toolbar-cluster {
+  background: transparent;
+  border: 0;
+}
+.explorer-row {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 30px;
+  padding-right: 4px;
+  border-radius: 12px;
+  cursor: default;
+  user-select: none;
+  outline: 0;
+  color: var(--text-body);
+}
+.explorer-row:hover {
+  background: var(--surface-nested);
+}
+.explorer-row.is-selected {
+  background: color-mix(in srgb, var(--surface-nested) 88%, var(--text-strong));
+}
+/* The tree manages focus with a roving tabindex, so the focused row is the
+ * indicator. This keeps a ring for the pointer path too. */
+.explorer-row.is-focused,
+.explorer-row:focus-visible {
+  outline: var(--focus-width) solid var(--focus);
+  outline-offset: -1px;
+}
+.explorer-row.is-drop-target {
+  background: color-mix(in srgb, var(--accent) 20%, transparent);
+  box-shadow: inset 0 0 0 1px var(--accent);
+}
+.explorer-group {
+  margin-top: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+.explorer-disclosure {
+  flex: none;
+  width: 18px;
+  height: 24px;
+}
+.explorer-disclosure svg {
+  width: 12px;
+  height: 12px;
+  transition: transform 0.12s;
+}
+.explorer-disclosure svg.expanded {
+  transform: rotate(90deg);
+}
+.explorer-icon {
+  flex: none;
+  width: 15px;
+  height: 15px;
+  color: var(--text-muted);
+}
+.explorer-collection,
+.explorer-category {
+  font-weight: 600;
+}
+.explorer-category-programs {
+  --collection-color: var(--blue-11);
+}
+.explorer-category-projects {
+  --collection-color: var(--green-11);
+}
+.explorer-collection-notes,
+.explorer-category-notes {
+  --collection-color: var(--amber-11);
+}
+.explorer-collection-chats,
+.explorer-category-chats {
+  --collection-color: var(--violet-11);
+}
+:is(.explorer-collection, .explorer-category) .explorer-icon {
+  color: var(--collection-color);
+  fill: color-mix(in srgb, var(--collection-color) 18%, transparent);
+}
+:is(.explorer-collection, .explorer-category) .explorer-name {
+  color: var(--collection-color);
+}
+.explorer-name {
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.explorer-more {
+  flex: none;
+  width: 24px;
+  height: 24px;
+  opacity: 0;
+}
+.explorer-row:hover .explorer-more,
+.explorer-row:focus-within .explorer-more,
+.explorer-more[aria-expanded='true'] {
+  opacity: 1;
+}
+.explorer-badge {
+  flex: none;
+  font-size: 10px;
+  color: var(--text-muted);
+  padding: 0 2px;
+  font-weight: 400;
+}
+.explorer-unread {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+.explorer-rename {
+  flex: 1;
+  min-width: 0;
+  height: 24px;
+  color: inherit;
+  background: var(--surface-raised);
+  border: 1px solid var(--accent);
+  border-radius: 4px;
+  padding: 2px 4px;
+  font: inherit;
+}
+/* Panel chrome comes from the shared HeroUI floating-choice family. */
+.explorer-menu {
+  min-width: 188px;
+  max-height: min(70vh, 520px);
+  z-index: 100;
+}
+.explorer-menu-item {
+  display: flex;
+  align-items: center;
+  cursor: default;
+}
+.explorer-menu-item[data-disabled='true'] {
+  opacity: 0.4;
+}
+.explorer-drag-line {
+  position: absolute;
+  background: var(--accent);
+  height: 2px;
+  pointer-events: none;
+}
+.explorer-empty {
+  padding: 8px 12px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+.explorer-empty button {
+  background: transparent;
+  color: inherit;
+  border: 1px solid var(--line-soft);
+  border-radius: 6px;
+  padding: 4px 8px;
+  cursor: pointer;
+}
+.explorer-feedback,
+.explorer-clipboard {
+  margin: 4px 6px;
+  padding: 8px;
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--orange-9) 10%, transparent);
+  font-size: 12px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+.explorer-clipboard {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: space-between;
+}
+.explorer-selection {
+  background: var(--selection-bg);
+}
+@media (pointer: coarse) {
+  .explorer-row {
+    min-height: 36px;
+  }
+  .explorer-more {
+    opacity: 1;
+  }
+}
+.external-preview {
+  box-sizing: border-box;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 0;
+  height: 100%;
+  padding: 16px 24px 24px;
+}
+.external-preview-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px 16px;
+}
+.external-preview h2 {
+  font-size: 18px;
+  margin: 0;
+}
+.external-preview-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.external-preview-media {
+  max-width: 100%;
+  max-height: min(65vh, 100%);
+  object-fit: contain;
+}
+.external-preview a {
+  color: var(--accent);
+}
+.file-preview-stage-page {
+  position: relative;
+  padding: 0;
+  min-height: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+.pdf-stage-viewer {
+  position: absolute;
+  inset: var(--stage-page-top-space) 0 0;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  width: 100%;
+  background: var(--slate-3, #eef0f3);
+  color: var(--text-body);
+}
+.pdf-stage-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 16px;
+  min-height: 44px;
+  padding: 8px 16px;
+  border-bottom: 1px solid var(--line-soft);
+  background: var(--surface-raised, #fff);
+}
+.pdf-stage-title {
+  flex: 1 1 160px;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font: 600 14px/1.3 var(--font-sans);
+}
+.pdf-stage-toolbar-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.pdf-stage-page {
+  min-width: 4.5rem;
+  text-align: center;
+  font: 13px/1 var(--font-sans);
+  color: var(--text-muted);
+}
+.pdf-stage-download {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--accent);
+  font: 13px/1 var(--font-sans);
+  text-decoration: none;
+}
+.pdf-stage-scroller {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  padding: 16px 0 32px;
+  scrollbar-width: thin;
+}
+.pdf-stage-page-canvas {
+  display: block;
+  margin: 0 auto 16px;
+  max-width: calc(100% - 32px);
+  background: #fff;
+  box-shadow: 0 1px 3px color-mix(in srgb, #000 18%, transparent);
+}
+.pdf-stage-error,
+.pdf-stage-status {
+  margin: 24px;
+}
+.source-editor-stage {
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100%;
+}
+.document-conflict {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 0 0 12px;
+  padding: 10px 14px;
+  border: 1px solid color-mix(in srgb, var(--accent, #3b82f6) 35%, transparent);
+  background: color-mix(in srgb, var(--accent, #3b82f6) 12%, transparent);
+  border-radius: 8px;
+  font-size: 0.9rem;
+  line-height: 1.35;
+}
+.document-conflict-actions {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}

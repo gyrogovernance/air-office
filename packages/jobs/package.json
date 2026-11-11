@@ -1,0 +1,8 @@
+{
+ "name":"@office/jobs","version":"0.1.0","private":true,"type":"module",
+ "dependencies":{"@office/contracts":"workspace:*"},
+ "exports": {
+  "./domain": "./src/jobs.domain.public.ts",
+  "./service": "./src/jobs.service.public.ts"
+ }
+}

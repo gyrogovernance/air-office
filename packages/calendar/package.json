@@ -1,0 +1,13 @@
+{
+  "name": "@office/calendar",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./domain": "./src/calendar.domain.public.ts",
+    "./store": "./src/calendar-store.vault.adapter.ts"
+  },
+  "dependencies": {
+    "@office/vault": "workspace:*"
+  }
+}

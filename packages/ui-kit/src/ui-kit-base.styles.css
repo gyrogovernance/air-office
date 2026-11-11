@@ -1,0 +1,453 @@
+/* AIR Office shared base layer.
+ *
+ * This is the single base every surface uses: the web app, the editor package,
+ * and every third-party library surface we render (react-aria, headless-tree,
+ * xyflow, streamdown). It owns only rules that are genuinely shared.
+ *
+ * Everything in this file lives in `@layer base`. That is load-bearing:
+ * HeroUI v3 ships its component styles in `@layer components`, and any
+ * unlayered rule beats every layered rule regardless of specificity — an
+ * unlayered `:where(button) { background: none; padding: 0; }` reset here
+ * silently stripped every HeroUI Button to bare text. Inside `base` (the
+ * first layer Tailwind v4 declares), these resets still beat browser
+ * defaults but never outrank a library component rule. Component and glass
+ * styles stay unlayered and always win over this file.
+ *
+ * The tokens this file depends on live in ui-kit.tokens.css and are published
+ * as `@office/ui-kit/styles`. This file is published as `@office/ui-kit/base`.
+ */
+@layer base {
+
+/* ---------- Element defaults ---------- */
+
+/* The glass library writes every rule with :where(), which has zero
+ * specificity on purpose so an app can override it. An element selector
+ * (0,0,1) would beat that, so these resets are also zero-specificity. They
+ * still reset the browser defaults, but they never outrank a library rule or
+ * a component rule. */
+:where(*, *::before, *::after) {
+  box-sizing: border-box;
+}
+
+:where(body) {
+  margin: 0;
+  min-width: 0;
+  -webkit-font-smoothing: antialiased;
+  font-size: var(--font-size-body);
+}
+
+:where(h1, h2, h3, h4, h5, h6, p, figure, blockquote, dl, dd) {
+  margin: 0;
+}
+:where(h1, h2, h3, h4, h5, h6) {
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+:where(ul, ol) {
+  margin: 0;
+  padding: 0;
+}
+:where(li) {
+  list-style: none;
+}
+
+:where(hr:not(.separator)) {
+  border: 0;
+  border-top: 1px solid var(--line-soft);
+  margin-block: var(--space-5);
+}
+
+:where(img, svg, video, canvas) {
+  display: block;
+  max-width: 100%;
+}
+:where(img, video) {
+  height: auto;
+}
+
+:where(button, input, select, textarea) {
+  font: inherit;
+  color: inherit;
+  margin: 0;
+}
+:where(button, input, select, textarea) {
+  -webkit-tap-highlight-color: transparent;
+}
+
+:where(button) {
+  background: none;
+  border: 0;
+  padding: 0;
+}
+:where(button:not(:disabled), [role='button']:not([aria-disabled='true']), summary, select) {
+  cursor: pointer;
+}
+:where(button:disabled, [aria-disabled='true']) {
+  cursor: default;
+}
+
+:where(fieldset) {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  min-width: 0;
+}
+:where(legend) {
+  padding: 0;
+}
+
+:where(table) {
+  border-collapse: collapse;
+}
+
+/* ---------- Focus ---------- */
+
+/* Keyboard focus is always visible and never clipped; pointer clicks stay quiet.
+   HeroUI fields draw their own ring on the group/trigger, so their inner
+   inputs and textareas are excluded here. */
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: var(--focus-width) solid var(--focus);
+  outline-offset: var(--focus-offset);
+}
+:where(input, textarea):is(.input, .textarea, .search-field__input):focus-visible {
+  outline: none;
+}
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Composite controls suppress the inner ring and draw it on the wrapper, so
+ * the indicator is never clipped by the field edge. */
+:where(.control, .surface-field):focus-within {
+  outline: var(--focus-width) solid var(--focus);
+  outline-offset: var(--focus-offset);
+}
+:where(.control, .surface-field):focus-within :where(input, select, textarea) {
+  outline: none;
+}
+
+/* ---------- Prose ---------- */
+
+/* The shared model for rendered markdown and rich text. Every surface that
+ * shows model output (chat, glossary, briefing) and the document editor use it,
+ * so a list or heading looks the same wherever it appears.
+ *
+ * The wrapper deliberately does NOT set a colour: the surrounding surface owns
+ * it, so a user message keeps its own foreground on the accent fill. */
+.prose {
+  font-size: calc(var(--text-md) * var(--document-scale, 1));
+  line-height: 1.75; /* HeroUI body line-height */
+}
+.prose > * + * {
+  margin-block-start: var(--space-3);
+}
+.prose :is(h1, h2, h3, h4, h5, h6) {
+  color: var(--text-strong);
+  line-height: 1.25; /* tighter, matching HeroUI heading line-heights */
+}
+.prose h1 {
+  font-size: var(--text-4xl);
+  font-weight: 600;
+  line-height: 1.11;
+}
+.prose h2 {
+  font-size: var(--text-3xl);
+  font-weight: 600;
+  line-height: 1.17;
+}
+.prose h3 {
+  font-size: var(--text-2xl);
+  font-weight: 600;
+  line-height: 1.25;
+}
+.prose h4 {
+  font-size: var(--text-xl);
+  font-weight: 600;
+  line-height: 1.33;
+}
+.prose h5 {
+  font-size: var(--text-lg);
+  font-weight: 600;
+  line-height: 1.39;
+}
+.prose h6 {
+  font-size: var(--text-md);
+  font-weight: 600;
+  line-height: 1.5;
+}
+.prose a {
+  color: var(--accent-text);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.prose a:hover {
+  text-decoration-thickness: 2px;
+}
+.prose strong {
+  color: var(--text-strong);
+  font-weight: 600;
+}
+.prose em {
+  font-style: italic;
+}
+.prose :is(ul, ol) {
+  padding-inline-start: 1.6em;
+}
+.prose ul {
+  list-style: disc;
+}
+.prose ol {
+  list-style: decimal;
+}
+.prose li {
+  list-style: inherit;
+}
+.prose li + li {
+  margin-block-start: var(--space-1);
+}
+.prose li::marker {
+  color: var(--text-faint);
+}
+.prose blockquote {
+  padding-inline-start: var(--space-3);
+  border-inline-start: 2px solid var(--line-strong);
+  color: var(--text-muted);
+}
+.prose :is(code, pre) {
+  font-family: var(--font-mono);
+}
+.prose :not(pre) > code {
+  padding: 1px 4px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-inset);
+  color: var(--text-strong);
+  font-size: var(--text-xs); /* HeroUI code: 12px (body-xs) */
+}
+.prose pre {
+  margin: 0;
+  padding: var(--space-3);
+  overflow: auto;
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius-md);
+  background: var(--surface-nested);
+  color: var(--text-body);
+  font-size: var(--text-sm); /* HeroUI body-sm: 14px */
+  line-height: 1.5; /* HeroUI body-sm line-height */
+  tab-size: 2;
+}
+.prose pre code {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+}
+.prose table {
+  width: 100%;
+  font-size: var(--text-sm);
+}
+.prose :is(th, td) {
+  padding: 6px var(--space-3);
+  text-align: left;
+  border-bottom: 1px solid var(--line-soft);
+}
+.prose th {
+  background: var(--surface-inset);
+  color: var(--text-strong);
+  font-weight: 600;
+}
+.prose tr:last-child td {
+  border-bottom: 0;
+}
+.prose img {
+  border-radius: var(--radius-md);
+}
+.prose small {
+  color: var(--text-muted);
+  font-size: var(--text-xs); /* HeroUI body-xs: 12px */
+}
+
+/* ---------- Shared control families ---------- */
+
+/* One control geometry that every surface extends: native inputs, react-aria
+ * parts, headless-tree rows and library buttons all start from these. */
+.control {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--control-height);
+  padding: 0 var(--space-3);
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius-md);
+  background: var(--surface-inset);
+  color: var(--text-body);
+}
+.control:hover:not(:disabled) {
+  border-color: var(--line-strong);
+  background: var(--surface-hover);
+}
+.control:focus-visible {
+  border-color: var(--accent);
+}
+.control:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+.control--compact {
+  min-height: var(--control-height-compact);
+  padding: 0 var(--space-2);
+}
+.control--tall {
+  min-height: 36px;
+}
+
+/* An inset well for text entry. */
+.surface-field {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--control-height);
+  padding: 0 var(--space-3);
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius-md);
+  background: var(--surface-inset);
+  color: var(--text-body);
+}
+.surface-field:focus-within {
+  border-color: var(--accent);
+}
+.surface-field > input {
+  width: 100%;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  color: var(--text-strong);
+}
+
+/* A repeated row in a list. */
+.surface-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 32px;
+  padding: 0 var(--space-2);
+  border-radius: var(--radius-sm);
+  color: var(--text-body);
+}
+.surface-row:hover {
+  background: var(--surface-hover);
+}
+
+/* A persistent selection wash, distinct from hover. */
+.surface-selection {
+  background: color-mix(in srgb, var(--surface-nested) 88%, var(--text-strong));
+  color: var(--text-strong);
+}
+
+/* A quiet panel body. */
+.surface-panel {
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius-lg);
+  background: var(--surface-raised);
+}
+
+/* ---------- Scrollbars ---------- */
+
+.scroll-thin {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--text-muted) 30%, transparent) transparent;
+}
+.scroll-thin::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+  background: transparent;
+}
+.scroll-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
+.scroll-thin::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--text-muted) 30%, transparent);
+  border: 0;
+  border-radius: var(--radius-pill);
+  background-clip: padding-box;
+}
+.scroll-thin::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in srgb, var(--text-muted) 50%, transparent);
+}
+.scroll-thin::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+/* ---------- Accessibility ---------- */
+
+/* Reduced motion keeps every shape and visible state; only the movement goes.
+ *
+ * The glass library manages its own motion and reads this preference itself,
+ * so its surfaces are left alone rather than being frozen mid-transition. */
+@media (prefers-reduced-motion: reduce) {
+  :where(:not(.lg-scene):not(.lg-surface):not(.lg-content), .lg-scene *, .lg-surface *) {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Reduced transparency keeps the hierarchy with solid fills.
+ *
+ * Only OUR own translucent surfaces are replaced. The glass library paints its
+ * material through a canvas layer the stylesheet does not control, so forcing
+ * a background here would leave a white plate where the frost should be.
+ * The glass skill owns that material; the reduced-transparency fallback for
+ * it belongs to the glass stylesheet. */
+@media (prefers-reduced-transparency: reduce) {
+  :where(.method-dialog-backdrop) {
+    background: var(--overlay-scrim) !important;
+    backdrop-filter: none !important;
+  }
+  :where(.sidebar-switch-material.lg-content, .workspace-action-material.lg-content) {
+    background: var(--surface-raised) !important;
+  }
+}
+:root[data-reduced-transparency='force'] :where(.method-dialog-backdrop) {
+  background: var(--overlay-scrim) !important;
+  backdrop-filter: none !important;
+}
+:root[data-reduced-transparency='force'] :where(.sidebar-switch-material.lg-content, .workspace-action-material.lg-content) {
+  background: var(--surface-raised) !important;
+}
+
+/* Higher contrast raises text and line contrast without changing layout. */
+@media (prefers-contrast: more) {
+  :root {
+    --text-body: var(--text-strong);
+    --text-faint: var(--text-muted);
+    --line-soft: var(--line-strong);
+    --border-subtle: var(--line-strong);
+  }
+  :where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+    outline-width: 3px;
+  }
+}
+
+/* Forced colors replaces our palette with the system one.
+ *
+ * The glass surfaces keep the library's own painting: a forced-colors canvas
+ * cannot show a refraction, so the material is left as the library draws it
+ * rather than being replaced by a flat plate. */
+@media (forced-colors: active) {
+  :where(.surface-panel, .surface-field, .control, .prose pre) {
+    border: 1px solid CanvasText;
+    forced-color-adjust: none;
+    background: Canvas;
+    color: CanvasText;
+  }
+  :where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+    outline: 2px solid Highlight;
+  }
+  :where(.status-dot, .dirty-dot, .unread-dot) {
+    forced-color-adjust: none;
+    background: CanvasText;
+  }
+}
+}

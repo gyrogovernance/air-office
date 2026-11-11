@@ -1,0 +1,27 @@
+/* AIR Office Code chrome: hide the right / chat rail only. Keep every other layout toggle.
+   First-paint html/body background is sealed per appearance in workbench-file.adapter. */
+#air-office-code-chrome { /* marker */ }
+.monaco-workbench .part.auxiliarybar {
+  display: none !important;
+  visibility: hidden !important;
+  width: 0 !important;
+  min-width: 0 !important;
+}
+.monaco-workbench .codicon-layout-sidebar-right,
+.monaco-workbench .codicon-layout-sidebar-right-off {
+  display: none !important;
+}
+.monaco-workbench .action-label[aria-label*="Secondary Side Bar"],
+.monaco-workbench .action-item[aria-label*="Secondary Side Bar"],
+.monaco-workbench .action-label[aria-label*="Toggle Secondary Side Bar"],
+.monaco-workbench .action-item[aria-label*="Toggle Secondary Side Bar"],
+.monaco-workbench .action-label[aria-label*="Open Chat"],
+.monaco-workbench .action-item[aria-label*="Open Chat"],
+.monaco-workbench .action-label[aria-label*="Chat"],
+.monaco-workbench .action-item[aria-label="Chat"],
+.monaco-workbench .codicon-comment-discussion,
+.monaco-workbench .codicon-copilot,
+.monaco-workbench .codicon-chat-sparkle,
+.monaco-workbench .codicon-sparkle-filled {
+  display: none !important;
+}

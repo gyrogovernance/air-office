@@ -1,0 +1,79 @@
+/* The single app-level stylesheet manifest.
+ *
+ * Every stylesheet in apps/web/src is imported here exactly once, in a
+ * deliberate order. Importing from one place is what makes the cascade
+ * predictable: Vite emits CSS in module-graph order, so a stylesheet that is
+ * imported late overrides an earlier one no matter where the import statement
+ * sits in a component file.
+ *
+ * Layer order:
+ *   1. tokens      - the design tokens, which everything else reads
+ *   2. tailwind    - Tailwind v4 utilities + HeroUI v3 styles (before our base
+ *                    so our base and component rules win where we differ)
+ *   3. base        - the shared element, focus, prose, control and a11y rules
+ *   4. components  - the app's own surfaces, in dependency order
+ *   5. glass       - last, so glass composition wins over the base
+ *
+ * The liquid-glass stylesheet inside glass.styles.css must stay the only
+ * app-level import of the SDK stylesheet, and glass must stay last. See
+ * .agents/skills/liquid-glass/SKILL.md.
+ */
+
+@import '@office/ui-kit/styles';
+/* Tailwind CSS v4 + HeroUI v3. Imported after tokens (so they can read our
+ * tokens) and before our base. Our base lives in `@layer base`, so HeroUI's
+ * `@layer components` rules win over its resets; our unlayered component
+ * styles still win over both. Must stay before glass/frost so glass
+ * composition wins. */
+@import 'tailwindcss';
+/* Element kits and chat adapters sit under apps/web/src; scan their class names. */
+@source '../components/assistant-ui/**/*.{ts,tsx}';
+@source '../chat/**/*.{ts,tsx}';
+@import '@heroui/styles';
+
+/* HeroUI theme bridge: maps HeroUI semantic vars to our tokens. */
+@import '../shared/heroui-bridge.styles.css';
+/* assistant-ui Elements semantic tokens + shimmer. */
+@import '../shared/assistant-ui-theme.styles.css';
+
+@import '@office/ui-kit/base';
+
+/* Third-party reset. The xyflow stylesheet is listed here rather than in the
+ * component so the layer order stays explicit: it is imported before the
+ * component styles that override it. */
+@import '@xyflow/react/dist/style.css';
+
+@import '../shared/application.styles.css';
+/* Editor chrome (slash/block/table portals) must load with the app cascade so
+   desktop production does not ship unstyled Lobe popovers when the note view
+   chunk has not painted yet. */
+@import '@office/editor/styles.css';
+@import '../shared/markdown.styles.css';
+@import '../shared/app-dialogs.styles.css';
+@import '../shared/collection-dashboard.styles.css';
+@import '../shared/sidebar.styles.css';
+@import '../app/fellowship-workspace.styles.css';
+@import '../market/lab-apps.styles.css';
+@import '../app/line-waves.styles.css';
+@import '../models/models-workspace.styles.css';
+@import '../market/community-workspace.styles.css';
+@import '../market/market-automations.styles.css';
+@import '../tools/connector-catalog.styles.css';
+@import '../calendar/calendar-workspace.styles.css';
+@import '../calendar/calendar-import.styles.css';
+@import '../calendar/automations-workspace.styles.css';
+@import '../shared/program-explorer.styles.css';
+@import '../app/programs-workspace.styles.css';
+@import '../market/glossary-workspace.styles.css';
+@import '../media/workplace-media-workspace.styles.css';
+@import '../models/local-ai/local-ai-collections.styles.css';
+@import '../shared/date-field.styles.css';
+@import '../chat/branch-overview.styles.css';
+@import '../chat/reasoning-panel.styles.css';
+@import '../chat/model-compare.styles.css';
+@import '../shared/workspace-hero-page.styles.css';
+
+@import '../shared/glass.styles.css';
+
+/* Shared CSS frost owns material after the SDK composition rules. */
+@import '@office/ui-kit/frost';

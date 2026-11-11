@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "id": "documents",
+  "title": "Document extraction worker",
+  "purpose": "Extracts normalized text and warnings from source bytes for the documents module. It opens no application database and reports only bounded artifacts.",
+  "kind": "worker",
+  "lifecycle": "active",
+  "protocol_version": 1,
+  "entrypoint": "src/office_documents/main.py",
+  "owns": ["extraction"],
+  "does_not_own": ["source-document", "source-version", "extraction-artifact-record", "collection", "job"],
+  "resources": { "required": [], "optional": ["pypdfium2", "docling", "ocr-models"], "packaged_status": "source-staged-only; Docling and OCR are absent from the desktop target artifact until separately installed on the host" },
+  "documentation": [".dev/air-office/02-architecture.plan.md", ".dev/air-office/05-verification-release.plan.md"]
+}

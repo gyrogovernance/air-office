@@ -1,0 +1,192 @@
+@import '@radix-ui/colors/slate.css';
+@import '@radix-ui/colors/blue.css';
+@import '@radix-ui/colors/green.css';
+@import '@radix-ui/colors/amber.css';
+@import '@radix-ui/colors/yellow.css';
+@import '@radix-ui/colors/red.css';
+@import '@radix-ui/colors/violet.css';
+@import '@radix-ui/colors/orange.css';
+@import '@radix-ui/colors/pink.css';
+@import '@radix-ui/colors/slate-dark.css';
+@import '@radix-ui/colors/blue-dark.css';
+@import '@radix-ui/colors/green-dark.css';
+@import '@radix-ui/colors/amber-dark.css';
+@import '@radix-ui/colors/yellow-dark.css';
+@import '@radix-ui/colors/red-dark.css';
+@import '@radix-ui/colors/violet-dark.css';
+@import '@radix-ui/colors/orange-dark.css';
+@import '@radix-ui/colors/pink-dark.css';
+@import '@radix-ui/colors/black-alpha.css';
+@import '@radix-ui/colors/white-alpha.css';
+
+:root {
+  font-family: 'Nunito Variable', Nunito, ui-sans-serif, system-ui, sans-serif;
+  font-synthesis: none;
+
+  /* Spacing scale (4px base) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+
+  /* Radius scale */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 22px;
+  --radius-3xl: 1.5rem;
+  --radius-pill: 999px;
+
+  /* Interface size zooms the whole #root chrome. Document size only scales reading text. */
+  --interface-scale: 1;
+  --document-scale: 1;
+  /* Type scale stays absolute; interface zoom owns overall density. */
+  --text-2xs: 10px;
+  --text-xs: 12px;
+  --text-sm: 14px;
+  --text-md: 16px;
+  --text-lg: 18px;
+  --text-xl: 20px;
+  --text-2xl: 24px;
+  --text-3xl: 30px;
+  --text-4xl: 36px;
+  --font-size-body: 16px;
+  --font-sans: 'Nunito Variable', Nunito, ui-sans-serif, system-ui, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  /* Radix scales are mapped into AIR roles below in light and dark themes. */
+  --text-on-accent: #fff;
+  --overlay-scrim: var(--black-a5);
+  --control-height: 32px;
+  --control-height-compact: 28px;
+  --document-width: 820px;
+  --font-code: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+    /* Interaction */
+  --focus-width: 2px;
+  --focus-offset: 2px;
+
+  --surface-app: var(--slate-2);
+  --surface-stage: var(--slate-1);
+  --surface-rail: var(--slate-3);
+  --surface-raised: var(--slate-1);
+  /* Panel ladder: an inner panel must always be visibly deeper than its card.
+     Nested is one step past secondary so layers never merge. */
+  --surface-nested: var(--slate-4);
+  --surface-hover: var(--slate-5);
+  --surface-document: var(--slate-1);
+  --surface-inset: var(--slate-3);
+  --surface-sunken: var(--slate-4);
+  --surface-input: var(--slate-4);
+  --line-soft: var(--slate-6);
+  --line-strong: var(--slate-7);
+  --border-subtle: var(--slate-6);
+  --text-strong: var(--slate-12);
+  --text-body: var(--slate-11);
+  --text-muted: var(--slate-10);
+  --text-faint: var(--slate-11);
+  --accent: var(--blue-9);
+  --accent-strong: var(--blue-10);
+  --accent-soft: var(--blue-3);
+  --accent-text: var(--blue-11);
+  --ok: var(--green-9);
+  --ok-text: var(--green-11);
+  --warn: var(--amber-9);
+  --warn-text: var(--amber-11);
+  --danger: var(--red-9);
+  --danger-soft: var(--red-3);
+  --danger-text: var(--red-11);
+  --focus: var(--blue-8);
+  --selection-bg: var(--blue-3);
+  --scrollbar-thumb: color-mix(in srgb, var(--slate-9) 40%, transparent);
+  --scrollbar-thumb-hover: color-mix(in srgb, var(--slate-9) 62%, transparent);
+
+  /* Stage rim */
+  --stage-rim-outer: var(--black-a5);
+  --stage-rim-inner: var(--white-a8);
+  --shadow-stage: 0 18px 50px var(--black-a4);
+  --shadow-pop: 0 8px 24px var(--black-a3);
+
+  color: var(--text-strong);
+  background: var(--surface-app);
+  color-scheme: light dark;
+}
+
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --surface-app: var(--slate-1);
+    --surface-stage: var(--slate-2);
+    --surface-rail: var(--slate-3);
+    --surface-raised: var(--slate-4);
+    --surface-nested: var(--slate-5);
+    --surface-hover: var(--slate-6);
+    --surface-document: var(--slate-2);
+    /* The stage is slate-2; panels use the first visibly distinct Radix steps. */
+    --surface-inset: var(--slate-4);
+    --surface-sunken: var(--slate-5);
+    --surface-input: var(--slate-5);
+    --line-soft: var(--slate-6);
+    --line-strong: var(--slate-7);
+    --border-subtle: var(--slate-6);
+    --text-strong: var(--slate-12);
+    --text-body: var(--slate-11);
+    --text-muted: var(--slate-10);
+    --text-faint: var(--slate-11);
+    /* Dark shell */
+    --stage-rim-outer: var(--black-a12);
+    --stage-rim-inner: var(--white-a2);
+    --shadow-stage: 0 18px 50px var(--black-a6);
+    --shadow-pop: 0 10px 30px var(--black-a7);
+  }
+}
+:root[data-theme='dark'] {
+  --surface-app: var(--slate-1);
+  --surface-stage: var(--slate-2);
+  --surface-rail: var(--slate-3);
+  --surface-raised: var(--slate-4);
+  --surface-nested: var(--slate-5);
+  --surface-hover: var(--slate-6);
+  --surface-document: var(--slate-2);
+  --surface-inset: var(--slate-4);
+  --surface-sunken: var(--slate-5);
+  --surface-input: var(--slate-5);
+  --line-soft: var(--slate-6);
+  --line-strong: var(--slate-7);
+  --border-subtle: var(--slate-6);
+  --text-strong: var(--slate-12);
+  --text-body: var(--slate-11);
+  --text-muted: var(--slate-10);
+  --text-faint: var(--slate-11);
+  --accent: var(--blue-9);
+  --accent-strong: var(--blue-10);
+  --accent-soft: var(--blue-3);
+  --accent-text: var(--blue-11);
+  --ok: var(--green-9);
+  --ok-text: var(--green-11);
+  --warn: var(--amber-9);
+  --warn-text: var(--amber-11);
+  --danger: var(--red-9);
+  --danger-soft: var(--red-3);
+  --danger-text: var(--red-11);
+  --focus: var(--blue-8);
+  --selection-bg: var(--blue-3);
+  --stage-rim-outer: var(--white-a4);
+  --stage-rim-inner: var(--white-a2);
+  --shadow-stage: 0 18px 50px var(--black-a6);
+  --shadow-pop: 0 10px 30px var(--black-a7);
+  color-scheme: dark;
+}
+:root[data-theme='light'] {
+  color-scheme: light;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+}

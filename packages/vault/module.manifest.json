@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "id": "vault",
+  "title": "Vault",
+  "purpose": "Owns AIR_VAULT_ROOT path identity, projection hashes, and fail-fast codecs for workspace-native durable formats.",
+  "kind": "foundation",
+  "lifecycle": "active",
+  "ownership": {
+    "entities": ["vault-root", "note-projection", "vault-settings"],
+    "table_prefixes": []
+  },
+  "entrypoints": {
+    "domain": "src/vault.domain.public.ts",
+    "host": "src/vault.host.public.ts",
+    "service": "src/vault.service.public.ts"
+  },
+  "foundation_dependencies": ["contracts"],
+  "required_ports": [],
+  "contracts": [],
+  "events": { "emits": [], "consumes": [] },
+  "feature_ids": ["F-016"],
+  "scenario_ids": [],
+  "documentation": [".dev/air-office/09-workspace-native-storage.plan.md"]
+}

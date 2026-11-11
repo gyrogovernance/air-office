@@ -1,0 +1,17 @@
+name: AIR Office Alpha CodeQL scope
+paths:
+  - apps/web/src
+  - apps/service/src
+  - packages
+  - tools/office-cli/src
+  - apps/desktop
+paths-ignore:
+  - '**/node_modules/**'
+  - '**/.venv/**'
+  - '**/venv/**'
+  - '**/target/**'
+  - '**/dist/**'
+  - '**/build/**'
+  - '**/resources/**'
+  - '**/binaries/**'
+  - '**/gen/**'

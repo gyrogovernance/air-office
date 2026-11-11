@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "id": "methods",
+  "title": "Methods",
+  "purpose": "Owns reusable user-authored model presets, prompts, skills, history, and portable method and craft configuration transfers.",
+  "kind": "capability",
+  "lifecycle": "active",
+  "ownership": { "entities": ["method-definition", "method-version", "model-preset", "saved-prompt", "reusable-skill"], "table_prefixes": ["method_"] },
+  "entrypoints": { "domain": "src/methods.domain.public.ts", "service": "src/methods.service.public.ts" },
+  "foundation_dependencies": ["contracts"],
+  "required_ports": ["methods-store"],
+  "contracts": ["methods-definition"],
+  "events": { "emits": ["method-definition-saved", "method-definition-restored"], "consumes": [] },
+  "feature_ids": ["F-007"],
+  "scenario_ids": ["A-005"],
+  "documentation": [".dev/air-office/01-product.plan.md", ".dev/air-office/02-architecture.plan.md"]
+}

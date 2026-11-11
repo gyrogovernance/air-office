@@ -1,0 +1,4 @@
+[test]
+# Integration files share one spawned service process and stop/restart it.
+# Concurrent cases race that process and leave dangling listeners.
+concurrency = 1

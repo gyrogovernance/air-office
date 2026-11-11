@@ -1,0 +1,237 @@
+/* Reading and editing stay plain; compact navigation follows the desktop controls. */
+.stage-page[data-active-stage='glossary'] {
+  padding-top: 64px;
+}
+.glossary-workspace {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-width: 0;
+  padding: 8px 0 32px;
+  container-type: inline-size;
+  color: var(--text-body);
+}
+.lab-apps-form,
+.lab-apps-results {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+}
+/* Nested inside the 16px preview card (12px inset): outer − inset → ~4px → radius-sm. */
+.lab-apps-form .textarea,
+.lab-app-edit-step .textarea {
+  border-radius: var(--radius-sm);
+}
+.lab-apps-run-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  justify-content: flex-end;
+}
+.lab-apps-run-row > .select {
+  min-width: 0;
+  max-width: 100%;
+}
+.lab-apps-run-row .select__trigger {
+  border-radius: var(--radius-sm);
+}
+.lab-apps-model {
+  color: var(--text-muted);
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+.lab-apps-notice {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 0;
+  padding: 12px;
+  border-radius: 10px;
+  background: var(--surface-inset);
+  color: var(--text-body);
+  font-size: 12px;
+  line-height: 1.6;
+}
+.lab-apps-notice > span {
+  flex: 1;
+  min-width: 160px;
+}
+.lab-apps-results-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+.lab-apps-results-head h3 {
+  margin: 0;
+  font-size: 15px;
+  color: var(--text-strong);
+}
+.lab-apps-status {
+  color: var(--text-muted);
+  font-size: 12px;
+  flex: 1;
+  min-width: 160px;
+}
+.lab-apps-result-actions {
+  display: flex;
+  gap: 8px;
+  margin-left: auto;
+}
+.lab-apps-empty {
+  margin: 0;
+  padding: 16px 0;
+  color: var(--text-muted);
+  font-size: 13px;
+  line-height: 1.6;
+}
+.lab-app-result-step {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line-soft);
+}
+.lab-app-result-step:first-of-type {
+  border-top: 0;
+  padding-top: 0;
+}
+.lab-app-result-step-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 600;
+}
+.lab-app-result-step-state {
+  color: var(--accent-text);
+}
+.lab-app-result-step > *:last-child {
+  color: var(--text-body);
+  font-size: 14px;
+  line-height: 1.75;
+  overflow-wrap: anywhere;
+}
+/* Settings, Apps: step editing inside the app dialog. */
+.lab-app-edit-steps {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+.lab-app-edit-steps legend {
+  padding: 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-strong);
+}
+.lab-app-edit-step {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 10px 12px;
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius-md);
+  background: var(--surface-inset);
+}
+.lab-app-edit-step-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+.lab-app-edit-step-head > span {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--text-strong);
+}
+.lab-app-edit-step .textarea {
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 5.5rem;
+  resize: vertical;
+  font-size: var(--text-sm);
+}
+.lab-app-edit-step-actions {
+  display: flex;
+}
+
+.apps-settings-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 16px 0;
+}
+.apps-settings-header p {
+  margin: 0;
+  font-size: 13px;
+  color: var(--text-muted);
+  max-width: 52ch;
+}
+/* HeroUI SearchField owns the field paint; this class is layout only. */
+.apps-settings-search {
+  width: 100%;
+  min-width: 0;
+  margin-bottom: 8px;
+}
+.lab-app-edit-step .office-disclosure-trigger {
+  font-size: 13px;
+  font-weight: 600;
+  padding-inline: 0;
+  min-height: 28px;
+}
+.lab-app-edit-step .office-disclosure-body {
+  margin-top: 10px;
+}
+@container (min-width:1000px) {
+  .lab-apps-results {
+    border-top: 0;
+    border-left: 1px solid var(--line-soft);
+    padding: 0 0 0 24px;
+  }
+}
+
+/* Stage apps share a content inset while document editors retain their own margins. */
+.stage-page:is([data-active-stage='teams'], [data-active-stage='market'], [data-active-stage='prompts'], [data-active-stage='apps'], [data-active-stage='glossary'], [data-active-stage='settings'], [data-active-stage='methods'], [data-active-stage='calendar']) {
+  --stage-page-inline-space: clamp(20px, 3cqi, 36px);
+  padding-inline: var(--stage-page-inline-space);
+}
+.stage-page > .community-workspace {
+  box-sizing: border-box;
+  padding-inline: 0;
+}
+.workspace-app-icon {
+  flex: 0 0 auto;
+}
+.workspace-app-icon .lg-surface {
+  display: grid;
+  place-items: center;
+}
+.workspace-app-icon .lg-surface > span {
+  position: relative;
+  z-index: 1;
+  line-height: 1;
+}
+.settings-app-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.app-icon-editor {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+

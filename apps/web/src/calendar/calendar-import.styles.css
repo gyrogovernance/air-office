@@ -1,0 +1,36 @@
+.calendar-import {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+}
+.calendar-import h4,
+.calendar-import p {
+  margin: 0;
+}
+.calendar-import textarea {
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 140px;
+  font: 12px/1.5 var(--font-mono, monospace);
+  resize: vertical;
+}
+.calendar-import .settings-inline-details .office-disclosure-body textarea {
+  margin-top: 8px;
+  max-height: 240px;
+}
+.calendar-import-preview {
+  padding: 12px;
+  border: 1px solid var(--line-soft);
+  border-radius: 10px;
+  background: var(--surface-inset);
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+.calendar-import-preview ul {
+  margin: 8px 0;
+  padding-left: 20px;
+}
+.calendar-import [role='alert'] {
+  color: var(--danger);
+}

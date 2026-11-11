@@ -1,0 +1,70 @@
+appId: org.airoffice.desktop
+productName: AIR Office
+copyright: Copyright © Gyro Governance Lab
+directories:
+  output: ../../dist/desktop
+  buildResources: build
+files:
+  - out/**/*
+  - package.json
+extraResources:
+  - from: resources
+    to: .
+    filter:
+      - '**/*'
+  - from: binaries
+    to: .
+    filter:
+      - air-office-service*
+      - air-office-service.exe
+  - from: ../web/dist
+    to: web
+  - from: build/icon.png
+    to: icon.png
+
+asar: true
+asarUnpack:
+  - '**/*.{node,dll,dylib,so,exe}'
+forceCodeSigning: false
+# Clears CopyFiles overwrite locks on Windows upgrades (see scripts/after-pack.entry.cjs).
+afterPack: scripts/after-pack.entry.cjs
+nsis:
+  oneClick: false
+  allowToChangeInstallationDirectory: true
+  allowElevation: true
+  perMachine: false
+  createDesktopShortcut: true
+  createStartMenuShortcut: true
+  installerIcon: build/icon.ico
+  uninstallerIcon: build/icon.ico
+  installerHeader: build/installerHeader.bmp
+  installerSidebar: build/installerSidebar.bmp
+  include: build/installer.nsh
+  artifactName: AIR-Office-Setup-${version}-${arch}.${ext}
+win:
+  target:
+    - target: nsis
+      arch:
+        - x64
+  icon: build/icon.ico
+  # Keep resource editing so the .exe (and all-users shortcuts) get our icon.
+  # signAndEditExecutable: false skips rcedit entirely and leaves the stock
+  # Electron icon for other Windows accounts. Skip signing only.
+  signExecutable: false
+  signAndEditExecutable: true
+mac:
+  # Arch comes from the pack script CLI only (`--x64` or `--arm64`).
+  # Listing both arches here made `pack:mac:intel` emit Silicon packages too.
+  target:
+    - dmg
+    - zip
+  category: public.app-category.productivity
+  icon: build/icon.icns
+  hardenedRuntime: false
+  gatekeeperAssess: false
+  identity: null
+  notarize: false
+  minimumSystemVersion: '12.0'
+  artifactName: AIR-Office-${version}-${arch}.${ext}
+dmg:
+  artifactName: AIR-Office-${version}-${arch}.${ext}

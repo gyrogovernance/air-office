@@ -1,0 +1,7 @@
+node_modules
+dist
+apps/web/dist
+apps/desktop/out
+apps/desktop/resources
+apps/desktop/binaries
+assets/arcade

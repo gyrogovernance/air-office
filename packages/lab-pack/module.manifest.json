@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "id": "lab-pack",
+  "title": "Lab pack",
+  "purpose": "Installs Gyro Lab default agents, skills, and framework knowledge from the Studio Alpha pack without overwriting user edits or deletions.",
+  "kind": "capability",
+  "lifecycle": "active",
+  "ownership": { "entities": ["lab-pack-ledger"], "table_prefixes": [] },
+  "entrypoints": { "domain": "src/lab-pack.domain.public.ts", "service": "src/lab-pack.service.public.ts" },
+  "foundation_dependencies": ["methods"],
+  "required_ports": [],
+  "contracts": [],
+  "events": { "emits": [], "consumes": [] },
+  "feature_ids": ["F-008", "F-007", "F-006"],
+  "scenario_ids": ["A-005"],
+  "documentation": [".dev/air-office/references/lab-pack.md", ".dev/air-office/references/sources.md"]
+}

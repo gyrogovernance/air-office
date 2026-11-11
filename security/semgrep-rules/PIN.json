@@ -1,0 +1,13 @@
+{
+  "included_paths": [
+    "javascript",
+    "typescript"
+  ],
+  "schema_version": 1,
+  "source": "github.com/semgrep/semgrep-rules",
+  "active_fast_gate_config": "security/semgrep-rules",
+  "archive_sha256": "098703252fbff4c04186e7b6dd06f9a6a03fb548778341056a945e099ec2a824",
+  "notes": "Vendored JavaScript and TypeScript rules are enabled across application and package source. Python and Rust SAST rules are not vendored; those languages still require additional coverage.",
+  "commit": "16b9e6d45f10649f6a531ec4838ed9924372c3bc",
+  "updated": "2026-11-03"
+}

@@ -1,0 +1,10 @@
+[test]
+# The web and editor DOM adapters register globals that replace the standard
+# ones for the whole process, so each suite that needs a DOM imports its own
+# adapter directly rather than sharing a preload.
+#
+# Every test file that runs editor code (headless Lobe conversions included)
+# must import the editor adapter before its editor imports: executing editor
+# code before the document exists poisons the process, and later DOM
+# selection tests in the same run silently receive no selection.
+

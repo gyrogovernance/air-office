@@ -1,0 +1,59 @@
+{
+  "name": "air-office",
+  "private": true,
+  "packageManager": "bun@1.4.4",
+  "engines": {
+    "bun": ">=1.4.4",
+    "node": "^22.23.4 || ^24.22.1 || ^26.12.1"
+  },
+  "type": "module",
+  "workspaces": ["apps/*", "packages/*", "tools/*", "tests"],
+  "scripts": {
+    "dev": "bun --silent run tools/dev.entry.ts",
+    "dev:demo": "bun --silent run tools/demo.entry.ts",
+    "build": "bun run build:web",
+    "build:web": "bun run --cwd apps/web build",
+    "export:static-demo": "bun run tools/export-static-demo.entry.ts",
+    "build:web:static-demo": "bun run tools/build-static-demo.entry.ts",
+    "prepare-desktop-artifact": "bun run apps/desktop/scripts/prepare-desktop-artifact.entry.ts",
+    "build:desktop": "bun run tools/build-desktop.entry.ts",
+    "build:desktop:windows": "bun run tools/build-desktop.entry.ts -- --target x86_64-pc-windows-msvc --bundles nsis",
+    "build:desktop:mac:intel": "TARGET=x86_64-apple-darwin bun run tools/build-desktop.entry.ts -- mac:intel",
+    "build:desktop:mac:arm": "TARGET=aarch64-apple-darwin bun run tools/build-desktop.entry.ts -- mac:arm",
+    "desktop:artifacts": "bun run tools/open-desktop-artifacts.entry.ts",
+    "clean:desktop": "bun run tools/clean-desktop.entry.ts",
+    "typecheck": "tsc --noEmit",
+    "lint:css": "stylelint --config tools/stylelint.config.json --ignore-path tools/stylelint.ignore \"apps/*/src/**/*.css\" \"packages/*/src/**/*.css\"",
+    "format:css": "prettier --config tools/prettier.config.json --check \"apps/*/src/**/*.css\" \"packages/*/src/**/*.css\"",
+    "format:css:write": "prettier --config tools/prettier.config.json --write \"apps/*/src/**/*.css\" \"packages/*/src/**/*.css\"",
+    "test": "bun run tools/test.entry.ts",
+    "generate:owasp-craft": "bun run tools/generate-owasp-craft.entry.ts",
+    "office": "bun run tools/office-cli/src/office-cli.entry.ts"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.64.0",
+    "@types/bun": "1.4.2",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "@vitejs/plugin-react": "4.7.0",
+    "playwright": "^1.64.0",
+    "prettier": "3",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "react-router-dom": "^7.18.5",
+    "stylelint": "16",
+    "stylelint-config-standard": "37",
+    "typescript": "5.9.3",
+    "vite": "6.4.4"
+  },
+  "dependencies": {},
+  "overrides": {
+    "@glass-sdk/liquid-glass": "file:.vendor/liquid-glass-0.0.2.tgz",
+    "@modelcontextprotocol/server": "2.4.0",
+    "decode-uri-component": "0.5.1",
+    "happy-dom": "21.0.4"
+  },
+  "patchedDependencies": {
+    "boring-avatars@2.0.4": "patches/boring-avatars@2.0.4.patch"
+  }
+}

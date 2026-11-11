@@ -1,0 +1,11 @@
+{
+  "name": "@office/runtime",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./service": "./src/runtime.service.public.ts"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}

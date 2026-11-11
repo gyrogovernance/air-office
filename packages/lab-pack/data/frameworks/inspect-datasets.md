@@ -1,0 +1,359 @@
+# Datasets – Inspect
+
+## Overview
+
+Inspect has native support for reading datasets in the CSV, JSON, and JSON Lines formats, as well as from [Hugging Face](#sec-hugging-face-datasets). In addition, the core dataset interface for the evaluation pipeline is flexible enough to accept data read from just about any source (see the [Custom Reader](#sec-custom-reader) section below for details).
+
+If your data is already in a format amenable for direct reading as an Inspect [Sample](https://inspect.aisi.org.uk/reference/inspect_ai.dataset.html.md#sample), reading a dataset is as simple as this:
+
+``` python
+from inspect_ai.dataset import csv_dataset, json_dataset
+dataset1 = csv_dataset("dataset1.csv")
+dataset2 = json_dataset("dataset2.json")
+```
+
+Of course, many real-world datasets won’t be so trivial to read. Below we’ll discuss the various ways you can adapt your datasets for use with Inspect.
+
+## Dataset Samples
+
+The core data type underlying the use of datasets with Inspect is the [Sample](https://inspect.aisi.org.uk/reference/inspect_ai.dataset.html.md#sample), which consists of a required `input` field and several other optional fields:
+
+**Class** `inspect_ai.dataset.Sample`
+
+| Field | Type | Description |
+|----|----|----|
+| `input` | `str | list[ChatMessage]` | The input to be submitted to the model. |
+| `choices` | `list[str] | None` | Optional. Multiple choice answer list. |
+| `target` | `str | list[str] | None` | Optional. Ideal target output. May be a literal value or narrative text to be used by a model grader. |
+| `id` | `str | None` | Optional. Unique identifier for sample. |
+| `description` | `str | None` | Optional. Short statement of what the sample asks of the agent (recorded in the eval log). |
+| `metadata` | `dict[str | Any] | None` | Optional. Arbitrary metadata associated with the sample. |
+| `sandbox` | `str | tuple[str,str]` | Optional. Sandbox environment type (or optionally a tuple with type and config file) |
+| `files` | `dict[str | str] | None` | Optional. Files that go along with the sample (copied to sandbox environments). |
+| `setup` | `str | None` | Optional. Setup script to run for sample (executed within default sandbox environment). |
+
+So a CSV dataset with the following structure:
+
+| input | target |
+|----|----|
+| What cookie attributes should I use for strong security? | secure samesite and httponly |
+| How should I store passwords securely for an authentication system database? | strong hashing algorithms with salt like Argon2 or bcrypt |
+
+Can be read directly with:
+
+``` python
+dataset = csv_dataset("security_guide.csv")
+```
+
+Note that samples from datasets without an `id` field will automatically be assigned ids based on an auto-incrementing integer starting with 1.
+
+If your samples include `choices`, then the `target` should be a capital letter representing the correct answer in `choices`, see [`multiple_choice`](https://inspect.aisi.org.uk/solvers.html.md#sec-multiple-choice)
+
+## Sample Files
+
+The sample `files` field maps sandbox target file paths to file contents (where contents can be either a filesystem path, a URL, or a string with inline content). For example, to copy a local file named `flag.txt` into the sandbox path `/shared/flag.txt` you would use this:
+
+``` python
+"/shared/flag.txt": "flag.txt"
+```
+
+Files are copied into the default sandbox environment unless their name contains a prefix mapping them into another environment. For example, to copy into the `victim` sandbox:
+
+``` python
+"victim:/shared/flag.txt": "flag.txt"
+```
+
+You can also specify a directory rather than a single file path and it will be copied recursively into the sandbox:
+
+``` python
+"/shared/resources": "resources"
+```
+
+### Sample Setup
+
+The `setup` field contains either a path to a bash setup script (resolved relative to the dataset path) or the contents of a script to execute. Setup scripts are executed with a 5 minute timeout. If you have setup scripts that may take longer than this you should move some of your setup code into the container build setup (e.g. Dockerfile).
+
+## Field Mapping
+
+If your dataset contains inputs and targets that don’t use `input` and `target` as field names, you can map them into a [Dataset](https://inspect.aisi.org.uk/reference/inspect_ai.dataset.html.md#dataset) using a [FieldSpec](https://inspect.aisi.org.uk/reference/inspect_ai.dataset.html.md#fieldspec). This same mechanism also enables you to collect arbitrary additional fields into the [Sample](https://inspect.aisi.org.uk/reference/inspect_ai.dataset.html.md#sample) `metadata` bucket. For example:
+
+``` python
+from inspect_ai.dataset import FieldSpec, json_dataset
+
+dataset = json_dataset(
+    "popularity.jsonl",
+    FieldSpec(
+        input="question",
+        target="answer_matching_behavior",
+        id="question_id",
+        metadata=["label_confidence"],
+    ),
+)
+```
+
+To read `Sample.description` (a short statement of what the sample asks of the agent) from a dataset field, name the field with `FieldSpec(description=...)`. Descriptions are not read unless the field is named, so existing datasets with a `description` column are unaffected. The description is recorded with the sample in the eval log and appears as the `description` column of [samples_df()](https://inspect.aisi.org.uk/reference/inspect_ai.analysis.html.md#samples_df).
+
+If you need to do more than just map field names and actually do custom processing of the data, you can instead pass a function which takes a `record` (represented as a `dict`) from the underlying file and returns a [Sample](https://inspect.aisi.org.uk/reference/inspect_ai.dataset.html.md#sample). For example:
+
+``` python
+from inspect_ai.dataset import Sample, json_dataset
+
+def record_to_sample(record):
+    return Sample(
+        input=record["question"],
+        target=record["answer_matching_behavior"].strip(),
+        id=record["question_id"],
+        metadata={
+            "label_confidence": record["label_confidence"]
+        }
+    )
+
+dataset = json_dataset("popularity.jsonl", record_to_sample)
+```
+
+### Typed Metadata
+
+If you want a more strongly typed interface to sample metadata, you can define a [Pydantic model](https://docs.pydantic.dev/latest/concepts/models/) and use it to both validate and read metadata.
+
+For validation, pass a `BaseModel` derived class in the [FieldSpec](https://inspect.aisi.org.uk/reference/inspect_ai.dataset.html.md#fieldspec). The interface to metadata is read-only so you must also specify `frozen=True`. For example:
+
+``` python
+from pydantic import BaseModel
+
+class PopularityMetadata(BaseModel, frozen=True):
+    category: str
+    label_confidence: float
+
+dataset = json_dataset(
+    "popularity.jsonl",
+    FieldSpec(
+        input="question",
+        target="answer_matching_behavior",
+        id="question_id",
+        metadata=PopularityMetadata,
+    ),
+)
+```
+
+To read metadata in a typesafe fashion, use the `metadata_as()` method on [Sample](https://inspect.aisi.org.uk/reference/inspect_ai.dataset.html.md#sample) or [TaskState](https://inspect.aisi.org.uk/reference/inspect_ai.solver.html.md#taskstate):
+
+``` python
+metadata = state.metadata_as(PopularityMetadata)
+```
+
+Note again that the intended semantics of `metadata` are read-only, so attempting to write into the returned metadata will raise a Pydantic `FrozenInstanceError`.
+
+If you need per-sample mutable data, use the [sample store](https://inspect.aisi.org.uk/agent-custom.html.md#agent-store), which also supports [typing](https://inspect.aisi.org.uk/agent-custom.html.md#typed-store) using Pydantic models.
+
+## Filtering
+
+The [Dataset](https://inspect.aisi.org.uk/reference/inspect_ai.dataset.html.md#dataset) class includes `filter()` and `shuffle()` methods, as well as support for the slice operator.
+
+To select a subset of the dataset, use `filter()`:
+
+``` python
+dataset = json_dataset("popularity.jsonl", record_to_sample)
+dataset = dataset.filter(
+    lambda sample : sample.metadata["category"] == "advanced"
+)
+```
+
+To select a subset of records, use standard Python slicing:
+
+``` python
+dataset = dataset[0:100]
+```
+
+You can also filter from the CLI or when calling [eval()](https://inspect.aisi.org.uk/reference/inspect_ai.html.md#eval). For example:
+
+``` bash
+inspect eval ctf.py --sample-id 22
+inspect eval ctf.py --sample-id 22,23,24
+inspect eval ctf.py --sample-id *_advanced
+```
+
+The last example above demonstrates using glob (wildcard) syntax to select multiple samples with a single expression.
+
+## Shuffling
+
+Shuffling is often helpful when you want to vary the samples used during evaluation development. Use the `--sample-shuffle` option to perform shuffling. For example:
+
+``` bash
+inspect eval ctf.py --sample-shuffle
+inspect eval ctf.py --sample-shuffle 42
+```
+
+Or from Python:
+
+``` python
+eval("ctf.py", sample_shuffle=True)
+eval("ctf.py", sample_shuffle=42)
+```
+
+You can also shuffle datasets directly within a task definition. To do this, either use the `shuffle()` method or the `shuffle` parameter of the dataset loading functions:
+
+``` python
+# shuffle method
+dataset = dataset.shuffle()
+
+# shuffle on load
+dataset = json_dataset("data.jsonl", shuffle=True)
+
+# shuffle on load with a seed
+dataset = json_dataset("data.jsonl", shuffle=42)
+```
+
+Note that both of these methods optionally support specifying a random seed for shuffling.
+
+## Choice Shuffling
+
+When working with datasets that contain multiple-choice options, you can randomize the order of these choices during data loading. The shuffling operation automatically updates any corresponding target values to maintain correct answer mappings.
+
+For datasets that contain `choices`, you can shuffle the choices when the data is loaded. Shuffling choices will randomly re-order the choices and update the sample’s target value or values to align with the shuffled choices.
+
+There are two ways to shuffle choices:
+
+``` python
+# Method 1: Using the dataset method
+dataset = dataset.shuffle_choices()
+
+# Method 2: During dataset loading
+dataset = json_dataset("data.jsonl", shuffle_choices=True)
+```
+
+For reproducible shuffling, you can specify a random seed:
+
+``` python
+# Using a seed with the dataset method
+dataset = dataset.shuffle_choices(seed=42)
+
+# Using a seed during loading
+dataset = json_dataset("data.jsonl", shuffle_choices=42)
+```
+
+## Hugging Face
+
+[Hugging Face Datasets](https://huggingface.co/docs/datasets/en/index) is a library for easily accessing and sharing datasets for machine learning, and features integration with [Hugging Face Hub](https://huggingface.co/datasets), a repository with a broad selection of publicly shared datasets. Typically datasets on Hugging Face will require specification of which split within the dataset to use (e.g. train, test, or validation) as well as some field mapping. Use the [hf_dataset()](https://inspect.aisi.org.uk/reference/inspect_ai.dataset.html.md#hf_dataset) function to read a dataset and specify the requisite split and field names:
+
+``` python
+from inspect_ai.dataset import FieldSpec, hf_dataset
+
+dataset=hf_dataset("openai_humaneval", 
+  split="test", 
+  sample_fields=FieldSpec(
+    id="task_id",
+    input="prompt",
+    target="canonical_solution",
+    metadata=["test", "entry_point"]
+  )
+)
+```
+
+Note that some HuggingFace datasets execute Python code in order to resolve the underlying dataset files. Since this code is run on your local machine, you need to specify `trust = True` in order to perform the download. This option should only be set to `True` for repositories you trust and in which you have read the code. Here’s an example of using the `trust` option (note that it defaults to `False` if not specified):
+
+``` python
+dataset=hf_dataset("openai_humaneval", 
+  split="test", 
+  trust=True,
+  ...
+)
+```
+
+Under the hood, the [hf_dataset()](https://inspect.aisi.org.uk/reference/inspect_ai.dataset.html.md#hf_dataset) function is calling the [load_dataset()](https://huggingface.co/docs/datasets/en/package_reference/loading_methods#datasets.load_dataset) function in the Hugging Face datasets package. You can additionally pass arbitrary parameters on to `load_dataset()` by including them in the call to [hf_dataset()](https://inspect.aisi.org.uk/reference/inspect_ai.dataset.html.md#hf_dataset). For example `hf_dataset(..., cache_dir="~/my-cache-dir")`.
+
+By default, [hf_dataset()](https://inspect.aisi.org.uk/reference/inspect_ai.dataset.html.md#hf_dataset) retries transient Hugging Face errors (rate limits, timeouts, and Hub-unreachable cache misses) with exponential backoff. Pass `retry=False` to disable.
+
+## Amazon S3
+
+Inspect has integrated support for storing datasets on [Amazon S3](https://aws.amazon.com/pm/serv-s3/). Compared to storing data on the local file-system, using S3 can provide more flexible sharing and access control, and a more reliable long term store than local files.
+
+Using S3 is mostly a matter of substituting S3 URLs (e.g. `s3://my-bucket-name`) for local file-system paths. For example, here is how you load a dataset from S3:
+
+``` python
+json_dataset("s3://my-bucket/dataset.jsonl")
+```
+
+S3 buckets are normally access controlled so require authentication to read from. There are a wide variety of ways to configure your client for AWS authentication, all of which work with Inspect. See the article on [Configuring the AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html) for additional details.
+
+## Chat Messages
+
+The most important data structure within [Sample](https://inspect.aisi.org.uk/reference/inspect_ai.dataset.html.md#sample) is the [ChatMessage](https://inspect.aisi.org.uk/reference/inspect_ai.model.html.md#chatmessage). Note that often datasets will contain a simple string as their input (which is then internally converted to a [ChatMessageUser](https://inspect.aisi.org.uk/reference/inspect_ai.model.html.md#chatmessageuser)). However, it is possible to include a full message history as the input via [ChatMessage](https://inspect.aisi.org.uk/reference/inspect_ai.model.html.md#chatmessage). Another useful application of [ChatMessage](https://inspect.aisi.org.uk/reference/inspect_ai.model.html.md#chatmessage) is providing multi-modal input (e.g. images).
+
+**Class** `inspect_ai.model.ChatMessage`
+
+| Field | Type | Description |
+|----|----|----|
+| `role` | `"system" | "user" | "assistant" | "tool"` | Role of this chat message. |
+| `content` | `str | list[Content]` | The content of the message. Can be a simple string or a list of content parts intermixing text and images. |
+
+An input with chat messages in your dataset might will look something like this:
+
+``` javascript
+"input": [
+  {
+    "role": "user",
+    "content": "What cookie attributes should I use for strong security?"
+  }
+]
+```
+
+Note that for this example we wouldn’t normally use a full chat message object (rather we’d just provide a simple string). Chat message objects are more useful when you want to include a system prompt or prime the conversation with “assistant” responses.
+
+## Custom Reader
+
+You are not restricted to the built in dataset functions for reading samples. You can also construct a [MemoryDataset](https://inspect.aisi.org.uk/reference/inspect_ai.dataset.html.md#memorydataset), and pass that to a task. For example:
+
+``` python
+from inspect_ai import Task, task
+from inspect_ai.dataset import MemoryDataset, Sample
+from inspect_ai.scorer import model_graded_fact
+from inspect_ai.solver import generate, system_message
+
+dataset=MemoryDataset([
+    Sample(
+        input="What cookie attributes should I use for strong security?",
+        target="secure samesite and httponly",
+    )
+])
+
+@task
+def security_guide():
+    return Task(
+        dataset=dataset,
+        solver=[system_message(SYSTEM_MESSAGE), generate()],
+        scorer=model_graded_fact(),
+    )
+```
+
+So if the built in dataset functions don’t meet your needs, you can create a custom function that yields a [MemoryDataset](https://inspect.aisi.org.uk/reference/inspect_ai.dataset.html.md#memorydataset)and pass those directly to your [Task](https://inspect.aisi.org.uk/reference/inspect_ai.html.md#task).
+
+
+---
+
+Source: https://inspect.aisi.org.uk/datasets.html.md
+
+Snapshot retrieved 2026-10-24. Relative links resolved for standalone reading.
+
+## License
+
+MIT License
+
+Copyright (c) 2024 UK AI Security Institute
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

@@ -1,0 +1,244 @@
+{
+  "schema_version": 1,
+  "description": "External packages adopted by the Open WebUI parity program, pinned to the exact installed release. bun run office -- check validates versions, licenses, the allowlist, the notices file, and the installed LICENSE files.",
+  "allowed_licenses": [
+    "MIT",
+    "Apache-2.0",
+    "BSD-2-Clause",
+    "BSD-3-Clause",
+    "ISC",
+    "0BSD",
+    "BlueOak-1.0.0",
+    "Unlicense",
+    "CC0-1.0",
+    "MIT-0",
+    "OFL-1.1"
+  ],
+  "packages": [
+    {
+      "name": "@radix-ui/colors",
+      "version": "3.0.0",
+      "license": "MIT",
+      "source": "https://registry.npmjs.org/@radix-ui/colors",
+      "purpose": "Accessible light and dark primitive color scales mapped into AIR semantic roles and HeroUI theme variables.",
+      "queue": "User-directed AIR color system using Radix Colors primitives.",
+      "adopted": "2026-10-28"
+    },
+    {
+      "name": "jose",
+      "version": "6.2.12",
+      "license": "MIT",
+      "source": "https://registry.npmjs.org/jose",
+      "purpose": "Validate OpenAI ChatGPT sign-in ID tokens against the issuer JWKS.",
+      "queue": "task-0032-chatgpt-signin",
+      "adopted": "2026-10-25"
+    },
+    {
+      "name": "zod",
+      "version": "4.1.12",
+      "license": "MIT",
+      "source": "https://registry.npmjs.org/zod",
+      "purpose": "Schema-derived episodic memory payload validation and monitor JSON schema.",
+      "queue": "06-execution.plan.md Gyroscopic Reasoning integration",
+      "adopted": "2026-10-22"
+    },
+    {
+      "name": "simple-icons",
+      "version": "16.35.0",
+      "license": "CC0-1.0",
+      "source": "https://registry.npmjs.org/simple-icons",
+      "purpose": "Locally bundled brand marks for the curated MCP connector catalog.",
+      "queue": "06-execution.plan.md MCP connectors, task-0027",
+      "adopted": "2026-10-18"
+    },
+    {
+      "name": "@glass-sdk/liquid-glass",
+      "version": "0.0.2",
+      "license": "MIT",
+      "source": "https://registry.npmjs.org/@glass-sdk/liquid-glass",
+      "purpose": "Locally patched glass controls and materials, preserved in .vendor/liquid-glass-0.0.2.tgz with patch notes in .vendor/liquid-glass-VENDOR-PATCH.md.",
+      "queue": "User-requested preservation of existing vendored glass dependency during dependency relocation.",
+      "adopted": "2026-10-17"
+    },
+    {
+      "name": "@fontsource/coiny",
+      "version": "5.3.0",
+      "license": "OFL-1.1",
+      "source": "https://registry.npmjs.org/@fontsource/coiny",
+      "purpose": "Locally bundled Coiny display font for Teams and Market widget titles.",
+      "queue": "06-execution.plan.md, user-requested Teams and Market widget polish task-0015",
+      "adopted": "2026-10-16"
+    },
+    {
+      "name": "react-aria-components",
+      "version": "1.22.1",
+      "license": "Apache-2.0",
+      "source": "https://registry.npmjs.org/react-aria-components",
+      "purpose": "Accessible launcher calendar with keyboard date selection and month navigation.",
+      "queue": "06-execution.plan.md, user-requested workspace UI polish task-0009",
+      "adopted": "2026-10-15"
+    },
+    {
+      "name": "lexical",
+      "version": "0.42.0",
+      "license": "MIT",
+      "source": "https://registry.npmjs.org/lexical",
+      "purpose": "Public selection and paragraph-node operations for the Lobe editor adapter, pinned to Lobe's engine version.",
+      "queue": "06-execution.plan.md section 4, Lobe Editor adoption",
+      "adopted": "2026-10-15"
+    },
+    {
+      "name": "@lexical/selection",
+      "version": "0.42.0",
+      "license": "MIT",
+      "source": "https://registry.npmjs.org/@lexical/selection",
+      "purpose": "Supported selected-block conversion to paragraphs within the Lobe editor adapter.",
+      "queue": "06-execution.plan.md section 4, Lobe Editor adoption",
+      "adopted": "2026-10-15"
+    },
+    {
+      "name": "tar",
+      "version": "7.5.22",
+      "license": "BlueOak-1.0.0",
+      "source": "https://registry.npmjs.org/tar",
+      "purpose": "Build-time extraction of pinned Lemonade gzip tar distribution archives for desktop artifact preparation.",
+      "queue": "06-execution.plan.md model setup MS-06",
+      "adopted": "2026-10-16"
+    },
+    {
+      "name": "yauzl",
+      "version": "3.1.3",
+      "license": "MIT",
+      "source": "https://registry.npmjs.org/yauzl",
+      "purpose": "Build-time validated streaming extraction of pinned Lemonade ZIP distribution archives for desktop artifact preparation.",
+      "queue": "06-execution.plan.md model setup MS-06",
+      "adopted": "2026-10-16"
+    },
+    {
+      "name": "@types/yauzl",
+      "version": "2.10.3",
+      "license": "MIT",
+      "source": "https://registry.npmjs.org/@types/yauzl",
+      "purpose": "TypeScript declarations for the desktop build-time yauzl archive extraction adapter.",
+      "queue": "06-execution.plan.md model setup MS-06",
+      "adopted": "2026-10-16"
+    },
+    {
+      "name": "boring-avatars",
+      "version": "2.0.4",
+      "license": "MIT",
+      "source": "https://registry.npmjs.org/boring-avatars",
+      "purpose": "Native deterministic Beam avatars with white face features for users, agents and conversations.",
+      "queue": "User-requested avatar library adoption and visual correction.",
+      "adopted": "2026-10-15"
+    },
+    {
+      "name": "@assistant-ui/react",
+      "version": "0.15.28",
+      "license": "MIT",
+      "source": "https://registry.npmjs.org/@assistant-ui/react",
+      "purpose": "Chat runtime, thread, composer, action bar and queue primitives over the service conversation graph in apps/web.",
+      "queue": "06-execution.plan.md Slice 6, chat on assistant-ui",
+      "adopted": "2026-10-14"
+    },
+    {
+      "name": "generative-frame",
+      "version": "0.0.9",
+      "license": "MIT",
+      "source": "https://registry.npmjs.org/generative-frame",
+      "purpose": "Stream model-written HTML/SVG widgets and spec-mode generative UI into assistant-ui threads.",
+      "queue": "assistant-ui Elements Safe Content Frame / Generative Frame wave",
+      "adopted": "2026-11-07"
+    },
+    {
+      "name": "safe-content-frame",
+      "version": "0.0.34",
+      "license": "MIT",
+      "source": "https://registry.npmjs.org/safe-content-frame",
+      "purpose": "Cross-origin sandboxed iframe host for untrusted HTML/SVG artifact and widget previews.",
+      "queue": "assistant-ui Elements Safe Content Frame / Generative Frame wave",
+      "adopted": "2026-11-07"
+    },
+    {
+      "name": "@assistant-ui/generative-ui",
+      "version": "0.0.8",
+      "license": "MIT",
+      "source": "https://registry.npmjs.org/@assistant-ui/generative-ui",
+      "purpose": "Default generative UI vocabulary for generative-frame spec mode (render_spec).",
+      "queue": "assistant-ui Elements Safe Content Frame / Generative Frame wave",
+      "adopted": "2026-11-07"
+    },
+    {
+      "name": "@lobehub/editor",
+      "version": "4.23.1",
+      "license": "MIT",
+      "source": "https://registry.npmjs.org/@lobehub/editor",
+      "purpose": "Rich document editing kernel for F-003 notes, replacing the earlier BlockNote selection with canonical-format mapping.",
+      "queue": "06-execution.plan.md section 4, Lobe Editor adoption",
+      "adopted": "2026-10-14"
+    },
+    {
+      "name": "@lobehub/ui",
+      "version": "5.64.2",
+      "license": "MIT",
+      "source": "https://registry.npmjs.org/@lobehub/ui",
+      "purpose": "Lobe Editor theme, motion and UI peer context required for its supported editor toolbar and plugins.",
+      "queue": "06-execution.plan.md section 4, Lobe Editor adoption",
+      "adopted": "2026-10-15"
+    },
+    {
+      "name": "antd",
+      "version": "6.6.6",
+      "license": "MIT",
+      "source": "https://registry.npmjs.org/antd",
+      "purpose": "Required Lobe UI component peer for editor controls, popovers and accessible interactions.",
+      "queue": "06-execution.plan.md section 4, Lobe Editor adoption",
+      "adopted": "2026-10-15"
+    },
+    {
+      "name": "motion",
+      "version": "12.43.0",
+      "license": "MIT",
+      "source": "https://registry.npmjs.org/motion",
+      "purpose": "Motion context required by the Lobe UI provider for editor interactions.",
+      "queue": "06-execution.plan.md section 4, Lobe Editor adoption",
+      "adopted": "2026-10-15"
+    },
+    {
+      "name": "@github/copilot-sdk",
+      "version": "1.0.28",
+      "license": "MIT",
+      "source": "https://registry.npmjs.org/@github/copilot-sdk",
+      "purpose": "Headless Copilot CLI server-mode agent harness for AIR cloud chat and for local models with Full harness enabled; default local chat uses AIR's lean path instead. Optional platform packages supply the matching Copilot CLI runtime binary.",
+      "queue": "06-execution.plan.md unit 1, Copilot SDK harness adoption",
+      "adopted": "2026-11-01"
+    },
+    {
+      "name": "@xyflow/react",
+      "version": "12.10.0",
+      "license": "MIT",
+      "source": "https://registry.npmjs.org/@xyflow/react",
+      "purpose": "Node canvas behind the conversation branch overview in apps/web, used through its public React components.",
+      "queue": "06-execution.plan.md Slice 6, message actions and navigation",
+      "adopted": "2026-10-14"
+    },
+    {
+      "name": "streamdown",
+      "version": "2.7.0",
+      "license": "Apache-2.0",
+      "source": "https://registry.npmjs.org/streamdown",
+      "purpose": "Streaming-safe markdown rendering for chat messages, extended through the @streamdown plugin packages.",
+      "queue": "06-execution.plan.md Slice 6, chat rendering on assistant-ui",
+      "adopted": "2026-10-14"
+    },
+    {
+      "name": "typescript",
+      "version": "5.9.3",
+      "license": "Apache-2.0",
+      "source": "https://registry.npmjs.org/typescript",
+      "purpose": "TypeScript compiler API for import-boundary and related repository checks in office-cli.",
+      "queue": "06-execution.plan.md Slice 1, repository checks",
+      "adopted": "2026-10-27"
+    }
+  ]
+}

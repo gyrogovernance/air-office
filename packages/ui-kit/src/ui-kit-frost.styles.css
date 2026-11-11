@@ -1,0 +1,257 @@
+/* CSS frost fill adapted from gyrogovernance.com/src/app/globals.css.
+   Shape, clip-path, interactive glow, and the optical rim stay with the
+   liquid-glass SDK. This layer adds a translucent tint (and light blur) on
+   opted-in surfaces; it does not set filter:none, hide .lg-glass-layer, or
+   invent an inset rim that replaces the library edge. */
+:root {
+  --frost-fill: var(--white-a6);
+  --frost-fill-strong: var(--white-a7);
+  --frost-selection: var(--white-a7);
+  --frost-fallback: var(--white-a9);
+  --frost-blur: 20px;
+  --frost-saturation: 180%;
+}
+
+/* Sibling layers sample the same backdrop. A filtered parent would prevent
+   the stronger layers from seeing the original rail content. */
+.ui-frost-scrim {
+  position: absolute;
+  inset: 0 0 auto;
+  height: var(--frost-scrim-height, 127px);
+  pointer-events: none;
+}
+.ui-frost-scrim > span {
+  position: absolute;
+  inset: 0;
+  -webkit-backdrop-filter: blur(var(--scrim-layer-blur));
+  backdrop-filter: blur(var(--scrim-layer-blur));
+  -webkit-mask-image: linear-gradient(to bottom, #000 var(--scrim-layer-start), transparent var(--scrim-layer-end));
+  mask-image: linear-gradient(to bottom, #000 var(--scrim-layer-start), transparent var(--scrim-layer-end));
+}
+.ui-frost-scrim > span:nth-child(1) {
+  --scrim-layer-blur: 4px;
+  --scrim-layer-start: 65%;
+  --scrim-layer-end: 100%;
+}
+.ui-frost-scrim > span:nth-child(2) {
+  --scrim-layer-blur: 12px;
+  --scrim-layer-start: 30%;
+  --scrim-layer-end: 85%;
+}
+.ui-frost-scrim > span:nth-child(3) {
+  --scrim-layer-blur: 24px;
+  --scrim-layer-start: 0%;
+  --scrim-layer-end: 65%;
+}
+/*
+  Flat mode: same progressive mask stack as the blur scrims, but each layer is
+  a soft opaque wash instead of backdrop-filter. Shell CSS still aims top/bottom
+  and side fades through the existing mask-image rules.
+*/
+@media (prefers-reduced-transparency: reduce) {
+  .ui-frost-scrim > span {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+  .ui-frost-scrim > span:nth-child(1) {
+    background-color: color-mix(in srgb, var(--flat-scrim-tint, var(--surface-app)) 58%, transparent);
+  }
+  .ui-frost-scrim > span:nth-child(2) {
+    background-color: color-mix(in srgb, var(--flat-scrim-tint, var(--surface-app)) 36%, transparent);
+  }
+  .ui-frost-scrim > span:nth-child(3) {
+    background-color: color-mix(in srgb, var(--flat-scrim-tint, var(--surface-app)) 22%, transparent);
+  }
+}
+:root[data-reduced-transparency='force'] .ui-frost-scrim > span {
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+:root[data-reduced-transparency='force'] .ui-frost-scrim > span:nth-child(1) {
+  background-color: color-mix(in srgb, var(--flat-scrim-tint, var(--surface-app)) 58%, transparent);
+}
+:root[data-reduced-transparency='force'] .ui-frost-scrim > span:nth-child(2) {
+  background-color: color-mix(in srgb, var(--flat-scrim-tint, var(--surface-app)) 36%, transparent);
+}
+:root[data-reduced-transparency='force'] .ui-frost-scrim > span:nth-child(3) {
+  background-color: color-mix(in srgb, var(--flat-scrim-tint, var(--surface-app)) 22%, transparent);
+}
+:root[data-theme='dark'] {
+  --frost-tint: color-mix(in srgb, var(--slate-9) 70%, var(--violet-11));
+  --frost-fill: color-mix(in srgb, var(--frost-tint) 28%, transparent);
+  --frost-fill-strong: color-mix(in srgb, var(--slate-6) 40%, transparent);
+  --frost-selection: color-mix(in srgb, var(--frost-tint) 40%, transparent);
+  --frost-fallback: color-mix(in srgb, var(--slate-2) 80%, transparent);
+}
+.ui-frost--strong {
+  --frost-material-fill: var(--frost-fill-strong);
+}
+.ui-frost,
+.ui-frost-group > .lg-toolbar-cluster {
+  background-color: var(--frost-material-fill, var(--frost-fill));
+  -webkit-backdrop-filter: blur(var(--frost-blur)) saturate(var(--frost-saturation));
+  backdrop-filter: blur(var(--frost-blur)) saturate(var(--frost-saturation));
+}
+/* Inner controls share their parent's material rather than frosting it again. */
+.ui-frost .lg-surface,
+.ui-frost-group > .lg-toolbar-cluster .lg-surface {
+  background-color: transparent;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+.ui-frost > .ui-frost-selection,
+.ui-frost-group > .lg-toolbar-cluster .ui-frost-selection {
+  background-color: var(--frost-selection);
+}
+
+/* Soft scrim behind HeroUI modals: blur the workspace instead of a flat black plate. */
+.modal__backdrop {
+  background: color-mix(in srgb, var(--slate-12) 22%, transparent) !important;
+  -webkit-backdrop-filter: blur(14px) saturate(140%) !important;
+  backdrop-filter: blur(14px) saturate(140%) !important;
+}
+
+.modal__backdrop.modal__backdrop--opaque {
+  background: color-mix(in srgb, var(--slate-12) 28%, transparent) !important;
+}
+
+/* Generic portaled popovers and modal dialogs keep a readable frost fill.
+   Dropdown shells and floating-choice menu popovers stay clear; the menu/list
+   paints the opaque raised surface. */
+:is(
+  .popover:not(
+    .message-action-dialog,
+    .chat-view-popover,
+    .explorer-menu-popover,
+    .command-permission-popover,
+    .compose-reasoning-popover,
+    .dropdown__popover
+  ),
+  .modal__dialog,
+  .glass-fallback
+):not(.dropdown__popover) {
+  background-color: var(--frost-material-fill, var(--frost-fill-strong, var(--frost-fill))) !important;
+  -webkit-backdrop-filter: blur(var(--frost-blur)) saturate(var(--frost-saturation)) !important;
+  backdrop-filter: blur(var(--frost-blur)) saturate(var(--frost-saturation)) !important;
+  filter: none !important;
+  border: 0 !important;
+  box-shadow: var(--shadow-pop), inset 0 0 0 1px var(--line-strong) !important;
+}
+
+.modal__dialog {
+  --frost-material-fill: color-mix(in srgb, var(--surface-raised) 66%, transparent);
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  :is(
+    .popover:not(
+      .message-action-dialog,
+      .chat-view-popover,
+      .explorer-menu-popover,
+      .command-permission-popover,
+      .compose-reasoning-popover,
+      .dropdown__popover
+    ),
+    .modal__dialog,
+    .glass-fallback
+  ):not(.dropdown__popover) {
+    background-color: var(--frost-fallback) !important;
+  }
+
+  .modal__backdrop,
+  .modal__backdrop.modal__backdrop--opaque {
+    background: color-mix(in srgb, var(--slate-12) 45%, transparent) !important;
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  :is(
+    .popover:not(
+      .message-action-dialog,
+      .chat-view-popover,
+      .explorer-menu-popover,
+      .command-permission-popover,
+      .compose-reasoning-popover,
+      .dropdown__popover
+    ),
+    .modal__dialog,
+    .glass-fallback
+  ):not(.dropdown__popover) {
+    background-color: var(--surface-raised) !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+
+  .modal__backdrop,
+  .modal__backdrop.modal__backdrop--opaque {
+    background: color-mix(in srgb, var(--slate-12) 45%, transparent) !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+}
+:root[data-reduced-transparency='force'] :is(
+  .popover:not(
+    .message-action-dialog,
+    .chat-view-popover,
+    .explorer-menu-popover,
+    .command-permission-popover,
+    .compose-reasoning-popover,
+    .dropdown__popover
+  ),
+  .modal__dialog,
+  .glass-fallback
+):not(.dropdown__popover) {
+  background-color: var(--surface-raised) !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+:root[data-reduced-transparency='force'] .modal__backdrop,
+:root[data-reduced-transparency='force'] .modal__backdrop.modal__backdrop--opaque {
+  background: color-mix(in srgb, var(--slate-12) 45%, transparent) !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .ui-frost,
+  .ui-frost-group > .lg-toolbar-cluster {
+    background-color: var(--frost-fallback);
+  }
+}
+@media (prefers-reduced-transparency: reduce) {
+  .ui-frost,
+  .ui-frost-group > .lg-toolbar-cluster {
+    background-color: var(--surface-raised);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+:root[data-reduced-transparency='force'] .ui-frost,
+:root[data-reduced-transparency='force'] .ui-frost-group > .lg-toolbar-cluster {
+  background-color: var(--surface-raised);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+/* Flat mode: keep Glass shapes, stop optical glass paint on every surface. */
+:root[data-reduced-transparency='force'] .lg-glass-layer {
+  display: none !important;
+}
+:root[data-reduced-transparency='force'] .lg-surface,
+:root[data-reduced-transparency='force'] .lg-toolbar-cluster {
+  background-color: var(--surface-raised) !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  filter: none !important;
+}
+/* SDK writes filter:url(#lg-...) on content hosts and warm helper divs. */
+:root[data-reduced-transparency='force'] .lg-content,
+:root[data-reduced-transparency='force'] [data-glass-blur-host],
+:root[data-reduced-transparency='force'] [data-glass-blur-host][data-glass-blur-active],
+:root[data-reduced-transparency='force'] .lg-scene div[style*='filter'] {
+  filter: none !important;
+}
+:root[data-reduced-transparency='force'] .lg-surface[data-glass-interactive]::before,
+:root[data-reduced-transparency='force'] .lg-surface[data-glass-interactive]::after {
+  display: none !important;
+}

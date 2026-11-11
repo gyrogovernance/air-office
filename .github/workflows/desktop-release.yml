@@ -1,0 +1,53 @@
+# Manual desktop release matrix. Builds only the platforms you select.
+#
+# Unsigned interim policy:
+# - Windows: NSIS (.exe) only
+# - macOS: DMG + zip (plus Install.command helper)
+# - MSI, pkg, store packages, and signed public Releases stay out until
+#   Authenticode / Apple Developer ID + notarization exist
+#
+# Artifacts upload to Actions (14-day retention). This workflow does not create
+# a public GitHub Release.
+name: Desktop release
+
+on:
+  workflow_dispatch:
+    inputs:
+      windows_x64:
+        description: Build Windows x64 NSIS (unsigned)
+        type: boolean
+        default: true
+      macos_intel:
+        description: Build macOS Intel DMG/zip (unsigned)
+        type: boolean
+        default: true
+      macos_arm:
+        description: Build macOS Apple Silicon DMG/zip (unsigned)
+        type: boolean
+        default: true
+
+concurrency:
+  group: desktop-release-${{ github.ref }}-${{ github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  windows-x64:
+    name: Windows x64
+    if: ${{ inputs.windows_x64 }}
+    uses: ./.github/workflows/build-windows-x64.yml
+    permissions:
+      contents: read
+
+  macos-intel:
+    name: macOS Intel
+    if: ${{ inputs.macos_intel }}
+    uses: ./.github/workflows/build-macos-intel.yml
+    permissions:
+      contents: read
+
+  macos-arm:
+    name: macOS Apple Silicon
+    if: ${{ inputs.macos_arm }}
+    uses: ./.github/workflows/build-macos-arm.yml
+    permissions:
+      contents: read

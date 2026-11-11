@@ -1,0 +1,23 @@
+cff-version: 1.2.0
+title: AIR Office
+message: If you use AIR Office in your research, please cite it.
+type: software
+authors:
+  - family-names: Korompilias
+    given-names: Basil
+  - name: Gyro Governance Lab
+repository-code: https://github.com/gyrogovernance/air-office
+url: http://gyrogovernance.com/
+abstract: >-
+  An AI-native workspace for agentic research, policy analysis, and knowledge
+  management, focused on mitigating risks from transformative AI and advancing
+  existential risk preparedness.
+keywords:
+  - AI governance
+  - transformative AI
+  - existential risk
+  - research workspace
+  - local-first
+license: MIT
+version: 0.1.0
+date-released: "2026-11-03"

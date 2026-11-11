@@ -1,0 +1,771 @@
+{
+  "version": "v1",
+  "collections": [
+    {
+      "id": "inspect-evaluation",
+      "name": "Evaluation with Inspect",
+      "description": "Practical guides from the UK AI Security Institute for building and analysing evaluations.",
+      "install_by_default": false,
+      "files": [
+        {
+          "filename": "inspect-datasets.md",
+          "title": "Evaluation datasets",
+          "description": "Prepare samples, targets, metadata and dataset splits.",
+          "source_url": "https://inspect.aisi.org.uk/datasets.html.md",
+          "publisher": "UK AI Security Institute",
+          "edition": "Documentation snapshot, 2026-10-24",
+          "retrieved_at": "2026-10-24",
+          "rights": "MIT License. Copyright (c) 2024 UK AI Security Institute. Full license included in each document.",
+          "rights_url": "https://github.com/UKGovernmentBEIS/inspect_ai/blob/72e7dce8026725ce5cc5b76cbef051568e0f1a9f/LICENSE",
+          "sha256": "fc3694c5493704319a4b51158026fc372868ba963adee28733ebf16746d02856"
+        },
+        {
+          "filename": "inspect-solvers.md",
+          "title": "Solvers and elicitation",
+          "description": "Build prompting and multi-step model interaction strategies.",
+          "source_url": "https://inspect.aisi.org.uk/solvers.html.md",
+          "publisher": "UK AI Security Institute",
+          "edition": "Documentation snapshot, 2026-10-24",
+          "retrieved_at": "2026-10-24",
+          "rights": "MIT License. Copyright (c) 2024 UK AI Security Institute. Full license included in each document.",
+          "rights_url": "https://github.com/UKGovernmentBEIS/inspect_ai/blob/72e7dce8026725ce5cc5b76cbef051568e0f1a9f/LICENSE",
+          "sha256": "bd923dc1d6b9f53c9a92aff12c17f7240552b02d9af7243443c56f55d6abf9eb"
+        },
+        {
+          "filename": "inspect-metrics.md",
+          "title": "Scoring metrics",
+          "description": "Aggregate scores, quantify uncertainty and handle grouped samples.",
+          "source_url": "https://inspect.aisi.org.uk/metrics.html.md",
+          "publisher": "UK AI Security Institute",
+          "edition": "Documentation snapshot, 2026-10-24",
+          "retrieved_at": "2026-10-24",
+          "rights": "MIT License. Copyright (c) 2024 UK AI Security Institute. Full license included in each document.",
+          "rights_url": "https://github.com/UKGovernmentBEIS/inspect_ai/blob/72e7dce8026725ce5cc5b76cbef051568e0f1a9f/LICENSE",
+          "sha256": "abf23a40dccf6ecc721c40041d38bae20f74b53db84775cae07d2d71b7af5e55"
+        },
+        {
+          "filename": "inspect-eval-logs.md",
+          "title": "Evaluation logs",
+          "description": "Inspect transcripts, diagnose failures and analyse evaluation results.",
+          "source_url": "https://inspect.aisi.org.uk/eval-logs.html.md",
+          "publisher": "UK AI Security Institute",
+          "edition": "Documentation snapshot, 2026-10-24",
+          "retrieved_at": "2026-10-24",
+          "rights": "MIT License. Copyright (c) 2024 UK AI Security Institute. Full license included in each document.",
+          "rights_url": "https://github.com/UKGovernmentBEIS/inspect_ai/blob/72e7dce8026725ce5cc5b76cbef051568e0f1a9f/LICENSE",
+          "sha256": "545fbfa08a983779bbdb3fffd7d204a0a6bfac1e504b4e0eb4e5479e9ecb3aa4"
+        },
+        {
+          "filename": "research-inspect-sandboxing.md",
+          "title": "Sandboxing evaluations",
+          "description": "Isolate tool, agent and scorer execution; configure environments and understand their limits.",
+          "source_url": "https://inspect.aisi.org.uk/sandboxing.html.md",
+          "publisher": "UK AI Security Institute",
+          "edition": "Inspect documentation snapshot, 2026-10-24",
+          "retrieved_at": "2026-10-24",
+          "rights": "MIT License. Full license included in this document.",
+          "rights_url": "https://github.com/UKGovernmentBEIS/inspect_ai/blob/72e7dce8026725ce5cc5b76cbef051568e0f1a9f/LICENSE",
+          "sha256": "a1b0ea0686ebc73f86ae36f52f93b6317101449c49da842aa49de73c1f7e12d3"
+        }
+      ],
+      "category": "Evaluation"
+    },
+    {
+      "id": "ai-security-engineering",
+      "name": "AI security engineering",
+      "description": "Threat models, adversarial attacks and secure model development.",
+      "install_by_default": false,
+      "files": [
+        {
+          "filename": "nist-adversarial-ml-2025.pdf",
+          "title": "Adversarial machine learning",
+          "description": "Attack taxonomy and mitigations for poisoning, evasion, privacy and misuse.",
+          "source_url": "https://doi.org/10.6028/NIST.AI.100-2e2025",
+          "publisher": "NIST",
+          "edition": "NIST AI 100-2e2025, March 2025; corrected April 2025",
+          "retrieved_at": "2026-10-24",
+          "rights": "Republished courtesy of the National Institute of Standards and Technology. NIST Technical Series reuse terms; source PDF unchanged.",
+          "rights_url": "https://www.nist.gov/open/copyright-fair-use-and-licensing-statements-srd-data-software-and-technical-series-publications",
+          "sha256": "4811fb6ad73f9c9121843ab77e029b5adc6f2c86d33c2fc5b2099ef133847646"
+        },
+        {
+          "filename": "nist-secure-ai-development.pdf",
+          "title": "Secure AI development",
+          "description": "Secure development practices for generative AI and foundation models; use with SSDF 1.1.",
+          "source_url": "https://doi.org/10.6028/NIST.SP.800-218A",
+          "publisher": "NIST",
+          "edition": "NIST SP 800-218A, July 2024",
+          "retrieved_at": "2026-10-24",
+          "rights": "Republished courtesy of the National Institute of Standards and Technology. NIST Technical Series reuse terms; source PDF unchanged.",
+          "rights_url": "https://www.nist.gov/open/copyright-fair-use-and-licensing-statements-srd-data-software-and-technical-series-publications",
+          "sha256": "e088c8bc75716824dae7c36a987f408364638561d381ed001b5c12254a7b10d8"
+        }
+      ],
+      "category": "AI security"
+    },
+    {
+      "id": "eu-ai-act",
+      "name": "EU AI Act",
+      "description": "Regulation (EU) 2024/1689: original Official Journal text published 12 July 2024, including recitals, articles, and annexes. This dated source is not a consolidated legal update service. Source snapshot retrieved 2026-10-09. Source links, editions, and reuse notices are recorded in document metadata.",
+      "files": [
+        {
+          "filename": "eu-ai-act-2024-1689.pdf",
+          "source_url": "https://eur-lex.europa.eu/eli/reg/2024/1689/oj/eng",
+          "publisher": "European Union",
+          "edition": "Original Official Journal text, 2024-07-12",
+          "retrieved_at": "2026-10-09",
+          "rights": "Reuse with source acknowledgement; see EUR-Lex copyright notice.",
+          "rights_url": "https://eur-lex.europa.eu/content/legal-notice/legal-notice.html",
+          "sha256": "bba630444b3278e881066774002a1d7824308934f49ccfa203e65be43692f55e",
+          "title": "EU AI Act",
+          "description": "Original 2024 regulation: obligations, risk categories and annexes."
+        }
+      ],
+      "category": "AI governance"
+    },
+    {
+      "id": "nist-ai-rmf",
+      "name": "NIST AI Risk Management Framework",
+      "description": "AI RMF 1.0, NIST AI 100-1 (January 2023). Voluntary risk management guidance organized around GOVERN, MAP, MEASURE, and MANAGE. Version 1.0 snapshot. Source snapshot retrieved 2026-10-09. Source links, editions, and reuse notices are recorded in document metadata.",
+      "files": [
+        {
+          "filename": "nist-ai-rmf-1.0.pdf",
+          "source_url": "https://doi.org/10.6028/NIST.AI.100-1",
+          "publisher": "NIST",
+          "edition": "AI RMF 1.0, January 2023",
+          "retrieved_at": "2026-10-09",
+          "rights": "NIST Technical Series reuse terms; attribution retained.",
+          "rights_url": "https://www.nist.gov/open/copyright-fair-use-and-licensing-statements-srd-data-software-and-technical-series-publications",
+          "sha256": "7576edb531d9848825814ee88e28b1795d3a84b435b4b797d3670eafdc4a89f1",
+          "title": "AI Risk Management Framework 1.0",
+          "description": "Organise AI risk work around Govern, Map, Measure and Manage."
+        }
+      ],
+      "category": "AI governance"
+    },
+    {
+      "id": "nist-genai",
+      "name": "NIST Generative AI Profile",
+      "description": "NIST AI 600-1 (July 2024), the Generative Artificial Intelligence Profile accompanying AI RMF 1.0. Generative AI risks and suggested actions. Source snapshot retrieved 2026-10-09. Source links, editions, and reuse notices are recorded in document metadata.",
+      "files": [
+        {
+          "filename": "nist-genai-profile.pdf",
+          "source_url": "https://doi.org/10.6028/NIST.AI.600-1",
+          "publisher": "NIST",
+          "edition": "NIST AI 600-1, July 2024",
+          "retrieved_at": "2026-10-09",
+          "rights": "NIST Technical Series reuse terms; attribution retained.",
+          "rights_url": "https://www.nist.gov/open/copyright-fair-use-and-licensing-statements-srd-data-software-and-technical-series-publications",
+          "sha256": "6e73620ab6b64e90ef2c04bf0e0d6246185a2f4b1b13cab0df494496cff89b6a",
+          "title": "Generative AI Profile",
+          "description": "Generative AI risks and suggested actions that extend the AI RMF."
+        }
+      ],
+      "category": "AI governance"
+    },
+    {
+      "id": "oecd-ai",
+      "name": "OECD AI Principles",
+      "description": "Recommendation of the Council on Artificial Intelligence, OECD/LEGAL/0449, adopted 2019 and amended 2024. Official English PDF snapshot retrieved 9 October 2026. Source snapshot retrieved 2026-10-09. Source links, editions, and reuse notices are recorded in document metadata.",
+      "files": [
+        {
+          "filename": "oecd-ai-recommendation.pdf",
+          "source_url": "https://legalinstruments.oecd.org/en/instruments/OECD-LEGAL-0449",
+          "publisher": "OECD",
+          "edition": "OECD/LEGAL/0449; retrieved 2026-10-09",
+          "retrieved_at": "2026-10-09",
+          "rights": "OECD Legal Instruments terms: distributed unchanged and free of charge; may be used in commercial activities; the instrument itself may not be sold.",
+          "rights_url": "https://www.oecd.org/en/about/terms-conditions.html",
+          "sha256": "88227000e69be9aad5864155bd3e06ebead1e76c5b7cf662d63c1605408e5060",
+          "title": "OECD AI Principles",
+          "description": "Principles for trustworthy AI and recommendations for public policy."
+        }
+      ],
+      "category": "AI governance"
+    },
+    {
+      "id": "human-mark",
+      "name": "The Human Mark",
+      "description": "Framework, Grammar, specifications, and terms for governance analysis. Basil Korompilias / Gyro Governance. Canonical source snapshot, 9 October 2026. CC BY-SA 4.0. Source snapshot retrieved 2026-10-09. Source links, editions, and reuse notices are recorded in document metadata.",
+      "files": [
+        {
+          "filename": "THM.md",
+          "source_url": "https://github.com/gyrogovernance/tools/blob/main/docs/the_human_mark/THM.md",
+          "publisher": "Basil Korompilias / Gyro Governance",
+          "edition": "Canonical source snapshot, 2026-10-09",
+          "retrieved_at": "2026-10-09",
+          "rights": "Creative Commons Attribution-ShareAlike 4.0. Source documents reproduced unchanged.",
+          "rights_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "sha256": "a9b79cd1034c14841b8d55fa95e16417b96613eb10c636aba3033eb95f018f78",
+          "title": "The Human Mark",
+          "description": "The framework for governance analysis."
+        },
+        {
+          "filename": "THM_Grammar.md",
+          "source_url": "https://github.com/gyrogovernance/tools/blob/main/docs/the_human_mark/THM_Grammar.md",
+          "publisher": "Basil Korompilias / Gyro Governance",
+          "edition": "Canonical source snapshot, 2026-10-09",
+          "retrieved_at": "2026-10-09",
+          "rights": "Creative Commons Attribution-ShareAlike 4.0. Source documents reproduced unchanged.",
+          "rights_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "sha256": "6e3ba4821debf6bc29d8b3387cc294731aff0d3d8f72d65c515ac2f4736e4e46",
+          "title": "Human Mark grammar",
+          "description": "The formal grammar used in Human Mark analysis."
+        },
+        {
+          "filename": "THM_Specs.md",
+          "source_url": "https://github.com/gyrogovernance/tools/blob/main/docs/the_human_mark/THM_Specs.md",
+          "publisher": "Basil Korompilias / Gyro Governance",
+          "edition": "Canonical source snapshot, 2026-10-09",
+          "retrieved_at": "2026-10-09",
+          "rights": "Creative Commons Attribution-ShareAlike 4.0. Source documents reproduced unchanged.",
+          "rights_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "sha256": "9d414fb68a069892ff84d3456f5a1040e506874fa562f5bece53222e2014ac4b",
+          "title": "Human Mark specifications",
+          "description": "Technical specifications of the Human Mark framework."
+        },
+        {
+          "filename": "THM_Terms.md",
+          "source_url": "https://github.com/gyrogovernance/tools/blob/main/docs/the_human_mark/THM_Terms.md",
+          "publisher": "Basil Korompilias / Gyro Governance",
+          "edition": "Canonical source snapshot, 2026-10-09",
+          "retrieved_at": "2026-10-09",
+          "rights": "Creative Commons Attribution-ShareAlike 4.0. Source documents reproduced unchanged.",
+          "rights_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "sha256": "fe1ac5da2aa797c18dd3112cbb64a1c3817f4c8ede517cd32a2c45da33af3a6c",
+          "title": "Human Mark terms",
+          "description": "Canonical terminology and definitions."
+        }
+      ],
+      "category": "AI governance"
+    },
+    {
+      "id": "mechanistic-interpretability",
+      "name": "Mechanistic interpretability",
+      "category": "Mechanistic interpretability",
+      "description": "Practical methods for investigating the internals of language models.",
+      "install_by_default": false,
+      "files": [
+        {
+          "filename": "research-mechanistic-interpretability.md",
+          "title": "Getting started with mechanistic interpretability",
+          "description": "A practical introduction to investigating model components, circuits and features.",
+          "source_url": "https://github.com/TransformerLensOrg/TransformerLens/blob/bd92bc444384a3df5d8881386bacc6030b0656b6/docs/source/content/getting_started_mech_interp.md",
+          "publisher": "TransformerLensOrg",
+          "edition": "TransformerLens documentation snapshot, 2026-10-24",
+          "retrieved_at": "2026-10-24",
+          "rights": "MIT License. Full license included in this document.",
+          "rights_url": "https://github.com/TransformerLensOrg/TransformerLens/blob/bd92bc444384a3df5d8881386bacc6030b0656b6/LICENSE",
+          "sha256": "fec1861d3f8c18e27df76690e3d265db4080e908e1503c9fb94976af45d5befd"
+        }
+      ]
+    },
+    {
+      "id": "ngo-playbook-guides",
+      "name": "NGO Playbook guides",
+      "description": "Evidence and exclusion notes shipped with the NGO Agent Skills library.",
+      "category": "Development evaluation",
+      "install_by_default": false,
+      "files": [
+        {
+          "filename": "ngo-playbook-guides/EVIDENCE.md",
+          "title": "Evidence tiers",
+          "description": "How NGO Agent Skills rates evidence strength and sources.",
+          "source_url": "https://github.com/LijieZhou/ngo-agent-skills/tree/fc7864e3f9d468bd16ad9b8cbbd42f2777e0aab8/docs/EVIDENCE.md",
+          "publisher": "NGO Agent Skills",
+          "edition": "commit fc7864e",
+          "retrieved_at": "2026-11-09",
+          "rights": "Creative Commons Attribution-ShareAlike 4.0 International.",
+          "rights_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "sha256": "39672935b83c6fadd1ac88bd1d0d1b722ccb04fa3226eeddd654b2efcdc94836"
+        },
+        {
+          "filename": "ngo-playbook-guides/EXCLUSIONS.md",
+          "title": "Exclusions",
+          "description": "Frameworks deliberately left out of NGO Agent Skills and why.",
+          "source_url": "https://github.com/LijieZhou/ngo-agent-skills/tree/fc7864e3f9d468bd16ad9b8cbbd42f2777e0aab8/docs/EXCLUSIONS.md",
+          "publisher": "NGO Agent Skills",
+          "edition": "commit fc7864e",
+          "retrieved_at": "2026-11-09",
+          "rights": "Creative Commons Attribution-ShareAlike 4.0 International.",
+          "rights_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "sha256": "1bebf2968288776e66b9d7731e760e6164c9d1b3786f9c4b076442281ed30eea"
+        }
+      ]
+    },
+    {
+      "id": "ngo-sdg-national-context",
+      "name": "NGO SDG national context",
+      "description": "Optional national SDG indicator overlays used by the SDG alignment skill.",
+      "category": "Development evaluation",
+      "install_by_default": false,
+      "files": [
+        {
+          "filename": "ngo-sdg-national-context/malaysia.md",
+          "title": "Malaysia MySDG notes",
+          "description": "National-context seed reference for Malaysia SDG indicator status.",
+          "source_url": "https://github.com/LijieZhou/ngo-agent-skills/tree/fc7864e3f9d468bd16ad9b8cbbd42f2777e0aab8/skills/sdg-alignment-mapper/references/malaysia.md",
+          "publisher": "NGO Agent Skills",
+          "edition": "commit fc7864e",
+          "retrieved_at": "2026-11-09",
+          "rights": "Creative Commons Attribution-ShareAlike 4.0 International.",
+          "rights_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "sha256": "22e6fd0e49faaaf9de6936bf791cc2f12f3dab2463511eb5f03cc7fc07ad35ed"
+        }
+      ]
+    },
+    {
+      "id": "un-sdg-indicator-framework",
+      "name": "UN SDG goals",
+      "description": "Companion index to the 17 Sustainable Development Goals and official UN sources.",
+      "category": "Development evaluation",
+      "install_by_default": false,
+      "files": [
+        {
+          "filename": "un-sdg-indicator-framework/un-sdg-goals-index.md",
+          "sha256": "0e2dc79c331534f514f543e30d0ef61f48f39d8fdb1050fb11bf5629537e9fbd",
+          "title": "UN SDG goals index",
+          "description": "The 17 SDG titles with links to official UN sources for NGO and development alignment work.",
+          "source_url": "https://sdgs.un.org/goals",
+          "publisher": "AIR Office companion index (UN SDG titles)",
+          "edition": "Companion index, 2026-11-09",
+          "retrieved_at": "2026-11-09",
+          "rights": "Goal titles follow the UN 2030 Agenda. This index is an AIR Office companion document for attribution and navigation.",
+          "rights_url": "https://www.un.org/en/about-us/copyright"
+        }
+      ]
+    },
+    {
+      "id": "oecd-dac-evaluation",
+      "name": "OECD-DAC evaluation",
+      "description": "Companion index to the six OECD-DAC evaluation criteria for program self-screens.",
+      "category": "Development evaluation",
+      "install_by_default": false,
+      "files": [
+        {
+          "filename": "oecd-dac-evaluation/oecd-dac-criteria-index.md",
+          "sha256": "12ca8c3bbd1df86646b1e4b4a710d389c9467d4c1d4707f5a8a9e44851708789",
+          "title": "OECD-DAC criteria index",
+          "description": "Companion index to the six OECD-DAC evaluation criteria for program self-screens.",
+          "source_url": "https://www.oecd.org/dac/evaluation/revised-evaluation-criteria-dec-2019.pdf",
+          "publisher": "AIR Office companion index (OECD-DAC criteria)",
+          "edition": "Companion index, 2026-11-09",
+          "retrieved_at": "2026-11-09",
+          "rights": "Companion index citing OECD DAC evaluation criteria. OECD publications remain under OECD terms.",
+          "rights_url": "https://www.oecd.org/en/about/terms-conditions.html"
+        }
+      ]
+    },
+    {
+      "id": "undp-dpi-approach",
+      "name": "UNDP DPI approach",
+      "description": "Companion index to UNDP digital public infrastructure guidance for inclusive program design.",
+      "category": "Development evaluation",
+      "install_by_default": false,
+      "files": [
+        {
+          "filename": "undp-dpi-approach/undp-dpi-index.md",
+          "sha256": "098f64fe43320963ea0ded3827845e17c7e6eb32dc85e5a92768b8d55949c336",
+          "title": "UNDP DPI approach index",
+          "description": "Companion index pointing to UNDP digital public infrastructure guidance for inclusive program design.",
+          "source_url": "https://www.undp.org/",
+          "publisher": "AIR Office companion index (UNDP DPI)",
+          "edition": "Companion index, 2026-11-09",
+          "retrieved_at": "2026-11-09",
+          "rights": "Companion index with links to UNDP materials. UNDP publications remain under their respective terms.",
+          "rights_url": "https://www.undp.org/copyright-terms-use"
+        }
+      ]
+    },
+    {
+      "id": "owasp-aisvs",
+      "name": "OWASP AISVS",
+      "description": "AI Application Security Verification Standard extracts from the OWASP Secure Agent Playbook.",
+      "category": "AI security",
+      "install_by_default": false,
+      "files": [
+        {
+          "filename": "owasp-aisvs/AISVS.md",
+          "title": "AISVS reference",
+          "description": "AI Application Security Verification Standard extracts from the OWASP Secure Agent Playbook.",
+          "source_url": "https://github.com/OWASP/secure-agent-playbook/tree/65d4efd2cd0b081d52101e9708792b944e4ddebb/data/aisvs",
+          "publisher": "OWASP",
+          "edition": "AISVS",
+          "retrieved_at": "2026-11-09",
+          "rights": "Creative Commons Attribution-ShareAlike 4.0.",
+          "rights_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "sha256": "2026457ab5c53faa3206527510df05c34748387afd52b82bdee0a75eb74369d6"
+        }
+      ]
+    },
+    {
+      "id": "owasp-llm-top10",
+      "name": "OWASP LLM Top 10",
+      "description": "LLM Top 10 for LLM Applications extracts from the OWASP Secure Agent Playbook.",
+      "category": "AI security",
+      "install_by_default": false,
+      "files": [
+        {
+          "filename": "owasp-llm-top10/LLM-Top-10.md",
+          "title": "LLM Top 10 reference",
+          "description": "LLM Top 10 for LLM Applications extracts from the OWASP Secure Agent Playbook.",
+          "source_url": "https://github.com/OWASP/secure-agent-playbook/tree/65d4efd2cd0b081d52101e9708792b944e4ddebb/data/llm-top10",
+          "publisher": "OWASP",
+          "edition": "LLM Top 10",
+          "retrieved_at": "2026-11-09",
+          "rights": "Creative Commons Attribution-ShareAlike 4.0.",
+          "rights_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "sha256": "9511960dc874e337ef57098a99524ee74ca50cea09df58ad05e4708bf1fbfc51"
+        }
+      ]
+    },
+    {
+      "id": "owasp-opencre",
+      "name": "OWASP OpenCRE",
+      "description": "OpenCRE cross-reference extracts bundled with the OWASP Secure Agent Playbook.",
+      "category": "AI security",
+      "install_by_default": false,
+      "files": [
+        {
+          "filename": "owasp-opencre/OpenCRE.md",
+          "title": "OpenCRE reference",
+          "description": "OpenCRE cross-reference extracts bundled with the OWASP Secure Agent Playbook.",
+          "source_url": "https://github.com/OWASP/secure-agent-playbook/tree/65d4efd2cd0b081d52101e9708792b944e4ddebb/data/opencre",
+          "publisher": "OWASP",
+          "edition": "OpenCRE",
+          "retrieved_at": "2026-11-09",
+          "rights": "Apache License 2.0.",
+          "rights_url": "https://www.apache.org/licenses/LICENSE-2.0",
+          "sha256": "02406176d7d383578dab450ec42647e592c0734ac767fa68cb54cd71e019c8a1"
+        }
+      ]
+    },
+    {
+      "id": "owasp-asvs",
+      "name": "OWASP ASVS",
+      "description": "Application Security Verification Standard extracts from the OWASP Secure Agent Playbook code plugin.",
+      "category": "Code security",
+      "install_by_default": false,
+      "files": [
+        {
+          "filename": "owasp-asvs/ASVS.md",
+          "title": "ASVS reference",
+          "description": "Application Security Verification Standard extracts from the OWASP Secure Agent Playbook code plugin.",
+          "source_url": "https://github.com/OWASP/secure-agent-playbook/tree/65d4efd2cd0b081d52101e9708792b944e4ddebb/plugins/code-security-skills/data/asvs",
+          "publisher": "OWASP",
+          "edition": "ASVS 5.0",
+          "retrieved_at": "2026-11-09",
+          "rights": "Creative Commons Attribution-ShareAlike 4.0.",
+          "rights_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "sha256": "a91ce502d36bcd662af9062f2feca9a55588ad1403cbfe20a98b735c3bd0fe10"
+        }
+      ]
+    },
+    {
+      "id": "owasp-fiasse",
+      "name": "OWASP FIASSE",
+      "description": "FIASSE securability engineering extracts from the OWASP Secure Agent Playbook.",
+      "category": "Code security",
+      "install_by_default": false,
+      "files": [
+        {
+          "filename": "owasp-fiasse/FIASSE.md",
+          "title": "FIASSE reference",
+          "description": "FIASSE securability engineering extracts from the OWASP Secure Agent Playbook.",
+          "source_url": "https://github.com/OWASP/secure-agent-playbook/tree/65d4efd2cd0b081d52101e9708792b944e4ddebb/plugins/code-security-skills/data/fiasse",
+          "publisher": "OWASP",
+          "edition": "FIASSE",
+          "retrieved_at": "2026-11-09",
+          "rights": "Creative Commons Attribution-ShareAlike 4.0.",
+          "rights_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "sha256": "5e3b4d957f0934593263d0e28c2afd4dba1258ca16180ba3632dadeb48d0d400"
+        }
+      ]
+    },
+    {
+      "id": "owasp-masvs",
+      "name": "OWASP MASVS",
+      "description": "Mobile Application Security Verification Standard extracts from the OWASP Secure Agent Playbook.",
+      "category": "Code security",
+      "install_by_default": false,
+      "files": [
+        {
+          "filename": "owasp-masvs/MASVS.md",
+          "title": "MASVS reference",
+          "description": "Mobile Application Security Verification Standard extracts from the OWASP Secure Agent Playbook.",
+          "source_url": "https://github.com/OWASP/secure-agent-playbook/tree/65d4efd2cd0b081d52101e9708792b944e4ddebb/plugins/code-security-skills/data/masvs",
+          "publisher": "OWASP",
+          "edition": "MASVS",
+          "retrieved_at": "2026-11-09",
+          "rights": "Creative Commons Attribution-ShareAlike 4.0.",
+          "rights_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "sha256": "9183b3fed944769ca25c47e24975648907244539bcfe75cefa97c4eed5b5e26b"
+        }
+      ]
+    },
+    {
+      "id": "owasp-secure-code-prompts",
+      "name": "OWASP SecCodePrompts",
+      "description": "Secure code prompt library (MIT) bundled with the OWASP Secure Agent Playbook.",
+      "category": "Code security",
+      "install_by_default": false,
+      "files": [
+        {
+          "filename": "owasp-secure-code-prompts/SecCodePrompts.md",
+          "title": "Secure code prompts",
+          "description": "Secure code prompt library (MIT) bundled with the OWASP Secure Agent Playbook.",
+          "source_url": "https://github.com/OWASP/secure-agent-playbook/tree/65d4efd2cd0b081d52101e9708792b944e4ddebb/plugins/code-security-skills/data/secure-code-prompts",
+          "publisher": "OWASP",
+          "edition": "SecCodePrompts",
+          "retrieved_at": "2026-11-09",
+          "rights": "MIT License.",
+          "rights_url": "https://opensource.org/licenses/MIT",
+          "sha256": "67967c1f9ee5b99e3c1f16ad41714edb179fa8db9b7d0d31a7c6cd928da88f66"
+        }
+      ]
+    },
+    {
+      "id": "owasp-mastg",
+      "name": "OWASP MASTG",
+      "description": "Mobile Application Security Testing Guide extracts from the OWASP Secure Agent Playbook. Install separately when doing mobile reviews.",
+      "category": "Code security",
+      "install_by_default": false,
+      "files": [
+        {
+          "filename": "owasp-mastg/MASTG.md",
+          "title": "MASTG reference",
+          "description": "Mobile Application Security Testing Guide extracts from the OWASP Secure Agent Playbook. Install separately when doing mobile reviews.",
+          "source_url": "https://github.com/OWASP/secure-agent-playbook/tree/65d4efd2cd0b081d52101e9708792b944e4ddebb/plugins/code-security-skills/data/mastg",
+          "publisher": "OWASP",
+          "edition": "MASTG",
+          "retrieved_at": "2026-11-09",
+          "rights": "Creative Commons Attribution-ShareAlike 4.0.",
+          "rights_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "sha256": "d931a1338ae5c8c64facd4b110d75eb69ffdec0dd7653aac32eaba45f06e1947"
+        }
+      ]
+    },
+    {
+      "id": "owasp-agent-security-plays",
+      "name": "OWASP agent security plays",
+      "description": "Full AI and agent security plays from the OWASP Secure Agent Playbook.",
+      "category": "AI security",
+      "install_by_default": false,
+      "files": [
+        {
+          "filename": "owasp-agent-security-plays/agent-security-audit.md",
+          "title": "Play: Agent Security Audit",
+          "description": "OWASP agent security plays: Agent Security Audit",
+          "source_url": "https://github.com/OWASP/secure-agent-playbook/tree/65d4efd2cd0b081d52101e9708792b944e4ddebb/plugins/ai-security-skills/plays/agent-security-audit.md",
+          "publisher": "OWASP",
+          "edition": "Secure Agent Playbook",
+          "retrieved_at": "2026-11-09",
+          "rights": "Creative Commons Attribution 4.0 International.",
+          "rights_url": "https://creativecommons.org/licenses/by/4.0/",
+          "sha256": "6d799f438da5a70d9c14bcb23c4740ddc6b1dfd885a9b2c3acf9bb2f0f557d58"
+        },
+        {
+          "filename": "owasp-agent-security-plays/agentic-ai-risk-assess.md",
+          "title": "Play: Agentic AI Risk Assessment",
+          "description": "OWASP agent security plays: Agentic Ai Risk Assess",
+          "source_url": "https://github.com/OWASP/secure-agent-playbook/tree/65d4efd2cd0b081d52101e9708792b944e4ddebb/plugins/ai-security-skills/plays/agentic-ai-risk-assess.md",
+          "publisher": "OWASP",
+          "edition": "Secure Agent Playbook",
+          "retrieved_at": "2026-11-09",
+          "rights": "Creative Commons Attribution 4.0 International.",
+          "rights_url": "https://creativecommons.org/licenses/by/4.0/",
+          "sha256": "ae9d05e9e3ea2aad5dea25eaa5ffc769c01b8628444b6533f1f34b199e8f9914"
+        },
+        {
+          "filename": "owasp-agent-security-plays/ai-security-verification.md",
+          "title": "Play: AI Security Verification Standard (AISVS)",
+          "description": "OWASP agent security plays: Ai Security Verification",
+          "source_url": "https://github.com/OWASP/secure-agent-playbook/tree/65d4efd2cd0b081d52101e9708792b944e4ddebb/plugins/ai-security-skills/plays/ai-security-verification.md",
+          "publisher": "OWASP",
+          "edition": "Secure Agent Playbook",
+          "retrieved_at": "2026-11-09",
+          "rights": "Creative Commons Attribution 4.0 International.",
+          "rights_url": "https://creativecommons.org/licenses/by/4.0/",
+          "sha256": "7703d2d7bc4223ed8fc0987321c357af3649a88868d412dff16e56303b5f97ad"
+        },
+        {
+          "filename": "owasp-agent-security-plays/llm-risk-assess.md",
+          "title": "Play: LLM Risk Assessment (2025)",
+          "description": "OWASP agent security plays: Llm Risk Assess",
+          "source_url": "https://github.com/OWASP/secure-agent-playbook/tree/65d4efd2cd0b081d52101e9708792b944e4ddebb/plugins/ai-security-skills/plays/llm-risk-assess.md",
+          "publisher": "OWASP",
+          "edition": "Secure Agent Playbook",
+          "retrieved_at": "2026-11-09",
+          "rights": "Creative Commons Attribution 4.0 International.",
+          "rights_url": "https://creativecommons.org/licenses/by/4.0/",
+          "sha256": "e492ed020edfcbcb879aac41589f3679a4777c48f5b8a5aaa52f47e23518b0fa"
+        },
+        {
+          "filename": "owasp-agent-security-plays/mcp-server-review.md",
+          "title": "Play: MCP Server Security Review",
+          "description": "OWASP agent security plays: Mcp Server Review",
+          "source_url": "https://github.com/OWASP/secure-agent-playbook/tree/65d4efd2cd0b081d52101e9708792b944e4ddebb/plugins/ai-security-skills/plays/mcp-server-review.md",
+          "publisher": "OWASP",
+          "edition": "Secure Agent Playbook",
+          "retrieved_at": "2026-11-09",
+          "rights": "Creative Commons Attribution 4.0 International.",
+          "rights_url": "https://creativecommons.org/licenses/by/4.0/",
+          "sha256": "500c714d1c5ce91725c36e7865d566c55fbe76ed984ecd301dd6232069fae48d"
+        },
+        {
+          "filename": "owasp-agent-security-plays/multi-agentic-threat-model.md",
+          "title": "Play: Multi-Agentic System Threat Modeling",
+          "description": "OWASP agent security plays: Multi Agentic Threat Model",
+          "source_url": "https://github.com/OWASP/secure-agent-playbook/tree/65d4efd2cd0b081d52101e9708792b944e4ddebb/plugins/ai-security-skills/plays/multi-agentic-threat-model.md",
+          "publisher": "OWASP",
+          "edition": "Secure Agent Playbook",
+          "retrieved_at": "2026-11-09",
+          "rights": "Creative Commons Attribution 4.0 International.",
+          "rights_url": "https://creativecommons.org/licenses/by/4.0/",
+          "sha256": "56986af4f1056b19c007de67f74fa55aae77c4243a01ce21ef1c770786f942b8"
+        },
+        {
+          "filename": "owasp-agent-security-plays/prompt-injection-testing.md",
+          "title": "Play: Prompt Injection Testing",
+          "description": "OWASP agent security plays: Prompt Injection Testing",
+          "source_url": "https://github.com/OWASP/secure-agent-playbook/tree/65d4efd2cd0b081d52101e9708792b944e4ddebb/plugins/ai-security-skills/plays/prompt-injection-testing.md",
+          "publisher": "OWASP",
+          "edition": "Secure Agent Playbook",
+          "retrieved_at": "2026-11-09",
+          "rights": "Creative Commons Attribution 4.0 International.",
+          "rights_url": "https://creativecommons.org/licenses/by/4.0/",
+          "sha256": "f9ea1c80c1fcd9d0e4198388d527af3623f0890f8bbefee723d7fd5796ffcd3a"
+        }
+      ]
+    },
+    {
+      "id": "owasp-code-security-plays",
+      "name": "OWASP code security plays",
+      "description": "Full code and infrastructure security plays from the OWASP Secure Agent Playbook.",
+      "category": "Code security",
+      "install_by_default": false,
+      "files": [
+        {
+          "filename": "owasp-code-security-plays/api-security-review.md",
+          "title": "Play: API Security Review",
+          "description": "OWASP code security plays: Api Security Review",
+          "source_url": "https://github.com/OWASP/secure-agent-playbook/tree/65d4efd2cd0b081d52101e9708792b944e4ddebb/plugins/code-security-skills/plays/api-security-review.md",
+          "publisher": "OWASP",
+          "edition": "Secure Agent Playbook",
+          "retrieved_at": "2026-11-09",
+          "rights": "Creative Commons Attribution 4.0 International.",
+          "rights_url": "https://creativecommons.org/licenses/by/4.0/",
+          "sha256": "9d8035bd6238e32265adfc7df92d6976c3eb49f08fd84e4a46912ed06f1616ff"
+        },
+        {
+          "filename": "owasp-code-security-plays/code-review-security.md",
+          "title": "Play: Security Code Review",
+          "description": "OWASP code security plays: Code Review Security",
+          "source_url": "https://github.com/OWASP/secure-agent-playbook/tree/65d4efd2cd0b081d52101e9708792b944e4ddebb/plugins/code-security-skills/plays/code-review-security.md",
+          "publisher": "OWASP",
+          "edition": "Secure Agent Playbook",
+          "retrieved_at": "2026-11-09",
+          "rights": "Creative Commons Attribution 4.0 International.",
+          "rights_url": "https://creativecommons.org/licenses/by/4.0/",
+          "sha256": "afc32c6ced903131d0b63a867a4790ced9192d72c7bfb07533f9840df64d5a9a"
+        },
+        {
+          "filename": "owasp-code-security-plays/iac-security-review.md",
+          "title": "IaC Security Review",
+          "description": "OWASP code security plays: Iac Security Review",
+          "source_url": "https://github.com/OWASP/secure-agent-playbook/tree/65d4efd2cd0b081d52101e9708792b944e4ddebb/plugins/code-security-skills/plays/iac-security-review.md",
+          "publisher": "OWASP",
+          "edition": "Secure Agent Playbook",
+          "retrieved_at": "2026-11-09",
+          "rights": "Creative Commons Attribution 4.0 International.",
+          "rights_url": "https://creativecommons.org/licenses/by/4.0/",
+          "sha256": "ddbacbeb4f6ccbee2619f2f99aef9c3f16e4bfd1c99deb8fecc92c68b9694d88"
+        },
+        {
+          "filename": "owasp-code-security-plays/mobile-code-review.md",
+          "title": "Play: Mobile Code Review",
+          "description": "OWASP code security plays: Mobile Code Review",
+          "source_url": "https://github.com/OWASP/secure-agent-playbook/tree/65d4efd2cd0b081d52101e9708792b944e4ddebb/plugins/code-security-skills/plays/mobile-code-review.md",
+          "publisher": "OWASP",
+          "edition": "Secure Agent Playbook",
+          "retrieved_at": "2026-11-09",
+          "rights": "Creative Commons Attribution 4.0 International.",
+          "rights_url": "https://creativecommons.org/licenses/by/4.0/",
+          "sha256": "cb7dabebc5477338226606fae72009fff1fecef02f003907e543d8757ee329f9"
+        },
+        {
+          "filename": "owasp-code-security-plays/owasp-top10-web-review.md",
+          "title": "Play: OWASP Top 10 Web Security Review",
+          "description": "OWASP code security plays: Owasp Top10 Web Review",
+          "source_url": "https://github.com/OWASP/secure-agent-playbook/tree/65d4efd2cd0b081d52101e9708792b944e4ddebb/plugins/code-security-skills/plays/owasp-top10-web-review.md",
+          "publisher": "OWASP",
+          "edition": "Secure Agent Playbook",
+          "retrieved_at": "2026-11-09",
+          "rights": "Creative Commons Attribution 4.0 International.",
+          "rights_url": "https://creativecommons.org/licenses/by/4.0/",
+          "sha256": "b8109d14e16461a61e64f81bad65d7849bfe91aec251254112c1aa117f2f6092"
+        },
+        {
+          "filename": "owasp-code-security-plays/prd-fiasse-asvs-enhancement.md",
+          "title": "PRD FIASSE / ASVS Enhancement \u2014 Step-by-Step Runbook",
+          "description": "OWASP code security plays: Prd Fiasse Asvs Enhancement",
+          "source_url": "https://github.com/OWASP/secure-agent-playbook/tree/65d4efd2cd0b081d52101e9708792b944e4ddebb/plugins/code-security-skills/plays/prd-fiasse-asvs-enhancement.md",
+          "publisher": "OWASP",
+          "edition": "Secure Agent Playbook",
+          "retrieved_at": "2026-11-09",
+          "rights": "Creative Commons Attribution 4.0 International.",
+          "rights_url": "https://creativecommons.org/licenses/by/4.0/",
+          "sha256": "2fa51dc8f13109099823a85ed9db6cb053e2950f083885ee380bc0b5567200a2"
+        },
+        {
+          "filename": "owasp-code-security-plays/sca-audit.md",
+          "title": "Play: Software Composition Analysis Audit",
+          "description": "OWASP code security plays: Sca Audit",
+          "source_url": "https://github.com/OWASP/secure-agent-playbook/tree/65d4efd2cd0b081d52101e9708792b944e4ddebb/plugins/code-security-skills/plays/sca-audit.md",
+          "publisher": "OWASP",
+          "edition": "Secure Agent Playbook",
+          "retrieved_at": "2026-11-09",
+          "rights": "Creative Commons Attribution 4.0 International.",
+          "rights_url": "https://creativecommons.org/licenses/by/4.0/",
+          "sha256": "72186a22b99a6a59c8a589d4560062fd835bfa4af641a5cd7f4be25de9544087"
+        },
+        {
+          "filename": "owasp-code-security-plays/secrets-scan.md",
+          "title": "Play: Secrets Scan",
+          "description": "OWASP code security plays: Secrets Scan",
+          "source_url": "https://github.com/OWASP/secure-agent-playbook/tree/65d4efd2cd0b081d52101e9708792b944e4ddebb/plugins/code-security-skills/plays/secrets-scan.md",
+          "publisher": "OWASP",
+          "edition": "Secure Agent Playbook",
+          "retrieved_at": "2026-11-09",
+          "rights": "Creative Commons Attribution 4.0 International.",
+          "rights_url": "https://creativecommons.org/licenses/by/4.0/",
+          "sha256": "c18a51fec8470880ec83c362ec298ddf7bb78ec9488b177506a01ff0203473dd"
+        },
+        {
+          "filename": "owasp-code-security-plays/securability-engineering-review.md",
+          "title": "Play: Securable Code Analysis (FIASSE v1.0.4 / SSEM)",
+          "description": "OWASP code security plays: Securability Engineering Review",
+          "source_url": "https://github.com/OWASP/secure-agent-playbook/tree/65d4efd2cd0b081d52101e9708792b944e4ddebb/plugins/code-security-skills/plays/securability-engineering-review.md",
+          "publisher": "OWASP",
+          "edition": "Secure Agent Playbook",
+          "retrieved_at": "2026-11-09",
+          "rights": "Creative Commons Attribution 4.0 International.",
+          "rights_url": "https://creativecommons.org/licenses/by/4.0/",
+          "sha256": "1f219fad90b5823c5629f6ad80012cd0d10e3c1757bb7dd16a56a80b25da54a8"
+        },
+        {
+          "filename": "owasp-code-security-plays/securable-generation.md",
+          "title": "Securable Generation \u2014 Full Loop Play",
+          "description": "OWASP code security plays: Securable Generation",
+          "source_url": "https://github.com/OWASP/secure-agent-playbook/tree/65d4efd2cd0b081d52101e9708792b944e4ddebb/plugins/code-security-skills/plays/securable-generation.md",
+          "publisher": "OWASP",
+          "edition": "Secure Agent Playbook",
+          "retrieved_at": "2026-11-09",
+          "rights": "Creative Commons Attribution 4.0 International.",
+          "rights_url": "https://creativecommons.org/licenses/by/4.0/",
+          "sha256": "0254afa47f5db9582c9b4400b817a29d372f54993ac79bc94493043a36afc8b4"
+        }
+      ]
+    }
+  ]
+}

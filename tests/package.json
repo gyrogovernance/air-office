@@ -1,0 +1,39 @@
+{
+  "name": "@office/tests",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@assistant-ui/react": "0.15.28",
+    "@assistant-ui/react-streamdown": "0.3.20",
+    "@codemirror/commands": "^6.11.1",
+    "@codemirror/language": "^6.13.1",
+    "@codemirror/view": "^6.43.14",
+    "@glass-sdk/liquid-glass": "file:../.vendor/liquid-glass-0.0.2.tgz",
+    "@lobehub/editor": "4.23.1",
+    "@office/automations": "workspace:*",
+    "@office/calendar": "workspace:*",
+    "@office/chat": "workspace:*",
+    "@office/contracts": "workspace:*",
+    "@office/documents": "workspace:*",
+    "@office/editor": "workspace:*",
+    "@office/files": "workspace:*",
+    "@office/jobs": "workspace:*",
+    "@office/knowledge": "workspace:*",
+    "@office/memory": "workspace:*",
+    "@office/methods": "workspace:*",
+    "@office/providers": "workspace:*",
+    "@office/runtime": "workspace:*",
+    "@office/tools": "workspace:*",
+    "@office/ui-kit": "workspace:*",
+    "@office/workspace": "workspace:*",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "@office/vault": "workspace:*"
+  },
+  "devDependencies": {
+    "@happy-dom/global-registrator": "21.0.4",
+    "playwright": "^1.64.0",
+    "typescript": "5.9.3"
+  }
+}

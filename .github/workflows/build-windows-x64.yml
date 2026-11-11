@@ -1,0 +1,85 @@
+# Product package for Windows x64 only (x86_64-pc-windows-msvc).
+# Target: unsigned branded NSIS installer.
+# Not Authenticode-signed. Suitable for private testing and CI artifacts.
+# Do not promote to a public GitHub Release until Windows code signing exists.
+name: Build Windows x64
+
+# Manual only. Do not auto-build on push (private Actions quota / local packaging).
+on:
+  workflow_dispatch:
+  workflow_call:
+
+concurrency:
+  group: windows-x64-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: x86_64-pc-windows-msvc (Electron NSIS)
+    runs-on: windows-latest
+    timeout-minutes: 180
+    permissions:
+      contents: read
+    env:
+      NODE_OPTIONS: --max-old-space-size=8192
+      CSC_IDENTITY_AUTO_DISCOVERY: 'false'
+      CSC_IDENTITY: ''
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Confirm Windows x64 runner
+        shell: pwsh
+        run: |
+          $arch = [System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture.ToString()
+          Write-Host "OSArchitecture=$arch"
+          if ($arch -ne 'X64') { throw "Expected X64 runner, got $arch." }
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: .bun-version
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+
+      - name: Verify Windows packaging pins
+        shell: pwsh
+        run: |
+          if (-not (Test-Path 'external/sqlite-vec/vec0.dll')) { throw 'external/sqlite-vec/vec0.dll is missing.' }
+          Get-FileHash 'external/sqlite-vec/vec0.dll' -Algorithm SHA256 | Format-List
+
+      - name: Cache web-search prepare (primp wheel + frozen worker)
+        uses: actions/cache@v5
+        with:
+          path: |
+            workers/web-search/.venv
+            workers/web-search/build
+            workers/web-search/dist
+          key: web-search-windows-x64-${{ hashFiles('workers/web-search/src/**', 'workers/web-search/requirements.txt', '.vendor/primp-2.0.1-air.1.tar.gz', 'tools/prepare-web-search.entry.ts') }}
+
+      - name: Install JS dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Build desktop product (Windows NSIS)
+        run: bun run build:desktop:windows
+
+      - name: List and check installer
+        shell: pwsh
+        run: |
+          Get-ChildItem dist/desktop | Format-Table Name, Length
+          $setup = Get-ChildItem dist/desktop -Filter 'AIR-Office-Setup-*.exe' | Select-Object -First 1
+          if (-not $setup) { throw 'NSIS installer AIR-Office-Setup-*.exe was not produced.' }
+          Get-FileHash $setup.FullName -Algorithm SHA256 | Format-List
+
+      - name: Upload Windows NSIS package
+        uses: actions/upload-artifact@v6
+        with:
+          name: air-office-windows-x64
+          path: |
+            dist/desktop/AIR-Office-Setup-*.exe
+          if-no-files-found: error
+          retention-days: 14

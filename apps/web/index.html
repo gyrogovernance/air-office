@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en" class="startup-pending">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="theme-color" content="#0b0c0e"/>
+  <link rel="icon" type="image/png" sizes="32x32" href="/air_Icon-32.png"/>
+  <link rel="icon" type="image/png" sizes="64x64" href="/air_Icon-64.png"/>
+  <link rel="icon" type="image/png" sizes="128x128" href="/air_Icon-128.png"/>
+  <link rel="apple-touch-icon" sizes="180x180" href="/air_Icon-256.png"/>
+  <title>AIR Office</title>
+  <!-- Critical first paint: keep the canvas dark until the splash dismisses.
+       Module CSS sets a light :root surface that would otherwise flash white. -->
+  <style>
+    html.startup-pending { color-scheme: dark; }
+    html.startup-pending,
+    html.startup-pending body,
+    html.startup-pending #root {
+      margin: 0;
+      background: #0b0c0e !important;
+    }
+    #startup-intro {
+      position: fixed;
+      inset: 0;
+      z-index: 10000;
+      display: grid;
+      place-items: center;
+      margin: 0;
+      background: #0b0c0e;
+      pointer-events: none;
+    }
+    /* Spin the wrapper, not the <img>. WKWebView often freezes CSS transforms on
+       SVG-backed images, which leaves a static mark on the Mac app splash. */
+    #startup-intro .startup-intro__spin {
+      display: grid;
+      place-items: center;
+      width: clamp(72px, 11vw, 96px);
+      height: clamp(72px, 11vw, 96px);
+      transform: translateZ(0);
+      transform-origin: 50% 50%;
+      will-change: transform;
+      animation: startup-intro-spin 2.4s linear infinite;
+    }
+    #startup-intro .startup-intro__logo {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+    @keyframes startup-intro-spin {
+      from { transform: translateZ(0) rotate(0deg); }
+      to { transform: translateZ(0) rotate(360deg); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      #startup-intro .startup-intro__spin { animation: none; }
+    }
+  </style>
+</head>
+<body>
+  <div id="startup-intro" class="startup-intro startup-intro--hold" aria-hidden="true">
+    <div class="startup-intro__spin">
+      <img class="startup-intro__logo" src="/air_logo_rainbow.png" alt="" width="96" height="96"/>
+    </div>
+  </div>
+  <div id="root"></div>
+  <script type="module" src="/src/entry/application.entry.tsx"></script>
+</body>
+</html>

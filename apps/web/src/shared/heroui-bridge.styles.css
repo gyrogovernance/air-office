@@ -1,0 +1,306 @@
+@layer components {
+  .tabs__tab {
+    column-gap: 8px;
+  }
+
+  /* Make every HeroUI tip clearly rounded (default token path can read as a sharp box). */
+  .tooltip {
+    border-radius: 12px;
+  }
+}
+
+/* HeroUI ships borderless cards. AIR puts a thin rim on every card so its edge
+   stays visible even where its fill is close to the surface behind it. */
+.card {
+  border: 1px solid var(--line-soft);
+}
+
+/* Same treatment for switch tracks: the off fill can vanish into nearby
+   surfaces, so the outer pill always keeps a thin rim. */
+.switch__control {
+  border: 1px solid var(--line-soft);
+  box-sizing: border-box;
+}
+
+/* On = enabled: use success green instead of brand blue so the open state
+   reads as active rather than as a primary-action accent. */
+.switch {
+  --switch-control-bg-checked: var(--success);
+  --switch-control-bg-checked-hover: var(--success-hover);
+}
+
+/* Keep the knob white in both states. HeroUI's selected thumb uses
+   bg-accent-foreground, and AIR remaps that token for chat chrome to strong
+   text, which would turn the knob dark on a green track. */
+.switch__thumb,
+.switch[aria-checked='true'] .switch__thumb,
+.switch[data-selected='true'] .switch__thumb {
+  background-color: #fff;
+  color: #000;
+}
+
+/* HeroUI's default off track reads too light on dark surfaces. Sink it to our
+   sunken panel step so the pill stays darker than the surrounding chrome. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .switch {
+    --switch-control-bg: var(--surface-sunken);
+    --switch-control-bg-hover: var(--surface-hover);
+    --switch-control-bg-pressed: var(--surface-hover);
+  }
+}
+
+:root[data-theme='dark'] .switch {
+  --switch-control-bg: var(--surface-sunken);
+  --switch-control-bg-hover: var(--surface-hover);
+  --switch-control-bg-pressed: var(--surface-hover);
+}
+
+.card__description {
+  color: var(--text-body);
+}
+
+.button--primary {
+  --button-bg: var(--slate-12);
+  --button-bg-hover: var(--slate-11);
+  --button-bg-pressed: var(--slate-11);
+  --button-fg: var(--slate-1);
+}
+
+/* A card's interior is a distinct material, never an extension of the outer
+   card or the stage paper. Lists deliberately remain transparent so their
+   rows float within the card rather than becoming a second panel. */
+.card .card,
+.card :is(.search-field__group, .input, .textarea, .accordion, .disclosure, .table-root) {
+  border: 1px solid var(--line-soft);
+  background-color: var(--surface-nested);
+}
+
+.card .table-root {
+  border-radius: var(--radius-lg);
+}
+
+.card .table-root--secondary .table__column {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--line-soft);
+  border-radius: 0;
+  background-color: var(--surface-sunken);
+  color: var(--text-muted);
+  font-size: var(--text-xs);
+}
+
+.card .table-root--secondary :is(
+  th.table__column:first-child,
+  [role="row"] > [role="presentation"]:first-of-type > .table__column,
+  th.table__column:last-child,
+  [role="row"] > [role="presentation"]:last-of-type > .table__column
+) {
+  border-radius: 0;
+}
+
+/*
+  One floating-choice family for HeroUI Dropdown menus, Select popovers, and
+  Popover menus. Panel: 6px inset, radius-xl, raised fill. Rows: radius-md so
+  they nest inside the panel without hover clipping or oversized inner arcs.
+*/
+:is(
+  .dropdown__menu,
+  .select__popover,
+  .autocomplete__popover,
+  .app-select-popover,
+  .command-permission-menu,
+  .chat-view-menu,
+  .explorer-menu,
+  .compose-reasoning-menu
+) {
+  box-sizing: border-box;
+  padding: 6px;
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius-xl);
+  background: var(--surface-raised);
+  color: var(--text-body);
+  box-shadow: var(--shadow-pop);
+  outline: 0;
+  font: 13px / 1.4 var(--font-sans);
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+/* Searchable selects grow past a narrow trigger (composer model chip). */
+.autocomplete__popover.app-select-popover {
+  display: flex;
+  flex-direction: column;
+  width: max(var(--trigger-width), 18rem);
+  min-width: var(--trigger-width);
+  max-width: min(22rem, calc(100vw - 24px));
+  overflow: hidden;
+}
+
+/*
+  Nested radius: panel is radius-xl (22px) with 6px inset, so the search well
+  uses radius-lg (16px = 22 − 6). Align it with the option column — no extra
+  HeroUI horizontal padding that would break the concentric inset.
+*/
+.autocomplete__popover.app-select-popover .app-select-search {
+  flex-shrink: 0;
+  margin-bottom: 8px;
+  padding-inline: 0;
+  padding-block: 0;
+}
+
+.autocomplete__popover.app-select-popover .app-select-search .search-field__group {
+  min-height: 32px;
+  border-radius: calc(var(--radius-xl) - 6px);
+  background: var(--surface-nested);
+  box-shadow: inset 0 0 0 1px var(--line-soft);
+}
+
+.autocomplete__popover.app-select-popover .list-box {
+  flex: 1 1 auto;
+  min-height: 0;
+  max-height: min(320px, 50vh);
+  overflow-y: auto;
+}
+
+/* Outer popover chrome stays invisible when the menu/list paints itself.
+   HeroUI paints .dropdown__popover with --overlay fill, overlay-shadow, and a
+   large radius (or our older clear forced radius 0). Either way a square or
+   oversized shell peeks past the rounded menu. Kill every paint signal and
+   match the menu radius so corner wedges cannot show. */
+:is(
+  .chat-view-popover,
+  .explorer-menu-popover,
+  .command-permission-popover,
+  .compose-reasoning-popover,
+  .calendar-list-menu-popover,
+  .dropdown__popover
+) {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  filter: none !important;
+  outline: none !important;
+  padding: 0 !important;
+  min-width: 0 !important;
+  overflow: visible !important;
+  overscroll-behavior: auto;
+  scrollbar-gutter: auto;
+  border-radius: var(--radius-xl) !important;
+}
+
+/* Select / Autocomplete paints on the popover; the list is only the option stack. */
+:is(.select__popover, .autocomplete__popover, .app-select-popover) .list-box {
+  border: 0;
+  background: transparent;
+  padding: 0;
+  box-shadow: none;
+  overflow: visible;
+}
+
+:is(.menu-item, .list-box-item) {
+  box-sizing: border-box;
+  border-radius: var(--radius-md);
+  min-height: 30px;
+  outline: none;
+}
+
+:is(.menu-item, .list-box-item):not(.menu-item--danger):not(.command-permission-option) {
+  padding: 6px 10px;
+}
+
+.command-permission-option.menu-item {
+  box-sizing: border-box;
+  border-radius: var(--radius-md);
+  outline: none;
+}
+
+:is(.list-box-item, .menu-item:not(.menu-item--danger), .command-permission-option):is(:hover, [data-hovered='true'], [data-focused='true'], [data-pressed='true'], [aria-pressed='true']) {
+  background-color: var(--surface-hover);
+}
+
+:is(.list-box-item, .menu-item:not(.menu-item--danger)):is([data-selected='true'], [aria-selected='true'], [aria-checked='true']) {
+  background-color: color-mix(in srgb, var(--accent) 14%, var(--surface-raised));
+  color: var(--text-strong);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 22%, var(--line-soft));
+}
+
+:is(.list-box-item, .menu-item:not(.menu-item--danger)):is([data-selected='true'], [aria-selected='true'], [aria-checked='true']):is(:hover, [data-hovered='true'], [data-focused='true'], [data-pressed='true']) {
+  background-color: color-mix(in srgb, var(--accent) 20%, var(--surface-raised));
+}
+
+/* AIR owns semantic colors; HeroUI variables are component-facing aliases. */
+:root {
+  --background: var(--surface-app);
+  --foreground: var(--text-strong);
+  --surface: var(--surface-inset);
+  --surface-secondary: var(--surface-inset);
+  /* Tertiary is the nesting level: always one visible Radix step deeper than
+     secondary, never lighter than it in either theme. */
+  --surface-tertiary: var(--surface-nested);
+  --surface-foreground: var(--text-strong);
+  --overlay: var(--surface-raised);
+  --overlay-foreground: var(--text-strong);
+  --field: var(--surface-input);
+  --field-background: var(--surface-input);
+  --field-foreground: var(--text-strong);
+  --separator: var(--line-soft);
+  --border: var(--line-strong);
+  --accent-foreground: var(--text-on-accent);
+  --accent-soft-foreground: var(--accent-text);
+  --danger-foreground: var(--text-on-accent);
+  --link: var(--accent-text);
+}
+
+:root.dark,
+:root[data-theme='dark'] {
+  --background: var(--surface-app);
+  --foreground: var(--text-strong);
+  --surface: var(--surface-inset);
+  --surface-secondary: var(--surface-inset);
+  --surface-tertiary: var(--surface-nested);
+  --surface-foreground: var(--text-strong);
+  --overlay: var(--surface-raised);
+  --overlay-foreground: var(--text-strong);
+  --field: var(--surface-input);
+  --field-background: var(--surface-input);
+  --field-foreground: var(--text-strong);
+  --separator: var(--line-soft);
+  --border: var(--line-strong);
+  --accent-soft-foreground: var(--accent-text);
+  --danger-foreground: var(--text-on-accent);
+  --link: var(--accent-text);
+}
+
+/* Calendar today marker.
+ *
+ * HeroUI's default today treatment is an accent-soft wash. AIR marks today
+ * in red instead, so the today state is re-pointed at HeroUI's danger pair
+ * (--danger / --danger-foreground, which flip correctly between light and
+ * dark). Today stays red even when it is also the selected day; selection
+ * is then shown by an accent ring so both states remain readable. Every
+ * other state stays on HeroUI defaults. There is deliberately no
+ * indicator dot: the background fill is the today marker, and a dot on
+ * top of it only hides the day number.
+ * Scoped to the two HeroUI calendar hosts so the custom calendar
+ * workspace keeps its own rules.
+ */
+.office-date-popover .calendar__cell[data-today='true'],
+.launcher-calendar .calendar__cell[data-today='true'] {
+  background: var(--danger);
+  color: var(--danger-foreground);
+}
+
+.office-date-popover .calendar__cell[data-today='true']:hover:not([data-selected='true']),
+.launcher-calendar .calendar__cell[data-today='true']:hover:not([data-selected='true']) {
+  background: var(--danger-hover);
+}
+
+.office-date-popover .calendar__cell[data-today='true'][data-selected='true'],
+.launcher-calendar .calendar__cell[data-today='true'][data-selected='true'] {
+  background: var(--danger);
+  color: var(--danger-foreground);
+  box-shadow: inset 0 0 0 2px var(--accent);
+}

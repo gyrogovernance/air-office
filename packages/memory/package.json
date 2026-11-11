@@ -1,0 +1,14 @@
+{
+  "name": "@office/memory",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./domain": "./src/memory.domain.public.ts",
+    "./service": "./src/memory.service.public.ts"
+  },
+  "dependencies": {
+    "@office/vault": "workspace:*",
+    "zod": "4.1.12"
+  }
+}

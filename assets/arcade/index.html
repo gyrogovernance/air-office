@@ -522,10 +522,20 @@ let heroFile = null;
 let _demoOrder = [];   // DEMO_GAMES shuffled once per page load
 let _demoIndex = 0;    // position in _demoOrder currently shown in the cabinet
 
+// Resolve against this launcher document. Relative URLs passed to
+// iframe.location.replace() after about:blank can inherit the parent AIR
+// Office page as base (Electron custom protocol), which turns games/x.html
+// into /games/x.html and serves the React shell — a white page.
+function arcadeUrl(path) {
+    if (!path || path === 'about:blank' || /^[a-z][a-z0-9+.-]*:/i.test(path)) return path;
+    return new URL(path, location.href).href;
+}
+
 // Navigate any iframe without polluting browser history (same trick as loadIframe).
 function loadFrame(frame, url) {
-    if (frame.contentWindow) frame.contentWindow.location.replace(url);
-    else frame.src = url;
+    const href = arcadeUrl(url);
+    if (frame.contentWindow) frame.contentWindow.location.replace(href);
+    else frame.src = href;
 }
 
 // Shuffle the demo list once (per page load) so the cabinet opens on a random
@@ -1109,8 +1119,9 @@ function buildRow(label, rowEmoji, games, isTop, cat) {
 // browser back navigates the iframe to about:blank instead of returning to
 // the library). location.replace() does the same load, no history entry.
 function loadIframe(url) {
-    if (frameEl.contentWindow) frameEl.contentWindow.location.replace(url);
-    else frameEl.src = url;
+    const href = arcadeUrl(url);
+    if (frameEl.contentWindow) frameEl.contentWindow.location.replace(href);
+    else frameEl.src = href;
 }
 
 function showWelcome(pushHistory = true) {

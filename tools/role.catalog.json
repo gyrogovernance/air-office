@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "description": "Initial role catalog seed. The implementation must validate this catalog and enforce it against actual paths. It is not a preexisting checker configuration.",
+  "source_scope": ["apps/*/src/", "packages/*/src/", "tools/*/src/", "tests/"],
+  "typescript_subject_pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$",
+  "forbidden_subjects": ["misc", "stuff", "helpers", "utils", "common", "manager", "new", "final", "v2-final"],
+  "roles": [
+    { "id": "entity", "extensions": ["ts"], "layers": ["domain"] },
+    { "id": "policy", "extensions": ["ts"], "layers": ["domain"] },
+    { "id": "event", "extensions": ["ts"], "layers": ["domain"] },
+    { "id": "port", "extensions": ["ts"], "layers": ["application"] },
+    { "id": "use-case", "extensions": ["ts"], "layers": ["application"] },
+    { "id": "adapter", "extensions": ["ts"], "layers": ["adapters/service", "runtime"] },
+    { "id": "route", "extensions": ["ts"], "layers": ["adapters/service", "composition"] },
+    { "id": "service", "extensions": ["ts"], "layers": ["composition", "runtime"] },
+    { "id": "component", "extensions": ["tsx"], "layers": ["adapters/ui", "ui-kit", "composition"] },
+    { "id": "types", "extensions": ["ts"], "layers": ["domain", "application", "adapters/service", "adapters/ui", "runtime", "composition"] },
+    { "id": "hook", "extensions": ["ts"], "layers": ["adapters/ui"] },
+    { "id": "store", "extensions": ["ts"], "layers": ["adapters/ui"] },
+    { "id": "public", "extensions": ["ts"], "layers": ["public"], "required_runtime_qualifier": true },
+    { "id": "composition", "extensions": ["ts", "tsx"], "layers": ["composition"] },
+    { "id": "entry", "extensions": ["ts", "tsx"], "layers": ["composition", "tool"] },
+    { "id": "command", "extensions": ["ts"], "layers": ["tool"] },
+    { "id": "analyzer", "extensions": ["ts"], "layers": ["tool"] },
+    { "id": "generated", "extensions": ["ts"], "layers": ["generated"] },
+    { "id": "unit.test", "extensions": ["ts", "tsx"], "layers": ["tests"] },
+    { "id": "contract.test", "extensions": ["ts"], "layers": ["tests"] },
+    { "id": "integration.test", "extensions": ["ts"], "layers": ["tests"] },
+    { "id": "browser.test", "extensions": ["ts"], "layers": ["tests/browser"] },
+    { "id": "desktop.test", "extensions": ["ts"], "layers": ["tests/desktop"] }
+  ],
+  "non_typescript_patterns": {
+    "rust": "^[a-z][a-z0-9]*(?:_[a-z0-9]+)*_(?:adapter|port|service|protocol|policy|entity)\\.rs$",
+    "python": "^(?:test_)?[a-z][a-z0-9]*(?:_[a-z0-9]+)*_(?:adapter|handler|protocol|policy|entity|service)\\.py$",
+    "migration": "^[0-9]{4}-[a-z0-9-]+\\.migration\\.sql$",
+    "schema": "^[a-z0-9-]+\\.schema\\.json$",
+    "styles": "^[a-z0-9-]+\\.(?:styles|tokens)\\.css$"
+  },
+  "conventional_names": ["main.rs", "lib.rs", "mod.rs", "main.py", "__init__.py", "package.json", "README.md", "AGENTS.md", "Cargo.toml", "Cargo.lock", "pyproject.toml", "uv.lock", "index.html", "module.manifest.json", "worker.manifest.json"],
+  "excluded_categories_requiring_registration": ["third-party", "generated-contracts", "user-content", "intentionally-invalid-test-fixtures"],
+  "additional_checks": ["role-to-directory", "case-collisions", "windows-reserved-paths", "path-portability", "unknown-roles", "expired-exceptions", "style-organization"],
+  "style_organization": {
+    "description": "Where a stylesheet lives, which category owns it, and which classes it may style. The rules live here so the checker reads them as data.",
+    "categories": [
+      { "id": "app", "purpose": "Application shell, stage, navigation chrome and the workspace frame." },
+      { "id": "chat", "purpose": "The assistant rail, conversation threads, branches and the composer." },
+      { "id": "workspace", "purpose": "Shared workspace surfaces: tabs, search, scrollbars and the destination frame." },
+      { "id": "settings", "purpose": "The settings surface and its sections." },
+      { "id": "knowledge", "purpose": "Knowledge collections, feeds and embedding settings." },
+      { "id": "calendar", "purpose": "Calendar views, import and the automation form." },
+      { "id": "market", "purpose": "Market, teams, prompts, apps and glossary surfaces." },
+      { "id": "models", "purpose": "Model setup, local AI runtime and provider surfaces." },
+      { "id": "tools", "purpose": "Tool connections, the tool catalog and the code interpreter." },
+      { "id": "media", "purpose": "Workplace media and the arcade stage." },
+      { "id": "shared", "purpose": "Reusable controls and primitives used by more than one category." },
+      { "id": "adapters", "purpose": "Adapters that talk to the service." },
+      { "id": "entry", "purpose": "Entry and composition roots, and the stylesheet manifest." }
+    ],
+    "rules": {
+      "colocated_stylesheets": "A stylesheet sits in the same category folder as the component whose classes it styles, and its name matches that component.",
+      "single_import": "A stylesheet is imported by exactly one manifest, never by a component.",
+      "class_ownership": "A class prefix is owned by one category. A second category that styles it is an overlap and is reported.",
+      "base_owns_defaults": "Element resets, focus rings, prose and the shared control families live only in the shared base. A category stylesheet may not redeclare them.",
+      "no_flat_pile": "A category folder holds the components and stylesheets of one feature, not a miscellaneous pile."
+    }
+  }
+}

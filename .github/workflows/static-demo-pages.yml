@@ -1,0 +1,55 @@
+# Manual publish of the distinct static GitHub Pages demo (apps/web/dist-static-demo).
+# Does not build or deploy product apps/web/dist used by desktop packaging.
+name: Static demo pages
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: static-demo-pages-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    name: Build static demo
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: .bun-version
+
+      - name: Install JS dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Build static demo site
+        # Uses the committed demo snapshot; regenerating the snapshot needs a local Demo service.
+        env:
+          SKIP_STATIC_DEMO_EXPORT: '1'
+        run: bun run build:web:static-demo
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: apps/web/dist-static-demo
+
+  deploy:
+    name: Deploy to GitHub Pages
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4

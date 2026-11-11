@@ -1,0 +1,5 @@
+The quick brown fox jumps over the lazy dog.
+
+Draft recovery keeps unsaved edits safe. Καλημέρα κόσμε. 日本語のテキスト。
+
+Second paragraph after a blank line.

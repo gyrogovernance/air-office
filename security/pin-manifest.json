@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "updated": "2026-11-10",
+  "tools": {
+    "trufflehog": {
+      "version": "3.99.7",
+      "source": "github.com/trufflesecurity/trufflehog",
+      "install_method": "binary",
+      "sha256": "475bd088ea8447041992f09c1978fbeda652d5216c97629bee6f83eea432afb2",
+      "verify": "cosign"
+    },
+    "trivy": {
+      "version": "0.76.1",
+      "source": "github.com/aquasecurity/trivy",
+      "install_method": "binary",
+      "sha256": "94618922c9eb324d7099bf217b01504bfc1f87a0d46d6008cb24ec89b1d1a4bb",
+      "verify": "cosign"
+    },
+    "semgrep": {
+      "version": "1.183.0",
+      "source": "github.com/returntocorp/semgrep",
+      "install_method": "pip",
+      "sha256": "f10fe3f9ebd4f4beff644407cad8cb681c29fd0026951790418c4bc5d600a164"
+    },
+    "codeql": {
+      "version": "2.27.4",
+      "source": "github.com/github/codeql-cli-binaries",
+      "install_method": "binary",
+      "sha256": "c9af307c0e71f8fda17b9c39e90b69bb5788e3df32c6a11df9eeaf787036c3c1",
+      "verify": "github-release-attestation"
+    },
+    "skillspector": {
+      "version": "2.12.0",
+      "source": "github.com/NVIDIA/skillspector@e14c450b260958ed3ebd83c94c09c4b093e3e656",
+      "install_method": "uv-tool",
+      "sha256": "0b92592c694ca86a35d062134563c8de32af7dcf631fbf4fa1de0fb9fa014605"
+    }
+  }
+}

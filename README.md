@@ -9,6 +9,7 @@ An AI-native desktop workspace for agentic research and knowledge management, bu
 ![License: MIT](https://img.shields.io/badge/license-MIT-2ea44f?style=flat-square)
 ![Desktop](https://img.shields.io/badge/desktop-Windows-0078D4?style=flat-square)
 ![Local-first](https://img.shields.io/badge/data-local--first-555555?style=flat-square)
+![Microsoft Copilot SDK](https://img.shields.io/badge/agent-Microsoft%20Copilot%20SDK-111827?style=flat-square)
 
 [About](#about) · [Capabilities & Services](#capabilities--services) · [Products & Workflows](#products--workflows) · [Security & Privacy](#security--privacy) · [Alpha release](#alpha-release) · [Community](#community) · [Citation](#citation)
 
@@ -21,6 +22,8 @@ An AI-native desktop workspace for agentic research and knowledge management, bu
 https://github.com/user-attachments/assets/2fba87a3-5de3-4c72-8804-43e607348d84
 
 AIR Office is developed by [Gyro Governance Lab](http://gyrogovernance.com/) as part of its work on AI safety and existential risk preparedness.
+
+Agentic chat and tool use run on the [Microsoft Copilot SDK](https://github.com/github/copilot-sdk) harness, including bring-your-own-key and local model endpoints.
 
 ### Theory of Change
 

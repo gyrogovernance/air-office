@@ -1,0 +1,312 @@
+.glossary-views {
+  align-self: center;
+  width: fit-content;
+  max-width: 100%;
+  margin-inline: auto;
+  overflow-x: auto;
+  padding-block: 3px;
+}
+
+.glossary-views .tabs__tab {
+  width: auto;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+.glossary-views .tabs__list-container {
+  width: fit-content;
+  max-width: 100%;
+  margin-inline: auto;
+}
+.glossary-toolbar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+/* HeroUI SearchField owns the field paint; layout only. */
+.glossary-toolbar > .search-field {
+  flex: 1 1 220px;
+}
+.glossary-count {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+.glossary-alphabet {
+  display: grid;
+  grid-template-columns: repeat(13, minmax(0, 1fr));
+  gap: 4px;
+}
+.glossary-alphabet > * {
+  display: grid;
+  place-items: center;
+  height: 28px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
+}
+.glossary-alphabet a {
+  color: var(--accent-text);
+  background: var(--surface-inset);
+}
+.glossary-alphabet a:hover {
+  background: var(--accent-soft);
+}
+.glossary-alphabet span {
+  color: var(--text-muted);
+  opacity: 0.45;
+}
+.glossary-categories {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+}
+.glossary-definitions {
+  display: grid;
+  gap: 28px;
+}
+.glossary-letter-group {
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr);
+  gap: 8px;
+  padding-inline-start: 8px;
+  scroll-margin-top: 84px;
+}
+.glossary-letter-group > h2 {
+  margin: 16px 0 0;
+  color: var(--accent-text);
+  font-size: 26px;
+  font-weight: 500;
+  line-height: 1.2;
+}
+.glossary-letter-entries {
+  display: grid;
+  gap: 12px;
+  align-items: start;
+}
+.glossary-definition {
+  min-width: 0;
+}
+.glossary-definition-header {
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+}
+.glossary-definition-header .chip {
+  margin-inline-start: auto;
+}
+.glossary-term-title {
+  margin: 0;
+  color: var(--text-strong);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+.glossary-entry {
+  min-width: 0;
+  font-size: 14px;
+  line-height: 1.75;
+  overflow-wrap: anywhere;
+}
+.glossary-provenance {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 4px 16px;
+  overflow-wrap: anywhere;
+  color: var(--text-muted);
+  font-size: var(--text-xs);
+  line-height: 1.5;
+}
+.glossary-reference {
+  min-width: 0;
+  color: var(--text-body);
+  font-size: 14px;
+  line-height: 1.8;
+  overflow-wrap: anywhere;
+}
+/* The shared prose layer supplies the markdown model; these keep the
+ * glossary's own larger reading measure. */
+.glossary-reference.prose,
+.glossary-entry.prose {
+  font-size: 14px;
+  line-height: 1.75;
+}
+.glossary-reference-label {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 16px;
+  color: var(--text-muted);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+}
+.glossary-reference h1 {
+  font-size: 26px;
+  line-height: 1.3;
+  color: var(--text-strong);
+}
+.glossary-reference h2 {
+  margin-top: 36px;
+  padding-top: 16px;
+  font-size: 20px;
+  color: var(--text-strong);
+}
+.glossary-reference h3 {
+  font-size: 16px;
+  color: var(--text-strong);
+}
+.glossary-reference-card { min-width: 0; }
+.glossary-reference-card .card__content { min-width: 0; }
+.glossary-empty {
+  padding: 24px;
+  color: var(--text-muted);
+  text-align: center;
+}
+.glossary-alphabet a:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+}
+@container (min-width:720px) {
+  .glossary-letter-entries {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+  }
+  .glossary-alphabet {
+    grid-template-columns: repeat(26, minmax(0, 1fr));
+    gap: 2px;
+  }
+}
+@container (max-width:420px) {
+  .glossary-letter-group {
+    grid-template-columns: 24px minmax(0, 1fr);
+    gap: 8px;
+  }
+}
+
+/* Protocols section of Guides */
+.protocol-list {
+  display: grid;
+  gap: 12px;
+}
+.protocol-card {
+  min-width: 0;
+}
+.protocol-card .card__content {
+  display: grid;
+  gap: 12px;
+}
+.protocol-card-header {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 14px;
+}
+.protocol-card-icon {
+  font-size: 26px;
+  line-height: 1.2;
+}
+.protocol-card-heading {
+  min-width: 0;
+}
+.protocol-card-heading h2 {
+  margin: 0;
+  color: var(--text-strong);
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+.protocol-route-focus {
+  margin-left: auto;
+  padding: 4px 9px;
+  border: 1px solid var(--line-soft);
+  border-radius: 999px;
+  color: var(--text-muted);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.protocol-card-body {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+}
+.protocol-card-body > div + div {
+  border-top: 1px solid var(--line-soft);
+  padding-top: 12px;
+}
+.protocol-card-body dt {
+  color: var(--text-muted);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.protocol-card-body dd {
+  margin: 4px 0 0;
+  color: var(--text-body);
+  font-size: 13.5px;
+  line-height: 1.7;
+}
+.protocol-card-section {
+  min-width: 0;
+}
+.protocol-card-section h3 {
+  margin: 0 0 8px;
+  color: var(--text-muted);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.protocol-card-note {
+  margin: 0 0 10px;
+  color: var(--text-body);
+  font-size: 13px;
+  line-height: 1.7;
+}
+.protocol-card-section ul {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding-left: 18px;
+}
+.protocol-card-section li {
+  color: var(--text-body);
+  font-size: 13px;
+  line-height: 1.65;
+}
+.protocol-card-section ul.protocol-docs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  padding-left: 0;
+  list-style: none;
+}
+.protocol-docs a {
+  color: var(--accent-text);
+  font-size: 12.5px;
+  font-weight: 600;
+  text-decoration: none;
+}
+.protocol-docs a:hover {
+  text-decoration: underline;
+}
+.protocol-docs a:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+@container (max-width:520px) {
+  .protocol-card-header {
+    flex-wrap: wrap;
+  }
+  .protocol-route-focus {
+    margin-left: 0;
+  }
+}

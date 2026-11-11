@@ -1,0 +1,651 @@
+# Sandboxing – Inspect
+
+## Overview
+
+Model tool calls are executed within the main process running the evaluation task. However, the work that tools perform — such as running shell commands or executing Python code — very often needs to happen in a dedicated, isolated environment (for example, [bash()](https://inspect.aisi.org.uk/reference/inspect_ai.tool.html.md#bash) runs its shell commands in a sandbox). This might be the case if:
+
+- You are creating tools, agents or scorers that execute arbitrary code (e.g. shell commands or Python code).
+
+- You need to provision per-sample filesystem resources.
+
+- You want to provide access to a more sophisticated evaluation environment (e.g. creating network hosts for a cybersecurity eval).
+
+To accommodate these scenarios, Inspect provides support for *sandboxing*, which typically involves provisioning containers in which tools, agents and scorers can execute commands and code. Several of Inspect’s [standard tools](https://inspect.aisi.org.uk/tools-standard.html.md) require a sandbox, including [bash()](https://inspect.aisi.org.uk/reference/inspect_ai.tool.html.md#bash), [python()](https://inspect.aisi.org.uk/reference/inspect_ai.tool.html.md#python), and [text_editor()](https://inspect.aisi.org.uk/reference/inspect_ai.tool.html.md#text_editor). Support for Docker sandboxes is built in, and the [Extension API](https://inspect.aisi.org.uk/extensions-sandboxes.html.md#sec-sandbox-environment-extensions) enables the creation of additional sandbox types.
+
+## Example: File Listing
+
+Let’s take a look at a simple example to illustrate. First, we’ll define a [list_files()](https://inspect.aisi.org.uk/reference/inspect_ai.tool.html.md#list_files) tool. This tool need to access the `ls` command—it does so by calling the [sandbox()](https://inspect.aisi.org.uk/reference/inspect_ai.util.html.md#sandbox) function to get access to the [SandboxEnvironment](https://inspect.aisi.org.uk/reference/inspect_ai.util.html.md#sandboxenvironment) instance for the currently executing [Sample](https://inspect.aisi.org.uk/reference/inspect_ai.dataset.html.md#sample):
+
+``` python
+from inspect_ai.tool import ToolError, tool
+from inspect_ai.util import sandbox
+
+@tool
+def list_files():
+    async def execute(dir: str):
+        """List the files in a directory.
+
+        Args:
+            dir: Directory
+
+        Returns:
+            File listing of the directory
+        """
+        result = await sandbox().exec(["ls", dir])
+        if result.success:
+            return result.stdout
+        else:
+            raise ToolError(result.stderr)
+
+    return execute
+```
+
+The `exec()` function is used to list the directory contents. Note that its not immediately clear where or how `exec()` is implemented (that will be described shortly!).
+
+Here’s an evaluation that makes use of this tool:
+
+``` python
+from inspect_ai import task, Task
+from inspect_ai.dataset import Sample
+from inspect_ai.scorer import includes
+from inspect_ai.solver import generate, use_tools
+
+dataset = [
+    Sample(
+        input='Is there a file named "bar.txt" ' 
+               + 'in the current directory?',
+        target="Yes",
+        files={"bar.txt": "hello"},
+    )
+]
+
+@task
+def file_probe():
+    return Task(
+        dataset=dataset,
+        solver=[
+            use_tools([list_files()]), 
+            generate()
+        ],
+        sandbox="docker",
+        scorer=includes(),
+    )
+```
+
+We’ve included `sandbox="docker"` so operations requested through [sandbox()](https://inspect.aisi.org.uk/reference/inspect_ai.util.html.md#sandbox) run in a Docker container. A sandbox environment must be specified at the sample, task, or evaluation level if any tools, agents or scorers call the [sandbox()](https://inspect.aisi.org.uk/reference/inspect_ai.util.html.md#sandbox) function.
+
+Provisioning a sandbox does not automatically run tools, agents or scorers in the container. That code still runs as part of the evaluation; only work that it requests through the [sandbox()](https://inspect.aisi.org.uk/reference/inspect_ai.util.html.md#sandbox) interface runs in the container.
+
+Note that `files` are specified as part of the [Sample](https://inspect.aisi.org.uk/reference/inspect_ai.dataset.html.md#sample). Files can be specified inline using plain text (as depicted above), inline using a base64-encoded data URI, or as a path to a file or remote resource (e.g. S3 bucket). Relative file paths are resolved according to the location of the underlying dataset file.
+
+## Environment Interface
+
+The following instance methods are available to tools, agents and scorers that need to interact with a [SandboxEnvironment](https://inspect.aisi.org.uk/reference/inspect_ai.util.html.md#sandboxenvironment):
+
+### exec()
+
+``` python
+async def exec(
+    self,
+    cmd: list[str],
+    input: str | bytes | None = None,
+    cwd: str | None = None,
+    env: dict[str, str] = {},
+    user: str | None = None,
+    timeout: int | None = None,
+    timeout_retry: bool = True,
+    concurrency: bool = True
+) -> ExecResult[str]:
+    """
+    Raises:
+      TimeoutError: If the specified `timeout` expires.
+      UnicodeDecodeError: May be raised if the sandbox provider
+        cannot decode the command output to UTF-8 and does not
+        support using the UTF-8 replacement character for
+        characters which cannot be decoded.
+      PermissionError: If the user does not have
+        permission to execute the command.
+    """
+    ...
+```
+
+The `exec()` method should enforce an output limit of `SandboxEnvironmentLimits.MAX_EXEC_OUTPUT_SIZE` (default 10MB, configurable via the `INSPECT_SANDBOX_MAX_EXEC_OUTPUT_SIZE` environment variable) and front-truncate its output to the limit when it is exceeded.
+
+To deal with potential unreliability of container services, the `exec()` method includes a `timeout_retry` parameter that defaults to `True`. For sandbox implementations this parameter is *advisory* (they should only use it if potential unreliability exists in their runtime). No more than 2 retries should be attempted and both with timeouts less than 60 seconds. If you are executing commands that are not idempotent (i.e. the side effects of a failed first attempt may affect the results of subsequent attempts) then you can specify `timeout_retry=False` to override this behavior.
+
+### exec_remote()
+
+``` python
+async def exec_remote(
+    self,
+    cmd: list[str],
+    options: (
+      ExecRemoteStreamingOptions
+      | ExecRemoteAwaitableOptions
+      | None
+  ) = None,
+    *,
+    stream: bool = True,
+) -> ExecRemoteProcess | ExecResult[str]:
+    """
+    Raises:
+      TimeoutError: If `timeout` is specified in
+        ExecRemoteAwaitableOptions and the command
+        exceeds it (only applicable when `stream=False`).
+    """
+    ...
+```
+
+The `exec_remote()` options ([ExecRemoteStreamingOptions](https://inspect.aisi.org.uk/reference/inspect_ai.util.html.md#execremotestreamingoptions) and [ExecRemoteAwaitableOptions](https://inspect.aisi.org.uk/reference/inspect_ai.util.html.md#execremoteawaitableoptions)) include a `user` field that requests the command run as the specified user (equivalent to `docker exec --user`). This requires the sandbox tools server to be running as root inside the container. If the server cannot switch users, a `ToolException` is raised. When `user` is omitted, the command runs as the sandbox’s default user (the user `sandbox().exec()` runs as).
+
+### write_file()
+
+``` python
+async def write_file(
+    self, file: str, contents: str | bytes
+) -> None:
+    """
+    Raises:
+      TimeoutError: If the operation times out.
+      PermissionError: If the user does not have
+        permission to write to the specified path.
+      IsADirectoryError: If the file exists already and
+        is a directory.
+    """
+    ...
+```
+
+Note that `write_file()` automatically creates parent directories as required if they don’t exist.
+
+### read_file()
+
+``` python
+async def read_file(
+    self, file: str, text: bool = True
+) -> Union[str | bytes]:
+    """
+    Raises:
+      TimeoutError: If the operation times out.
+      FileNotFoundError: If the file does not exist.
+      UnicodeDecodeError: If an encoding error occurs
+        while reading the file.
+        (only applicable when `text = True`)
+      PermissionError: If the user does not have
+        permission to read from the specified path.
+      IsADirectoryError: If the file is a directory.
+      OutputLimitExceededError: If the file size
+        exceeds the 100 MiB limit.
+    """
+    ...
+```
+
+The [read_file()](https://inspect.aisi.org.uk/reference/inspect_ai.tool.html.md#read_file) method should enforce the `SandboxEnvironmentLimits.MAX_READ_FILE_SIZE` limit (default 100MB, configurable via the `INSPECT_SANDBOX_MAX_READ_FILE_SIZE` environment variable) and raise an `OutputLimitExceededError` when it is exceeded.
+
+The [read_file()](https://inspect.aisi.org.uk/reference/inspect_ai.tool.html.md#read_file) method should preserve newline constructs (e.g. crlf should be preserved not converted to lf). This is equivalent to specifying `newline=""` in a call to the Python `open()` function.
+
+### connection()
+
+``` python
+async def connection(self, *, user: str | None = None) -> SandboxConnection:
+    """
+    Raises:
+       NotImplementedError: For sandboxes that don't provide connections
+       ConnectionError: If sandbox is not currently running.
+    """
+    ...
+```
+
+The `connection()` method is optional, and provides commands that can be used to login to the sandbox container from a terminal or IDE.
+
+### Expected and Unexpected Errors
+
+For each method there is a documented set of errors that are raised: these are *expected* errors and can either be caught by tools or allowed to propagate in which case they will be reported to the model for potential recovery. In addition, *unexpected* errors may occur (e.g. a networking error connecting to a remote container): these errors are not reported to the model and fail the [Sample](https://inspect.aisi.org.uk/reference/inspect_ai.dataset.html.md#sample) with an error state.
+
+## Environment Binding
+
+There are two sandbox environments built in to Inspect and six available as external packages. Dockerfile-compatible sandboxes accept standard `Dockerfile` and `compose.yaml` configuration files.
+
+| Environment Type | Package | Dockerfile | Description |
+|----|----|----|----|
+| `docker` | Built-in | Yes | [Docker](#sec-docker-configuration) local installation. |
+| `k8s` | [inspect-k8s-sandbox](https://pypi.org/project/inspect-k8s-sandbox/) | Yes | [Kubernetes](https://k8s-sandbox.aisi.org.uk/) cluster. |
+| `daytona` | [inspect-sandboxes](https://pypi.org/project/inspect-sandboxes/) | Yes | [Daytona](https://meridianlabs-ai.github.io/inspect_sandboxes/daytona.html) cloud sandbox. |
+| `modal` | [inspect-sandboxes](https://pypi.org/project/inspect-sandboxes/) | Yes | [Modal](https://meridianlabs-ai.github.io/inspect_sandboxes/modal.html) cloud sandbox. |
+| `ec2` | [inspect_ec2_sandbox](https://github.com/UKGovernmentBEIS/inspect_ec2_sandbox) | No | [AWS EC2](https://github.com/UKGovernmentBEIS/inspect_ec2_sandbox) virtual machine. |
+| `proxmox` | [inspect_proxmox_sandbox](https://github.com/UKGovernmentBEIS/inspect_proxmox_sandbox) | No | [Proxmox](https://github.com/UKGovernmentBEIS/inspect_proxmox_sandbox) with virtual machines. |
+| `vagrant` | [inspect_vagrant_sandbox](https://github.com/jasongwartz/inspect_vagrant_sandbox) | No | [Vagrant](https://github.com/jasongwartz/inspect_vagrant_sandbox) virtual machines on any Vagrant-supported hypervisor. |
+| `openshell` | [inspect-openshell-sandbox](https://pypi.org/project/inspect-openshell-sandbox/) | Yes | [NVIDIA OpenShell](https://github.com/32bitsret/inspect-openshell-sandbox) sandboxes with Landlock filesystem and network policies. |
+| `local` | Built-in | No | Local file system (no sandbox). |
+
+The `local` environment always executes as the current effective user. On POSIX systems, `exec(user=...)` accepts that user’s name or UID; other identities raise [SandboxUserUnsupportedError](https://inspect.aisi.org.uk/reference/inspect_ai.util.html.md#sandboxuserunsupportederror) before execution. On other platforms, omit `user`.
+
+Sandbox environment definitions can be bound at the [Sample](https://inspect.aisi.org.uk/reference/inspect_ai.dataset.html.md#sample), [Task](https://inspect.aisi.org.uk/reference/inspect_ai.html.md#task), or [eval()](https://inspect.aisi.org.uk/reference/inspect_ai.html.md#eval) level. Binding precedence goes from [eval()](https://inspect.aisi.org.uk/reference/inspect_ai.html.md#eval), to [Task](https://inspect.aisi.org.uk/reference/inspect_ai.html.md#task) to [Sample](https://inspect.aisi.org.uk/reference/inspect_ai.dataset.html.md#sample), however sandbox config files defined on the [Sample](https://inspect.aisi.org.uk/reference/inspect_ai.dataset.html.md#sample) always take precedence when the sandbox type for the [Sample](https://inspect.aisi.org.uk/reference/inspect_ai.dataset.html.md#sample) is the same as the enclosing [Task](https://inspect.aisi.org.uk/reference/inspect_ai.html.md#task) or [eval()](https://inspect.aisi.org.uk/reference/inspect_ai.html.md#eval).
+
+Here is a [Task](https://inspect.aisi.org.uk/reference/inspect_ai.html.md#task) that defines a `sandbox`:
+
+``` python
+Task(
+    dataset=dataset,
+    plan([
+        use_tools([read_file(), list_files()])), 
+        generate()
+    ]),
+    scorer=match(),
+    sandbox="docker"
+)
+```
+
+By default, any `Dockerfile` and/or `compose.yaml` file within the task directory will be automatically discovered and used. If your compose file has a different name then you can provide an override specification as follows:
+
+``` python
+sandbox=("docker", "attacker-compose.yaml")
+```
+
+### Programmatic Configuration
+
+For more dynamic scenarios, you can construct a [ComposeConfig](https://inspect.aisi.org.uk/reference/inspect_ai.util.html.md#composeconfig) object programmatically rather than using a static YAML file. This is useful when you need to vary container configuration based on task parameters:
+
+``` python
+from inspect_ai.util import ComposeConfig, ComposeService, SandboxEnvironmentSpec
+
+@task
+def my_task(cpus: float = 1.0):
+  config = ComposeConfig(
+    services={
+        "default": ComposeService(
+            image="python:3.12-bookworm",
+            init=True,
+            command="tail -f /dev/null",
+            mem_limit="512m",
+            cpus=cpus,
+            network_mode="none",
+        )
+    }
+  )
+
+  return Task(
+    dataset=dataset,
+    solver=[use_tools([read_file()]), generate()],
+    scorer=match(),
+    sandbox=SandboxEnvironmentSpec("docker", config),
+  )
+```
+
+The [ComposeConfig](https://inspect.aisi.org.uk/reference/inspect_ai.util.html.md#composeconfig) and [ComposeService](https://inspect.aisi.org.uk/reference/inspect_ai.util.html.md#composeservice) classes mirror the structure of Docker Compose files, supporting fields like `image`, `build`, `command`, `environment`, `volumes`, `ports`, `mem_limit`, `cpus`, and more. Extension fields (prefixed with `x-`) are also supported.
+
+## Sandbox Limits
+
+By default, sandboxes limit the size of file reads to 100MB and execution output to 10MB. These limits exist to prevent boundary cases of outputs or executions that don’t terminate and result in OOM or hung evaluations (i.e. they usually indicate an error by the model).
+
+The two limits are not enforced in the same way. [read_file()](https://inspect.aisi.org.uk/reference/inspect_ai.tool.html.md#read_file) always raises `OutputLimitExceededError` when the limit is exceeded. For `exec()` the behaviour depends on the sandbox provider: the built-in providers front-truncate each output stream (keeping only its trailing portion), so `exec()` returns a successful [ExecResult](https://inspect.aisi.org.uk/reference/inspect_ai.util.html.md#execresult) whose `stdout` or `stderr` may be silently incomplete rather than raising. Don’t rely on an exception to detect `exec()` overflow—this matters in particular when parsing structured output such as JSON. If a command can produce output near the limit and you need all of it, have the command write to a file and read it with [read_file()](https://inspect.aisi.org.uk/reference/inspect_ai.tool.html.md#read_file).
+
+You can however increase these limits using environment variables. For example, here we set the read file limit to 200MB and the exec output size to 20MB:
+
+``` bash
+export INSPECT_SANDBOX_MAX_READ_FILE_SIZE=209715200
+export INSPECT_SANDBOX_MAX_EXEC_OUTPUT_SIZE=20971520 
+```
+
+## Per Sample Setup
+
+The [Sample](https://inspect.aisi.org.uk/reference/inspect_ai.dataset.html.md#sample) class includes `sandbox`, `files` and `setup` fields that are used to specify per-sample sandbox config, file assets, and setup logic.
+
+### Sandbox
+
+You can either define a default `sandbox` for an entire [Task](https://inspect.aisi.org.uk/reference/inspect_ai.html.md#task) as illustrated above, or alternatively define a per-sample `sandbox`. For example, you might want to do this if each sample has its own Dockerfile and/or custom compose configuration file. (Note, each sample gets its own sandbox *instance*, even if the sandbox is defined at Task level. So samples do not interfere with each other’s sandboxes.)
+
+The `sandbox` can be specified as a string (e.g. `"docker`“), a tuple of sandbox type and config file (e.g. `("docker", "compose.yaml")`), or a `SandboxEnvironmentSpec` with a [ComposeConfig](https://inspect.aisi.org.uk/reference/inspect_ai.util.html.md#composeconfig) for [Programmatic Configuration](#programmatic-configuration). This last option is particularly useful when you need to vary container configuration (e.g. docker image) on a per-sample basis.
+
+### Files
+
+Sample `files` is a `dict[str,str]` that specifies files to copy into sandbox environments. The key of the `dict` specifies the name of the file to write. By default files are written into the default sandbox environment but they can optionally include a prefix indicating that they should be written into a specific sandbox environment (e.g. `"victim:flag.txt": "flag.txt"`).
+
+The value of the `dict` can be either the file contents, a file path, or a base64 encoded [Data URL](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URLs).
+
+### Script
+
+If there is a Sample `setup` bash script it will be executed within the default sandbox environment after any Sample `files` are copied into the environment. The `setup` field can be either the script contents, a file path containing the script, or a base64 encoded [Data URL](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URLs).
+
+## Docker Configuration
+
+### Installation
+
+Before using Docker sandbox environments, please be sure to install [Docker Engine](https://docs.docker.com/engine/install/). Inspect checks the connected Docker daemon and requires version 24.0.6 or greater.
+
+Docker Compose is checked separately: Inspect requires version 2.21.0 or greater, and version 2.22.0 or greater when Inspect pulls sandbox images from a registry.
+
+If you plan on running evaluations with large numbers of concurrent containers (\> 30) you should also configure Docker’s [default address pools](https://straz.to/2021-09-08-docker-address-pools/) to accommodate this.
+
+### Task Configuration
+
+You can use the Docker sandbox environment without any special configuration, however most commonly you’ll provide explicit configuration via either a `Dockerfile` or a [Docker Compose](https://docs.docker.com/compose/compose-file/) configuration file (`compose.yaml`).
+
+Here is how Docker sandbox environments are created based on the presence of `Dockerfile` and/or `compose.yml` in the task directory:
+
+| Config Files | Behavior |
+|----|----|
+| None | Creates a sandbox environment based on the standard [inspect-tool-support](https://hub.docker.com/r/aisiuk/inspect-tool-support) image. |
+| `Dockerfile` | Creates a sandbox environment by building the image. |
+| `compose.yaml` | Creates sandbox environment(s) based on `compose.yaml`. |
+
+Providing a `compose.yaml` is not strictly required, as Inspect will automatically generate one as needed. The generated Compose configuration sets `network_mode: none`, which prevents network access at container runtime.
+
+Supplying a custom Compose configuration — whether a Compose file or [ComposeConfig](https://inspect.aisi.org.uk/reference/inspect_ai.util.html.md#composeconfig) — *replaces* the generated configuration rather than extending it, including its `network_mode: none`. Docker Compose’s default is a project-scoped network with outbound Internet access, so include `network_mode: none` in your own configuration unless the evaluation requires networking.
+
+If the evaluation does need network access, omit `network_mode` — that provides outbound access while keeping the project’s network isolated (`network_mode: bridge` would instead join Docker’s shared built-in bridge, so prefer omitting it). When services only need to communicate with each other, use an [internal network](https://docs.docker.com/reference/compose-file/networks/#internal), which allows service-to-service traffic without external connectivity.
+
+Here’s an example of a `compose.yaml` file that sets container resource limits and isolates it from all network interactions including internet access:
+
+    compose.yaml
+
+``` yaml
+services:
+  default: 
+    build: .
+    init: true
+    command: tail -f /dev/null
+    cpus: 1.0
+    mem_limit: 0.5gb
+    network_mode: none
+```
+
+The `network_mode: none` entry applies only to processes inside the container. It does not restrict network access from the evaluation process or model provider. Code in custom tools, agents or scorers may therefore access the internet outside the Docker sandbox. Tools that do not use the Inspect sandbox, such as [web_search()](https://inspect.aisi.org.uk/reference/inspect_ai.tool.html.md#web_search), are also unaffected. The `init: true` entry enables the container to respond to shutdown requests. The `command` is provided to prevent the container from exiting after it starts.
+
+Here is what a simple `compose.yaml` would look like for a local pre-built image named `ctf-agent-environment` (resource limits excluded for brevity):
+
+    compose.yaml
+
+``` yaml
+services:
+  default: 
+    image: ctf-agent-environment
+    x-local: true
+    init: true
+    command: tail -f /dev/null
+    network_mode: none
+```
+
+The `ctf-agent-environment` is not an image that exists on a remote registry, so we add the `x-local: true` to indicate that it should not be pulled. If local images are tagged, they also will not be pulled by default (so `x-local: true` is not required). For example:
+
+    compose.yaml
+
+``` yaml
+services:
+  default: 
+    image: ctf-agent-environment:1.0.0
+    init: true
+    command: tail -f /dev/null
+    network_mode: none
+```
+
+If we are using an image from a remote registry we similarly don’t need to include `x-local`:
+
+    compose.yaml
+
+``` yaml
+services:
+  default:
+    image: python:3.12-bookworm
+    init: true
+    command: tail -f /dev/null
+    network_mode: none
+```
+
+See the [Docker Compose](https://docs.docker.com/compose/compose-file/) documentation for information on all available container options.
+
+### Prebuilt Images
+
+If the images for your sandboxes are already present in the local Docker image store (for example, on an air-gapped machine that cannot reach a registry), pass `--sandbox-prebuilt` to skip image builds entirely:
+
+``` bash
+inspect eval ctf.py --sandbox-prebuilt
+```
+
+Or from Python:
+
+``` python
+eval("ctf.py", sandbox_prebuilt=True)
+```
+
+With this option set, task startup verifies images instead of building them. Every service with a `build` section or `x-local: true` must name an `image` that already exists locally, and Inspect’s internal images (e.g. for the computer tool) must also be present. Other services use their local image when present, and a failed pull of a missing one is also an error. A missing image results in an error before any samples run. The option can also be set via the `INSPECT_EVAL_SANDBOX_PREBUILT` environment variable.
+
+### Multiple Environments
+
+In some cases you may want to create multiple sandbox environments (e.g. if one environment has complex dependencies that conflict with the dependencies of other environments). To do this specify multiple named services:
+
+    compose.yaml
+
+``` yaml
+services:
+  default:
+    image: ctf-agent-environment
+    x-local: true
+    init: true
+    cpus: 1.0
+    mem_limit: 0.5gb
+    network_mode: none
+  victim:
+    image: ctf-victim-environment
+    x-local: true
+    init: true
+    cpus: 1.0
+    mem_limit: 1gb
+    network_mode: none
+```
+
+The first environment listed is the “default” environment, and can be accessed from within a tool with a normal call to [sandbox()](https://inspect.aisi.org.uk/reference/inspect_ai.util.html.md#sandbox). Other environments would be accessed by name, for example:
+
+``` python
+sandbox()          # default sandbox environment
+sandbox("victim")  # named sandbox environment
+```
+
+If you define multiple sandbox environments the default sandbox environment will be determined as follows:
+
+1.  First, take any sandbox environment named `default`;
+2.  Then, take any environment with the `x-default` key set to `true`;
+3.  Finally, use the first sandbox environment as the default.
+
+You can use the [sandbox_default()](https://inspect.aisi.org.uk/reference/inspect_ai.util.html.md#sandbox_default) context manager to temporarily change the default sandbox (for example, if you have tools that always target the default sandbox that you want to temporarily redirect):
+
+``` python
+with sandbox_default("victim"):
+    # call tools, etc.
+```
+
+### Infrastructure
+
+Note that in many cases you’ll want to provision additional infrastructure (e.g. other hosts or volumes). For example, here we define an additional container (“writer”) as well as a volume shared between the default container and the writer container:
+
+``` yaml
+services:
+  default: 
+    image: ctf-agent-environment
+    x-local: true
+    init: true
+    network_mode: none
+    volumes:
+      - ctf-challenge-volume:/shared-data
+    
+  writer:
+    image: ctf-challenge-writer
+    x-local: true
+    init: true
+    network_mode: none
+    volumes:
+      - ctf-challenge-volume:/shared-data
+volumes:
+  ctf-challenge-volume:
+```
+
+See the documentation on [Docker Compose](https://docs.docker.com/compose/compose-file/) files for information on their full schema and feature set.
+
+### Sample Metadata
+
+You might want to interpolate Sample metadata into your Docker compose files. You can do this using the standard compose environment variable syntax, where any metadata in the Sample is made available with a `SAMPLE_METADATA_` prefix. For example, you might have a per-sample memory limit (with a default value of 0.5gb if unspecified):
+
+``` yaml
+services:
+  default:
+    image: ctf-agent-environment
+    x-local: true
+    init: true
+    cpus: 1.0
+    mem_limit: ${SAMPLE_METADATA_MEMORY_LIMIT-0.5gb}
+    network_mode: none
+```
+
+Note that `-` suffix that provides the default value of 0.5gb. This is important to include so that when the compose file is read *without* the context of a Sample (for example, when pulling/building images at startup) that a default value is available.
+
+### Mounting Host Directories
+
+A malicious agent with write access to your host machine through a volume mount can change files outside the sandbox. Even if it is restricted to a single directory, it could rewrite `compose.yml` to give future samples or evaluations more privileges than you intended, or redirect a later sample’s mount with a symlink, exposing host files you did not intend to share.
+
+For security, Inspect blocks volume mounts that give Docker sandboxes write access to files or directories on the host.
+
+To share a host directory read-only, add `:ro` to the mount:
+
+``` yaml
+services:
+  default:
+    image: ubuntu:24.04
+    volumes:
+      - ./host-dir:/container-dir:ro
+```
+
+Read-only sharing requires Docker Engine 25+, Compose 2.24+, and Linux kernel 5.12+ on the Docker host. Inspect also checks that the container runtime can keep mounts inside the shared directory read-only. These checks apply to Compose `configs` and `secrets` too.
+
+Inspect also rejects read-only host mounts if the service’s privileges or mount options could make them writable.
+
+These checks only cover mounts; privileged containers, host devices or Docker sockets can still give an agent access to the host.
+
+For writable data, you can copy inputs with [`Sample.files`](#files) or use a [Docker-managed volume](#infrastructure).
+
+> **CAUTION: CautionUnsafe host access**
+>
+> Should your eval require unsafe host write access, you may allow unsafe host access for all services in your Compose file:
+>
+> ``` yaml
+> x-inspect_docker_sandbox:
+>   unsafe_allow_writable_host_mounts: true
+> ```
+>
+> This opt-in is also required for `volumes_from` and volumes with custom names or drivers, driver options, or external storage. It also bypasses the read-only compatibility checks above.
+
+## Environment Cleanup
+
+When a task is completed, Inspect will automatically cleanup resources associated with the sandbox environment (e.g. containers, images, and networks). If for any reason resources are not cleaned up (e.g. if the cleanup itself is interrupted via Ctrl+C) you can globally cleanup all environments with the `inspect sandbox cleanup` command. For example, here we cleanup all environments associated with the `docker` provider:
+
+``` bash
+$ inspect sandbox cleanup docker
+```
+
+In some cases you may *prefer* not to cleanup environments. For example, you might want to examine their state interactively from the shell in order to debug an agent. Use the `--no-sandbox-cleanup` argument to do this:
+
+``` bash
+$ inspect eval ctf.py --no-sandbox-cleanup
+```
+
+You can also do this when using `eval(`):
+
+``` python
+eval("ctf.py", sandbox_cleanup = False)
+```
+
+When you do this, you’ll see a list of sandbox containers printed out which includes the ID of each container. You can then use this ID to get a shell inside one of the containers:
+
+``` bash
+docker exec -it inspect-task-ielnkhh-default-1 bash -l
+```
+
+When you no longer need the environments, you can clean them up either all at once or individually by project name. The printed list ends with the cleanup command for each environment:
+
+``` bash
+# cleanup all environments
+inspect sandbox cleanup docker
+
+# cleanup single environment
+inspect sandbox cleanup docker inspect-task-ielnkhh
+```
+
+## Resource Management
+
+Creating and executing code within Docker containers can be expensive both in terms of memory and CPU utilisation. Inspect provides some automatic resource management to keep usage reasonable in the default case. This section describes that behaviour as well as how you can tune it for your use-cases.
+
+### Max Sandboxes
+
+The `max_sandboxes` option determines how many sandboxes can be executed in parallel. Individual sandbox providers can establish their own default limits (for example, the Docker provider defaults to twice the number of processors available to the eval — which under a container CPU limit such as `docker --cpus` or a Kubernetes `limits.cpu` is the limit rather than the host’s processor count). You can modify this option as required, but be aware that container runtimes have resource limits, and pushing up against and beyond them can lead to instability and failed evaluations.
+
+When a `max_sandboxes` is applied, an indicator at the bottom of the task status screen will be shown:
+
+[![](images/task-max-sandboxes.png)](images/task-max-sandboxes.png)
+
+The `max_sandboxes` limit is shared across all tasks using the same sandbox provider type. Each provider type has its own independent limit.
+
+### Max Subprocesses
+
+The `max_subprocesses` option determines how many subprocess calls can run in parallel. By default, this is the number of processors available to the eval (under a container CPU limit, that limit rather than the host’s processor count). Depending on the nature of execution done inside sandbox environments, you might benefit from increasing or decreasing `max_subprocesses`.
+
+### Max Samples
+
+Another consideration is `max_samples`, which is the maximum number of samples to run concurrently within a task. Larger numbers of concurrent samples will result in higher throughput, but will also result in completed samples being written less frequently to the log file, and consequently less total recoverable samples in the case of an interrupted task.
+
+By default, `max_samples` tracks the model’s current connection limit: with adaptive connections (the default) it follows the controller, and with static concurrency it is set to `max_connections` (note that it would rarely make sense to set it *lower* than `max_connections`). A small limit will typically result in samples being written to the log frequently. On the other hand, setting a very large limit (e.g. 100 `max_connections` for a dataset with 100 samples) may result in very few recoverable samples in the case of an interruption.
+
+> **NOTE:**
+>
+> If your task involves tool calls and/or sandboxes, then you will likely want to set `max_samples` to greater than `max_connections`, as your samples will sometimes be calling the model (using up concurrent connections) and sometimes be executing code in the sandbox (using up concurrent subprocess calls). While running tasks you can see the utilization of connections and subprocesses in realtime and tune your `max_samples` accordingly.
+
+### Container Resources
+
+Use a `compose.yaml` file to limit the resources consumed by each running container. For example:
+
+    compose.yaml
+
+``` yaml
+services:
+  default: 
+    image: ctf-agent-environment
+    x-local: true
+    command: tail -f /dev/null
+    cpus: 1.0
+    mem_limit: 0.5gb
+    network_mode: none
+```
+
+## Troubleshooting
+
+To diagnose sandbox execution issues (e.g. commands that don’t terminate properly, container lifecycle issues, etc.) you should use Inspect’s [Tracing](https://inspect.aisi.org.uk/tracing.html.md) facility.
+
+Trace logs record the beginning and end of calls to [subprocess()](https://inspect.aisi.org.uk/reference/inspect_ai.util.html.md#subprocess) (e.g. tool calls that run commands in sandboxes) as well as control commands sent to Docker Compose. The `inspect trace anomalies` subcommand then enables you to query for commands that don’t terminate, timeout, or have errors. See the article on [Tracing](https://inspect.aisi.org.uk/tracing.html.md) for additional details.
+
+
+---
+
+Source: https://inspect.aisi.org.uk/sandboxing.html.md
+
+Snapshot retrieved 2026-10-24. Relative links resolved for standalone reading.
+
+## License
+
+MIT License
+
+Copyright (c) 2024 UK AI Security Institute
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

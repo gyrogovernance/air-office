@@ -1,0 +1,3 @@
+{
+ "schema_version":1,"id":"chat","title":"Chat","purpose":"Owns the conversation message graph and canonical run/event persistence.","kind":"capability","lifecycle":"active","ownership":{"entities":["conversation","message","message-branch","chat-run"],"table_prefixes":["chat_"]},"entrypoints":{"domain":"src/chat.domain.public.ts","service":"src/chat.service.public.ts"},"foundation_dependencies":["contracts"],"required_ports":[],"contracts":["chat-stream","chat-run"],"events":{"emits":[],"consumes":[]},"feature_ids":["F-004"],"scenario_ids":["A-002","A-003","T-004"],"documentation":[".dev/air-office/02-architecture.plan.md"]
+}

@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://air-office.dev/contracts/chat-event.schema.json",
+  "title": "Chat stream event envelope",
+  "description": "Canonical streaming envelope every provider adapter translates into. One envelope carries exactly one validated event payload for a single run.",
+  "type": "object",
+  "required": ["protocolVersion", "eventId", "runId", "correlationId", "sequence", "timestamp", "type", "payload"],
+  "additionalProperties": false,
+  "properties": {
+    "protocolVersion": { "type": "integer", "const": 1 },
+    "eventId": { "type": "string", "minLength": 1 },
+    "runId": { "type": "string", "minLength": 1 },
+    "correlationId": { "type": "string", "minLength": 1 },
+    "sequence": { "type": "integer", "minimum": 0 },
+    "timestamp": { "type": "string", "format": "date-time" },
+    "type": {
+      "type": "string",
+      "enum": ["text-delta", "message-complete", "tool-arguments-fragment", "tool-request", "tool-result", "source-attachment", "usage", "completion", "failure"]
+    },
+    "payload": { "type": "object" }
+  },
+  "allOf": [
+    { "if": { "properties": { "type": { "const": "text-delta" } } }, "then": { "properties": { "payload": { "$ref": "#/$defs/textDelta" } } } },
+    { "if": { "properties": { "type": { "const": "message-complete" } } }, "then": { "properties": { "payload": { "$ref": "#/$defs/messageComplete" } } } },
+    { "if": { "properties": { "type": { "const": "tool-arguments-fragment" } } }, "then": { "properties": { "payload": { "$ref": "#/$defs/toolArgumentsFragment" } } } },
+    { "if": { "properties": { "type": { "const": "tool-request" } } }, "then": { "properties": { "payload": { "$ref": "#/$defs/toolRequest" } } } },
+    { "if": { "properties": { "type": { "const": "tool-result" } } }, "then": { "properties": { "payload": { "$ref": "#/$defs/toolResult" } } } },
+    { "if": { "properties": { "type": { "const": "source-attachment" } } }, "then": { "properties": { "payload": { "$ref": "#/$defs/sourceAttachment" } } } },
+    { "if": { "properties": { "type": { "const": "usage" } } }, "then": { "properties": { "payload": { "$ref": "#/$defs/usage" } } } },
+    { "if": { "properties": { "type": { "const": "completion" } } }, "then": { "properties": { "payload": { "$ref": "#/$defs/completion" } } } },
+    { "if": { "properties": { "type": { "const": "failure" } } }, "then": { "properties": { "payload": { "$ref": "#/$defs/failure" } } } }
+  ],
+  "$defs": {
+    "textDelta": {
+      "type": "object",
+      "required": ["messageId", "text"],
+      "additionalProperties": false,
+      "properties": { "messageId": { "type": "string", "minLength": 1 }, "text": { "type": "string" } }
+    },
+    "messageComplete": {
+      "type": "object",
+      "required": ["messageId", "text"],
+      "additionalProperties": false,
+      "properties": { "messageId": { "type": "string", "minLength": 1 }, "text": { "type": "string" } }
+    },
+    "toolArgumentsFragment": {
+      "type": "object",
+      "required": ["toolCallId", "name", "argumentsDelta"],
+      "additionalProperties": false,
+      "properties": { "toolCallId": { "type": "string", "minLength": 1 }, "name": { "type": "string", "minLength": 1 }, "argumentsDelta": { "type": "string" } }
+    },
+    "toolRequest": {
+      "type": "object",
+      "required": ["toolCallId", "name", "arguments"],
+      "additionalProperties": false,
+      "properties": { "toolCallId": { "type": "string", "minLength": 1 }, "name": { "type": "string", "minLength": 1 }, "arguments": { "type": "object" } }
+    },
+    "toolResult": {
+      "type": "object",
+      "required": ["toolCallId", "status"],
+      "additionalProperties": false,
+      "properties": { "toolCallId": { "type": "string", "minLength": 1 }, "status": { "type": "string", "enum": ["ok", "error"] }, "result": {}, "message": { "type": "string" } }
+    },
+    "sourceAttachment": {
+      "type": "object",
+      "required": ["messageId", "sourceId", "label"],
+      "additionalProperties": false,
+      "properties": { "messageId": { "type": "string", "minLength": 1 }, "sourceId": { "type": "string", "minLength": 1 }, "label": { "type": "string", "minLength": 1 }, "resolved": { "type": "boolean" } }
+    },
+    "usage": {
+      "type": "object",
+      "required": ["inputTokens", "outputTokens"],
+      "additionalProperties": false,
+      "properties": { "inputTokens": { "type": "integer", "minimum": 0 }, "outputTokens": { "type": "integer", "minimum": 0 } }
+    },
+    "completion": {
+      "type": "object",
+      "required": ["reason"],
+      "additionalProperties": false,
+      "properties": { "reason": { "type": "string", "enum": ["stop", "length", "tool", "cancelled"] } }
+    },
+    "failure": {
+      "type": "object",
+      "required": ["code", "message"],
+      "additionalProperties": false,
+      "properties": { "code": { "type": "string", "minLength": 1 }, "message": { "type": "string", "minLength": 1 }, "retryable": { "type": "boolean" } }
+    }
+  }
+}

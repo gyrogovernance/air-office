@@ -1,0 +1,3 @@
+{
+ "schema_version":1,"id":"jobs","title":"Jobs","purpose":"Owns durable job lifecycle, attempts, leases, progress and checkpoints for background work such as source extraction, indexing, model acquisition and engine acquisition.","kind":"capability","lifecycle":"active","ownership":{"entities":["job","attempt","lease","job-event"],"table_prefixes":["job_"]},"entrypoints":{"domain":"src/jobs.domain.public.ts","service":"src/jobs.service.public.ts"},"foundation_dependencies":["contracts"],"required_ports":["job-store"],"contracts":["job-lifecycle"],"events":{"emits":[],"consumes":[]},"feature_ids":["F-005","F-006","F-016","F-017"],"scenario_ids":["A-003","A-004","T-014","T-016","T-026","T-031"],"documentation":[".dev/air-office/02-architecture.plan.md"]
+}

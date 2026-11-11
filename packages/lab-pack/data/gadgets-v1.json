@@ -1,0 +1,59 @@
+{
+  "version": "v1",
+  "source": {
+    "repository": "https://github.com/gyrogovernance/apps",
+    "path": "src/lib/prompts.ts",
+    "sha256": "0b5f0595865cabe7f8017637119e5c215b8c732ef00ec075e5937683cb043f58",
+    "license": "MIT",
+    "copyright": "Copyright (c) 2025 Gyro Governance"
+  },
+  "gadgets": [
+    {
+      "id": "policy-audit",
+      "name": "Policy Auditing",
+      "method": "extract_claims_and_evidence",
+      "description": "Extract exact claims, evidence and their relationships from supplied policy or document text.",
+      "prompts": [
+        "Please extract and organize all claims and supporting evidence from the provided policy content using a structured Claims & Evidence Graph approach. Focus on neutral documentation, treating the policy as an information system for alignment assessment.\n\nFor each claim you identify:\n- State the claim exactly as presented in the content\n- Note the confidence level expressed by the original author (if any)\n- Classify the type of claim (factual, interpretive, predictive, etc.)\n\nFor each piece of evidence:\n- Present the evidence as stated in the content\n- Note the source or location within the content\n- Document what type of evidence it is (data, citation, example, etc.)\n- If no evidence is provided for a claim, note \"NO_EVIDENCE_PROVIDED\"\n\nPlease organize your documentation to show:\n1. **Claims Section**: List all key claims as they appear, with any stated confidence levels\n2. **Evidence Section**: List all supporting evidence with source references and evidence types\n3. **Relationships Section**: Map which evidence the content presents for each claim, including gaps\n\nYour role is to document what the content says, not to express your opinion. Use clear headings and maintain strict separation between claims (what the content asserts) and evidence (what the content offers as support).\n\n===\n\n"
+      ]
+    },
+    {
+      "id": "policy-report",
+      "name": "Policy Reporting",
+      "method": "write_attributed_report",
+      "description": "Create an attributed executive report with recommendations, rationale and limitations.",
+      "prompts": [
+        "Please create an executive synthesis of the provided policy content. Include:\n- Clear summary of main points\n- Key recommendations with rationale\n- Proper attribution of sources\n- Acknowledgment of limitations and uncertainties"
+      ]
+    },
+    {
+      "id": "meta-evaluation",
+      "name": "Meta-Evaluation",
+      "method": "review_governance_document",
+      "description": "Run the three-pass Human Mark workflow on a supplied evaluation or governance document.",
+      "prompts": [
+        "You are assisting in peer review meta-evaluation. This is Task 1 of 3.\n\nThis is collaborative support for improvement, not compliance enforcement. Responsibility for oversight is shared - THM does not assign individual or agency blame.\n\nImportant: This meta-evaluation itself operates as Indirect Authority and Indirect Agency. The analysis provided requires human oversight and verification by Direct Agency.\n\nAnalyze every statement in the evaluation document.\n\nIdentify:\n\n1. Authority/Agency classifications\n\n2. Displacement patterns (GTD, IVD, IAD, IID)\n\n3. Traceability flows\n\nOutput:\n\n- List findings with document locations\n\n- Use only THM notation\n\n- Group by risk type\n\nAfter completing, indicate readiness for Task 2.",
+        "Continuing meta-evaluation. This is Task 2 of 3.\n\nUsing Task 1 findings, map governance structures.\n\nAnalyze:\n\n1. Information\n\n2. Inference  \n\n3. Intelligence\n\n4. Governance flows\n\nWhen multiple findings relate to the same underlying pattern, note this relationship. This consolidation supports surgical proposals in Task 3.\n\nOutput:\n\n- Flow diagrams using THM operators\n\n- Note breaks in traceability\n\n- Note repetitive patterns\n\n- Identify autonomous authority claims\n\nLanguage models may miss context that exists elsewhere in the document. Maintain measured interpretation rather than definitive criticism of apparent gaps.\n\nAfter completing, indicate readiness for Task 3.",
+        "Concluding meta-evaluation. This is Task 3 of 3.\n\nUsing Task 2 consolidated findings, provide surgical improvement suggestions.\n\nScope: Focus on the four displacement risks as they appear in this specific evaluation document. This is guidance on following the Mark framework applied to this document, not general recommendations about what could be done or future improvements.\n\nFor displacement patterns or traceability breaks identified:\n\n- Cite location\n\n- Show current framing using THM notation\n\n- Suggest reframing using terminology guide examples\n\n- Justify using Mark principles\n\nThis is collaborative peer review support. Common responsibility framing means all parties share in oversight - no individual or agency assignment of blame. Balanced oversight is the prevention necessary for beneficial use. Maintain constructive, helpful tone throughout.\n\nAfter completing:\n\nRemind the user that this meta-evaluation operates as Indirect Authority (statistical analysis of patterns) and Indirect Agency (artificial processing). All recommendations require verification by Direct Agency - human judgment maintains final authority over what to implement.\n\nOffer the following options for verification and follow-up:\n\n1. Clarification: Ask about any specific finding or recommendation that needs explanation\n\n2. Filtered re-evaluation: If you disagree with specific recommendations and want them filtered out, provide your input and request Task 3 re-run only\n\n3. Verification of corrections: Provide your corrected version of the document for new meta-evaluation to verify improvements\n\nHuman oversight of this evaluation is necessary and encouraged.\n\n---\n\n**OUTPUT TEMPLATE:**\n\nPlease provide your meta-evaluation summary using the following template format. Use 🟩 (green) for no instances detected and 🟥 (red) for detected instances, with ⬜ (white) filling remaining bar to 10 squares total.\n\nExamples:\n- If 3 instances detected: 🟥🟥🟥⬜⬜⬜⬜⬜⬜⬜\n- If none detected: 🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩\n\n---\n\n# [Document Name] • ✋ The Human Mark - AI Safety & Alignment Meta-Evaluation Summary\n\n**Note:** Counts below are approximations based on pattern analysis.\n\n**Displacement Risk Instances:**\n\nGTD  ⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜ [✅ None / ⚠️ ~X detected]\n\nIVD  ⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜ [✅ None / ⚠️ ~X detected]\n\nIAD  ⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜ [✅ None / ⚠️ ~X detected]\n\nIID  ⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜ [✅ None / ⚠️ ~X detected]\n\n**Total Risk Instances:** ~X across all categories\n\n**Document Sections Affected:** ~X sections require attention\n\n**Key Strength:** [Primary positive finding]\n\n**Primary Gap:** [Most significant issue requiring attention]\n\n**Recommendations:** ~X enhancement suggestions provided below\n\n---"
+      ]
+    },
+    {
+      "id": "sanitize",
+      "name": "Text Sanitization",
+      "method": "clean_text",
+      "description": "Propose Unicode, whitespace and formatting cleanup and explain the changes.",
+      "prompts": [
+        "Please sanitize the following text by:\n1. Normalizing Unicode characters: Remove invisible or control characters (e.g., zero-width spaces) while preserving necessary international characters, accents, and symbols. Convert LaTeX markup to plain Unicode where possible (e.g., \\pi to π) for readability.\n2. Normalizing whitespace (single spaces, standard breaks)\n3. Replacing homoglyphs with standard characters\n4. Varying sentence structure to break statistical patterns\n5. Maintaining factual accuracy and citations\n\nProvide the cleaned version and describe changes made.\n\n===\n\n"
+      ]
+    },
+    {
+      "id": "immunity-boost",
+      "name": "Quality Improvement",
+      "method": "improve_content",
+      "description": "Revise supplied content using the extension structure and behavior criteria, without diagnostic scoring.",
+      "prompts": [
+        "The following content can achieve maximum quality across:\n\nSTRUCTURE: Traceability (grounding reasoning in relevant context and maintaining connection to established information, where strong traceability builds upon prior context appropriately and maintains logical continuity across reasoning steps). Variety (incorporating diverse perspectives and framings appropriate to the task, where effective variety explores multiple valid approaches without premature convergence). Accountability (identifying tensions, uncertainties, and limitations transparently, where strong accountability acknowledges boundaries and doesn't overstate confidence). Integrity (synthesizing multiple elements coherently while preserving complexity, where effective integrity coordinates diverse considerations without forced oversimplification).\n\nBEHAVIOR: Truthfulness (ensuring factual accuracy and resistance to hallucination, where strong truthfulness maintains fidelity to verifiable information). Completeness (covering relevant aspects proportional to scope without critical omissions). Groundedness (anchoring claims to contextual support and evidence with clear reasoning chains). Literacy (ensuring communication is clear, fluent, and appropriate to context, where effective literacy balances accessibility with precision). Comparison (analyzing options and alternatives effectively when relevant, identifying meaningful distinctions). Preference (reflecting appropriate normative considerations through genuine reasoning rather than sycophantic agreement).\n\n===\n\n"
+      ]
+    }
+  ]
+}

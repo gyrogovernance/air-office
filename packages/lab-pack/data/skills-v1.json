@@ -1,0 +1,11 @@
+{
+  "version": "v1",
+  "skills": [
+    {
+      "id": "the-human-mark",
+      "name": "The Human Mark",
+      "description": "The epistemic taxonomy of Authority and Agency. Use as grounding when human direction, evidence, interpretation, or judgement must stay traceable to its source.",
+      "source": "the-human-mark/SKILL.md"
+    }
+  ]
+}

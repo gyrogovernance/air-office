@@ -1,0 +1,6 @@
+def sanitize(root: str, candidate: str) -> str:
+    """Join and containment check for untrusted relative paths."""
+    joined = os.path.normpath(os.path.join(root, candidate))
+    if os.path.commonpath([root, joined]) != root:
+        raise ValueError("path escapes the authorized root")
+    return joined

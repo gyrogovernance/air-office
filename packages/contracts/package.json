@@ -1,0 +1,18 @@
+{
+  "name": "@office/contracts",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./file": "./src/file.contracts.public.ts",
+    "./service": "./src/file.contracts.service.public.ts",
+    "./chat": "./src/chat/chat.contracts.public.ts",
+    "./document": "./src/document.contracts.public.ts",
+    "./knowledge": "./src/knowledge.contracts.public.ts",
+    "./job": "./src/job.contracts.public.ts",
+    "./export": "./src/export.contracts.public.ts",
+    "./rich-document": "./src/rich-document.contracts.public.ts",
+    "./tool": "./src/tool.contracts.public.ts",
+    "./capability": "./src/capability.contracts.public.ts"
+  }
+}

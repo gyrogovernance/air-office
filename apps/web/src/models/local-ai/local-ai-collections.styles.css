@@ -1,0 +1,64 @@
+.local-ai-collections {
+  display: grid;
+  gap: 16px;
+  font-size: var(--font-size-body);
+  min-width: 0;
+}
+.local-ai-collections h3,
+.local-ai-collections h4,
+.local-ai-collections p {
+  margin: 0;
+}
+.local-ai-collections p {
+  line-height: 1.5;
+}
+.local-ai-collections fieldset {
+  display: grid;
+  gap: 12px;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  min-width: 0;
+}
+.local-ai-collections legend {
+  font-weight: 600;
+  padding: 0 0 12px;
+}
+.local-ai-collections label {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+}
+/* HeroUI Input/TextArea own the field paint; layout only. */
+.local-ai-collections input:not([type='checkbox']),
+.local-ai-collections textarea {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+}
+.local-ai-collections textarea {
+  min-height: 88px;
+  resize: vertical;
+}
+.local-ai-collections .collection-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow-wrap: anywhere;
+}
+.local-ai-collections .collection-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+/* HeroUI components handle their own focus rings */
+.local-ai-collections pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  max-height: 320px;
+  overflow: auto;
+}
+.local-ai-collections .collection-review {
+  display: grid;
+  gap: 12px;
+}

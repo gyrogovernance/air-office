@@ -1,0 +1,298 @@
+{
+  "schema_version": 1,
+  "generated_by": "fixtures/build_fixtures.py",
+  "engine": "docling (optional; pdf, docx and image entries refuse without it)",
+  "fixtures": [
+    {
+      "file": "clean.pdf",
+      "sha256": "e438e8d263a100877826a0c79726fce972d14310d1d4d18ffe464d2e02507fbb",
+      "bytes": 1497,
+      "kind": "pdf",
+      "contains": [
+        "AIR Office clean extraction sample",
+        "stable page anchors",
+        "draft recovery"
+      ],
+      "warnings": [],
+      "page_count": 1
+    },
+    {
+      "file": "code-listing.txt",
+      "sha256": "ffb12181d0f80c14ccbd6b775e583fd064b91a26525ec8c2e0ed47f7eb57f508",
+      "bytes": 312,
+      "kind": "text",
+      "contains": [
+        "def sanitize(root: str, candidate: str) -> str:",
+        "path escapes the authorized root",
+        "return joined"
+      ],
+      "warnings": [],
+      "page_count": null
+    },
+    {
+      "file": "corrupt.pdf",
+      "sha256": "1e9b15acdbc73abe1903075f1cc478100f67897744336729e627b6302e3f8907",
+      "bytes": 709,
+      "kind": "pdf",
+      "requires_engine": true,
+      "contains": [],
+      "warnings_any": [
+        "corrupt",
+        "empty-content",
+        "unsupported-format"
+      ],
+      "page_count": null
+    },
+    {
+      "file": "duplicate-plain.txt",
+      "sha256": "b1d51275ebc5c04fd0d2fb41d8d85d5c4a5c2fca33fecb1a36adbaae79948682",
+      "bytes": 187,
+      "kind": "text",
+      "duplicate_of": "plain-utf8.txt",
+      "contains": [
+        "quick brown fox"
+      ],
+      "warnings": [],
+      "page_count": null
+    },
+    {
+      "file": "empty.txt",
+      "sha256": "7574df7474b5d2cc87cd9de04682da18206e7ba3abf926c2f423a9e904c92487",
+      "bytes": 5,
+      "kind": "text",
+      "contains": [],
+      "warnings": [
+        "empty-content"
+      ],
+      "page_count": null
+    },
+    {
+      "file": "encrypted.pdf",
+      "sha256": "a9dc7dcbf3c74c0502b1a9ad6f7a67437fbfc665e3473e74035156728963f98b",
+      "bytes": 2063,
+      "kind": "pdf",
+      "requires_engine": true,
+      "contains": [],
+      "warnings_any": [
+        "corrupt",
+        "unsupported-format",
+        "empty-content"
+      ],
+      "page_count": null
+    },
+    {
+      "file": "headings-table.docx",
+      "sha256": "1f921e69d0f4a49b5890c10ac2bcbbcf03d3a39416d0797762b0c8092e276f1c",
+      "bytes": 1841,
+      "kind": "docx",
+      "requires_engine": true,
+      "contains": [
+        "Quarterly summary",
+        "Revenue grew by forty-two percent",
+        "North"
+      ],
+      "warnings": [],
+      "page_count": null
+    },
+    {
+      "file": "html-navigation.html",
+      "sha256": "8c56675ecb53aa9521487c8797806c5ee5536bb9e5ce3266087e7b1899b8e2ce",
+      "bytes": 388,
+      "kind": "html",
+      "contains": [
+        "Visible heading",
+        "Visible paragraph text."
+      ],
+      "not_contains": [
+        "Navigation links",
+        "console.log",
+        "Site footer",
+        "Site header"
+      ],
+      "warnings": [],
+      "page_count": null
+    },
+    {
+      "file": "invalid-encoding.txt",
+      "sha256": "9c5d6ee431fcb29d5cb16505d65a9d9942abc548e9318958fa70d52639b268cb",
+      "bytes": 14,
+      "kind": "text",
+      "contains": [],
+      "warnings": [
+        "corrupt"
+      ],
+      "page_count": null
+    },
+    {
+      "file": "long.pdf",
+      "sha256": "4c01290df0013380742cef7439d153421722b57052b2b2775b26bff65a9cadee",
+      "bytes": 7393,
+      "kind": "pdf",
+      "contains": [
+        "Long document page 1 opening line.",
+        "Long document page eight closing line."
+      ],
+      "warnings": [],
+      "page_count": 8
+    },
+    {
+      "file": "markdown-complex.md",
+      "sha256": "bf830ee6c5fa54451e3ec174e9d1c8f3c737af844f381c6bf463e64a0f9bed6b",
+      "bytes": 122,
+      "kind": "markdown",
+      "contains": [
+        "# Document title",
+        "## Section",
+        "- first item",
+        "const value = 1;"
+      ],
+      "warnings": [],
+      "page_count": null
+    },
+    {
+      "file": "mixed-direction.txt",
+      "sha256": "fdf0a18c3f836259aaea0b4ff79912bdfa987bc521b17cd90a1dda678150ff83",
+      "bytes": 88,
+      "kind": "text",
+      "contains": [
+        "English then العربية then back to English.",
+        "עברית followed by more text."
+      ],
+      "warnings": [],
+      "page_count": null
+    },
+    {
+      "file": "ocr-sample.png",
+      "sha256": "7775a815ca4b723f2d8001919dd519a89239122ae472a661f55b649b65f0c776",
+      "bytes": 20913,
+      "kind": "image",
+      "requires_engine": true,
+      "ocr_sample": true,
+      "contains": [
+        "AIR OFFICE OCR SAMPLE TEXT"
+      ],
+      "warnings_any": [
+        "empty-content",
+        "ocr-low-confidence"
+      ],
+      "page_count": null
+    },
+    {
+      "file": "plain-utf8.txt",
+      "sha256": "b1d51275ebc5c04fd0d2fb41d8d85d5c4a5c2fca33fecb1a36adbaae79948682",
+      "bytes": 187,
+      "kind": "text",
+      "contains": [
+        "quick brown fox",
+        "Καλημέρα κόσμε",
+        "Draft recovery keeps unsaved edits safe.",
+        "Second paragraph after a blank line."
+      ],
+      "warnings": [],
+      "page_count": null
+    },
+    {
+      "file": "revision-v1.md",
+      "sha256": "842d538bab3748d0b807f84862673efa2040de00e9ddd603aba0e1d3d6165a8a",
+      "bytes": 146,
+      "kind": "markdown",
+      "contains": [
+        "# Revision history",
+        "Draft revision one records every source version immutably."
+      ],
+      "warnings": [],
+      "page_count": null
+    },
+    {
+      "file": "revision-v2.md",
+      "sha256": "9b24f1b3144d696d046abbf933eac34b4d4f045a05d404f334eb7f229ba039f6",
+      "bytes": 165,
+      "kind": "markdown",
+      "contains": [
+        "# Revision history",
+        "Final revision two resolves citations against the stored extraction artifact."
+      ],
+      "warnings": [],
+      "page_count": null
+    },
+    {
+      "file": "scanned.pdf",
+      "sha256": "f77adbb75b864ebea2fbe621760848818fbbcd97dcc6c788bc182cd6c06b6273",
+      "bytes": 22356,
+      "kind": "pdf",
+      "requires_engine": true,
+      "ocr_sample": true,
+      "contains": [
+        "AIR OFFICE SCANNED SAMPLE"
+      ],
+      "warnings_any": [
+        "empty-content",
+        "ocr-low-confidence"
+      ],
+      "page_count": 1
+    },
+    {
+      "file": "sheet.xlsx",
+      "sha256": "43becf49d0e9763b7b029932069bcfaad92619f964766ab3a1a4baf8030599ab",
+      "bytes": 4917,
+      "worker_kind": "unsupported",
+      "contains": [
+        "Q1",
+        "North",
+        "42"
+      ],
+      "note": "Spreadsheet material is refused by the protocol until the source-kind mapping supports it."
+    },
+    {
+      "file": "slides.pptx",
+      "sha256": "7a7eb7be9663bde73d976e8cfefadcb45901da2c330cc629689b4854200f9a49",
+      "bytes": 28372,
+      "worker_kind": "unsupported",
+      "contains": [
+        "AIR Office slide sample"
+      ],
+      "note": "PPTX is refused by the protocol until the source-kind mapping supports it."
+    },
+    {
+      "file": "table.pdf",
+      "sha256": "c4532c7b678485bd1b549494d6e19409fa45da252608ccecf1b3996553269746",
+      "bytes": 3957,
+      "kind": "pdf",
+      "contains": [
+        "Quarterly table sample",
+        "Quarter",
+        "North",
+        "known cell value of 42"
+      ],
+      "warnings": [],
+      "page_count": 1
+    },
+    {
+      "file": "two-column.pdf",
+      "sha256": "f04be7aeb02ce0d0671fe06c7d77a452786d6eda802cc0021d6baa2c19f009da",
+      "bytes": 1910,
+      "kind": "pdf",
+      "contains": [
+        "Two column layout sample",
+        "Left column anchor text",
+        "Right column anchor text"
+      ],
+      "warnings": [],
+      "page_count": 1
+    },
+    {
+      "file": "unsupported.bin",
+      "sha256": "17e88db187afd62c16e5debf3e6527cd006bc012bc90b51a810cd80c2d511f43",
+      "bytes": 6,
+      "kind": "pdf",
+      "requires_engine": true,
+      "contains": [],
+      "warnings_any": [
+        "corrupt",
+        "unsupported-format",
+        "empty-content"
+      ],
+      "page_count": null
+    }
+  ]
+}

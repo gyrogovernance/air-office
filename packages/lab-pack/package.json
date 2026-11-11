@@ -1,0 +1,16 @@
+{
+  "name": "@office/lab-pack",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./domain": "./src/lab-pack.domain.public.ts",
+    "./service": "./src/lab-pack.service.public.ts"
+  },
+  "scripts": { "test": "bun test" },
+  "dependencies": {
+    "@office/contracts": "workspace:*",
+    "@office/methods": "workspace:*",
+    "@office/vault": "workspace:*"
+  }
+}

@@ -1,0 +1,102 @@
+# Product package for Intel Mac only (x86_64-apple-darwin).
+# No Windows, no Apple Silicon. No Apple Developer ID / notarization.
+#
+# Runner: macos-15-intel (GitHub-hosted x86_64; available until ~Fall 2027).
+# Artifact: unsigned Electron DMG/zip + Install.command helper.
+# Notarization requires a paid Apple Developer ID; without it, Privacy & Security
+# often will not show Open Anyway. The Installer script is the private-test path.
+# Do not promote to a public GitHub Release until notarization exists.
+name: Build macOS Intel
+
+# Manual only. Do not auto-build on push (private Actions quota / local packaging).
+on:
+  workflow_dispatch:
+  workflow_call:
+
+concurrency:
+  group: macos-intel-${{ github.ref }}
+  # Do not cancel in-progress runs: primp/web-search compile can take a long time,
+  # and a canceled job never writes the actions/cache entry.
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: x86_64-apple-darwin (Electron)
+    runs-on: macos-15-intel
+    timeout-minutes: 180
+    permissions:
+      contents: read
+    env:
+      # Vite production build needs >2GB heap on this app (CI OOM without it).
+      NODE_OPTIONS: --max-old-space-size=8192
+      CSC_IDENTITY_AUTO_DISCOVERY: 'false'
+      CSC_IDENTITY: ''
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Confirm Intel runner
+        run: |
+          set -euo pipefail
+          uname -m
+          test "$(uname -m)" = "x86_64"
+          sw_vers
+          xcodebuild -version
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: .bun-version
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+
+      - name: Verify Intel packaging pins
+        run: |
+          set -euo pipefail
+          test -f external/lemonade/lemonade-embeddable-2026.42.1-macos-x64.tar.gz
+          # lipo wants: lipo <file> -verify_arch <arch>… (file before the flag)
+          lipo external/sqlite-vec/vec0.dylib -verify_arch x86_64
+          shasum -a 256 external/lemonade/lemonade-embeddable-2026.42.1-macos-x64.tar.gz
+          shasum -a 256 external/sqlite-vec/vec0.dylib
+
+      - name: Cache web-search prepare (primp wheel + frozen worker)
+        uses: actions/cache@v5
+        with:
+          path: |
+            workers/web-search/.venv
+            workers/web-search/build
+            workers/web-search/dist
+          key: web-search-macos-x64-${{ hashFiles('workers/web-search/src/**', 'workers/web-search/requirements.txt', '.vendor/primp-2.0.1-air.1.tar.gz', 'tools/prepare-web-search.entry.ts') }}
+
+      - name: Install JS dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Build desktop product (Intel DMG/zip)
+        run: bun run build:desktop:mac:intel
+
+      - name: Stage Mac installer helper
+        run: |
+          set -euo pipefail
+          ls -la dist/desktop
+          test -n "$(find dist/desktop -maxdepth 1 -name 'AIR-Office-*.dmg' -o -name 'AIR-Office-*.zip' | head -n 1)"
+          INSTALLER="dist/desktop/Install AIR Office.command"
+          cp "apps/desktop/macos/Install AIR Office.command" "$INSTALLER"
+          # Ensure LF line endings even if the repo was edited on Windows.
+          perl -pi -e 's/\r\n/\n/g' "$INSTALLER"
+          chmod +x "$INSTALLER"
+          ls -la dist/desktop
+
+      - name: Upload Intel package + installer
+        uses: actions/upload-artifact@v6
+        with:
+          name: air-office-macos-intel
+          path: |
+            dist/desktop/AIR-Office-*.dmg
+            dist/desktop/AIR-Office-*.zip
+            dist/desktop/Install AIR Office.command
+          if-no-files-found: error
+          retention-days: 14

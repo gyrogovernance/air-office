@@ -1,0 +1,291 @@
+.folder-picker-dialog {
+  width: min(560px, calc(100vw - 32px));
+}
+
+.folder-picker-select.button--primary {
+  --button-bg: var(--accent);
+  --button-bg-hover: var(--accent-strong);
+  --button-bg-pressed: var(--accent-strong);
+  --button-fg: var(--text-on-accent);
+}
+
+.folder-picker {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+
+.folder-picker-address,
+.folder-picker-create {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 8px;
+  min-width: 0;
+}
+
+.folder-picker-address-field,
+.folder-picker-create-field {
+  min-width: 0;
+}
+
+.folder-picker-address-field input,
+.folder-picker-create-field input {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 12px;
+}
+
+.folder-picker-browser {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  min-width: 0;
+  border: 1px solid color-mix(in srgb, var(--line-soft, var(--slate-6)) 80%, transparent);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--surface-nested, var(--slate-2)) 72%, transparent);
+  overflow: hidden;
+}
+
+.folder-picker-roots {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border, var(--slate-6));
+}
+
+.folder-picker-root.is-current {
+  background: color-mix(in srgb, var(--accent, var(--blue-9)) 14%, transparent);
+  color: var(--accent-text, var(--blue-11));
+}
+
+.folder-picker-toolbar {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border, var(--slate-6));
+  background: color-mix(in srgb, var(--surface, var(--slate-1)) 55%, var(--surface-nested, var(--slate-2)));
+}
+
+.folder-picker-current {
+  margin: 0;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--text-muted, var(--slate-11));
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.folder-picker-toolbar-actions {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 6px;
+}
+
+.folder-picker-create {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border, var(--slate-6));
+}
+
+.folder-picker-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  max-height: 280px;
+  min-height: 160px;
+  overflow-y: auto;
+  padding: 6px;
+}
+
+.folder-picker-row {
+  display: grid;
+  grid-template-columns: 16px minmax(0, 1fr);
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 32px;
+  margin: 0;
+  padding: 0 10px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text-body, inherit);
+  font: inherit;
+  font-size: 13px;
+  line-height: 18px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.folder-picker-row:hover:not(:disabled),
+.folder-picker-row:focus-visible {
+  background: color-mix(in srgb, var(--slate-9) 8%, transparent);
+  outline: none;
+}
+
+.folder-picker-row:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.folder-picker-row-icon {
+  flex: 0 0 16px;
+  color: var(--accent-text, var(--blue-11));
+}
+
+.folder-picker-row-name {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.folder-picker-empty {
+  margin: 0;
+  padding: 24px 12px;
+  color: var(--text-muted, var(--slate-11));
+  font-size: 13px;
+  line-height: 18px;
+  text-align: center;
+}
+
+.folder-picker-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.folder-picker-status {
+  margin: 0;
+  color: var(--text-muted, var(--slate-11));
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.folder-picker-error {
+  margin: 0;
+  color: var(--danger-text, var(--red-11));
+  font-size: 13px;
+  line-height: 18px;
+}
+
+.app-dialog-form {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  flex: 1 1 auto;
+}
+
+.app-dialog-message {
+  margin: 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.app-dialog-choices {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: 8px;
+  margin-top: 16px;
+  min-width: 0;
+}
+
+.app-dialog-choices > .button {
+  flex: 1 1 auto;
+  min-width: min(100%, 9rem);
+  max-width: 100%;
+  white-space: normal;
+  text-wrap: balance;
+  height: auto;
+  min-height: var(--button-height-sm, 32px);
+  padding-block: 8px;
+  justify-content: center;
+  text-align: center;
+}
+
+.app-dialog--choice .modal__body {
+  min-width: 0;
+}
+
+.app-dialog-footer--choice {
+  flex-wrap: wrap;
+}
+
+/* Modal shell is ~24px with 24px padding; field radius stays at control scale. */
+.app-dialog-field > :is(.input, .textarea) {
+  border-radius: var(--radius-md);
+}
+.app-dialog-field > .textarea {
+  width: 100%;
+  min-height: 150px;
+  resize: vertical;
+}
+.app-dialog-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 24px;
+}
+.app-dialog-content h2 {
+  margin: 0;
+  color: var(--text-strong);
+  font-size: 19px;
+  font-weight: 600;
+  line-height: 25px;
+}
+.app-dialog-content p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+.app-dialog-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  color: var(--text-strong);
+  font-size: 13px;
+  font-weight: 500;
+}
+.app-dialog-field input {
+  width: 100%;
+  box-sizing: border-box;
+}
+.app-dialog-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 12px;
+}
+.app-dialog-detail-label {
+  color: var(--text-muted, #6b7280);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+.app-dialog-detail-body {
+  margin: 0;
+  max-height: 220px;
+  overflow: auto;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: var(--surface-muted, rgba(15, 23, 42, 0.06));
+  color: var(--text-strong, inherit);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 12px;
+  line-height: 1.45;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}

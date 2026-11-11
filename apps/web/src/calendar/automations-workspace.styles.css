@@ -1,0 +1,56 @@
+.schedule-overview {
+  display: flex;
+  align-items: start;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 12px;
+}
+.schedule-overview button {
+  flex: 0 0 auto;
+}
+/* Same outer arc as the Actions/Scheduled toolbar card above (24px), not Tailwind rounded-2xl (32px). */
+.schedules-workspace > .card {
+  border-radius: min(32px, var(--radius-3xl));
+}
+.schedule-editor {
+  padding: 16px;
+  border: 1px solid var(--line-soft);
+}
+.schedules-workspace .slice-form {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 20px;
+}
+.schedule-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+.schedule-fields legend {
+  padding: 0 0 12px;
+  color: var(--text-strong);
+  font-weight: 600;
+}
+.schedule-fields > .form-field-wide {
+  grid-column: 1 / -1;
+}
+.schedule-preview {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  overflow-wrap: anywhere;
+}
+.schedules-workspace .slice-row {
+  align-items: start;
+}
+.schedules-workspace .slice-row strong {
+  overflow-wrap: anywhere;
+}
+@container workspace (max-width: 650px) {
+  .schedule-fields {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

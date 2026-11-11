@@ -1,0 +1,9 @@
+Intel Mac Lemonade (v2026.42.1) notes
+=====
+- Built embeddable: lemonade/build/lemonade-embeddable-2026.42.1-macos-x64.tar.gz
+- Patch: src/cpp/server/backends/llamacpp/llamacpp_server.cpp
+  metal download uses llama-{ver}-bin-macos-x64.tar.gz on __x86_64__
+  (upstream ggml-org; arm64 archive caused Bad CPU type on Intel)
+- Official macos-x64 llama.cpp build is CPU (no libggml-metal); still runs embeddings
+- Proven: load + /v1/embeddings for Qwen3-Embedding-0.6B-GGUF -> 1024 dims
+- Smoke home/cache: runtime-smoke/home/.cache/lemonade

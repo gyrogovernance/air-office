@@ -1,0 +1,64 @@
+{
+  "extends": "stylelint-config-standard",
+  "rules": {
+    "no-descending-specificity": null,
+    "custom-property-pattern": null,
+    "selector-class-pattern": null,
+    "alpha-value-notation": null,
+    "color-function-notation": null,
+    "declaration-block-no-redundant-longhand-properties": null,
+    "comment-empty-line-before": null,
+    "no-empty-source": null,
+    "value-keyword-case": null,
+    "font-family-no-missing-generic-family-keyword": null,
+    "declaration-property-value-no-unknown": null,
+    "media-feature-range-notation": null,
+    "selector-not-notation": null,
+
+    "import-notation": null,
+    "declaration-empty-line-before": null,
+    "rule-empty-line-before": null,
+    "at-rule-empty-line-before": null,
+    "declaration-block-single-line-max-declarations": null,
+    "number-max-precision": null,
+    "length-zero-no-unit": null,
+    "shorthand-property-no-redundant-values": null,
+    "function-calc-no-unspaced-operator": null,
+    "font-family-name-quotes": null,
+    "selector-attribute-quotes": null,
+    "selector-pseudo-element-colon-notation": null,
+    "media-feature-name-no-unknown": null,
+    "block-no-empty": null,
+    "comment-no-empty": null,
+    "declaration-block-no-duplicate-properties": null,
+    "keyframe-block-no-duplicate-selectors": null,
+    "no-duplicate-at-import-rules": null,
+    "no-duplicate-selectors": null,
+    "declaration-block-no-shorthand-property-overrides": null,
+
+    "property-no-vendor-prefix": null,
+    "value-no-vendor-prefix": null,
+    "property-no-unknown": [true, { "ignoreProperties": ["corner-shape"] }],
+    "custom-property-empty-line-before": null
+  },
+  "overrides": [
+    {
+      "files": ["packages/ui-kit/src/ui-kit.tokens.css", "packages/ui-kit/src/ui-kit-base.styles.css"],
+      "rules": {
+        "selector-pseudo-class-no-unknown": null,
+        "declaration-block-no-shorthand-property-overrides": null,
+        "property-no-vendor-prefix": null,
+        "value-no-vendor-prefix": null
+      }
+    },
+    {
+      "files": ["packages/editor/src/rich-document-editor.styles.css"],
+      "rules": {
+        "selector-pseudo-class-no-unknown": null,
+        "declaration-block-no-shorthand-property-overrides": null,
+        "property-no-vendor-prefix": null,
+        "value-no-vendor-prefix": null
+      }
+    }
+  ]
+}

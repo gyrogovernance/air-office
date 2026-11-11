@@ -1,0 +1,31 @@
+{
+  "name": "@office/desktop",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "./out/main/index.js",
+  "exports": {
+    ".": "./out/main/index.js"
+  },
+  "scripts": {
+    "postinstall": "bun run scripts/ensure-electron.entry.ts",
+    "dev": "bun run scripts/run-electron-vite.entry.ts dev",
+    "build": "bunx electron-vite build",
+    "preview": "bun run scripts/run-electron-vite.entry.ts preview",
+    "pack": "bunx electron-builder --config electron-builder.yml",
+    "pack:win": "bunx electron-builder --win --x64 --config electron-builder.yml -c.electronVersion=45.2.3",
+    "pack:mac:intel": "bunx electron-builder --mac --x64 --config electron-builder.yml -c.electronVersion=43.8.4",
+    "pack:mac:arm": "bunx electron-builder --mac --arm64 --config electron-builder.yml -c.electronVersion=45.2.3"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@types/node": "^24.10.0",
+    "@types/yauzl": "2.10.3",
+    "electron": "45.2.3",
+    "electron-builder": "^26.0.12",
+    "electron-vite": "6",
+    "tar": "7.5.22",
+    "typescript": "5.9.3",
+    "yauzl": "3.1.3"
+  }
+}

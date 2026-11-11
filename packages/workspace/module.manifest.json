@@ -1,0 +1,3 @@
+{
+ "schema_version":1,"id":"workspace","title":"Workspace","purpose":"Owns program and explorer organization, workspace selection, authorized file scope, and central-stage surface layout.","kind":"capability","lifecycle":"active","ownership":{"entities":["workspace","authorized-root","program","workspace-node"],"table_prefixes":["workspace_"]},"entrypoints":{"domain":"src/workspace.domain.public.ts","service":"src/workspace.service.public.ts","ui":"src/stage.ui.public.ts"},"foundation_dependencies":["contracts"],"required_ports":["workspace-store"],"contracts":[],"events":{"emits":[],"consumes":[]},"feature_ids":["F-001","F-003"],"scenario_ids":["A-001"],"documentation":[".dev/air-office/01-product.plan.md"]
+}

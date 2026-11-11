@@ -1,0 +1,9 @@
+{
+  "name": "@office/methods",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": { "./domain": "./src/methods.domain.public.ts", "./service": "./src/methods.service.public.ts" },
+  "scripts": { "test": "bun test" },
+  "dependencies": { "@office/contracts": "workspace:*", "@office/automations": "workspace:*", "@office/calendar": "workspace:*", "@office/vault": "workspace:*", "zod": "4.1.12" }
+}

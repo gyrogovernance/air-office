@@ -1,0 +1,15 @@
+{
+  "name": "@office/ui-kit",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "peerDependencies": {
+    "react": "^19.0.0"
+  },
+  "exports": {
+    "./ui": "./src/ui-kit.ui.public.ts",
+    "./styles": "./src/ui-kit.tokens.css",
+    "./base": "./src/ui-kit-base.styles.css",
+    "./frost": "./src/ui-kit-frost.styles.css"
+  }
+}

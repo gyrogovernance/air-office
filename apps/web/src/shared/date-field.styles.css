@@ -1,0 +1,104 @@
+.office-date-picker {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+  color: var(--text-body);
+  font-size: 13px;
+}
+.office-date-input {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 36px;
+  padding: 0 10px;
+  border: 1px solid var(--line-soft);
+  border-radius: 10px;
+  background: var(--surface-inset);
+}
+.office-date-input[data-focus-within='true'] {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+.office-date-input .date-input-group__input {
+  display: flex;
+  padding: 8px 0;
+}
+.office-date-input .date-input-group__segment {
+  padding: 0 2px;
+  font-variant-numeric: tabular-nums;
+  border-radius: 3px;
+}
+.office-date-input .date-input-group__segment[data-focused='true'] {
+  outline: none;
+  background: var(--accent);
+  color: var(--text-on-accent);
+}
+.office-date-input .date-picker__trigger,
+.office-date-popover .calendar__nav-button {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+.office-date-input .date-picker__trigger:hover,
+.office-date-popover .calendar__nav-button:hover {
+  background: var(--surface-hover);
+}
+.office-date-picker[data-disabled='true'] {
+  opacity: 0.6;
+}
+.office-date-popover {
+  z-index: 200;
+  width: 270px;
+  padding: 14px;
+  font: inherit;
+}
+.office-date-popover .calendar {
+  width: 100%;
+  max-width: 100%;
+}
+.office-date-popover .calendar__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 12px;
+  padding-bottom: 0;
+}
+.office-date-popover .calendar__heading {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+}
+.office-date-popover .calendar__nav-button svg {
+  width: 16px;
+  height: 16px;
+}
+.office-date-popover .calendar__grid {
+  width: 100%;
+  row-gap: 4px;
+  text-align: center;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+.office-date-popover .calendar__header-cell {
+  font-size: 11px;
+  font-weight: 500;
+  padding-bottom: 0;
+}
+.office-date-popover .calendar__cell {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  justify-self: center;
+  border-radius: 50%;
+  cursor: pointer;
+}

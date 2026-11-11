@@ -1,0 +1,37 @@
+{
+  "schema_version": 2,
+  "entries": [
+    {
+      "fingerprint": "c6a1cd2ae1d33ef41300aee879956b1715965ad9c1cfc9dbf237e8fed0817454",
+      "detector": "URI",
+      "path": "tests/apps/service/market-discovery.unit.test.ts",
+      "reason": "The value is a reserved example-domain URL used as synthetic plugin test data.",
+      "approved_by": "AIR Office maintainer (delegated security cleanup, 2026-11-03)",
+      "review_by": "2027-11-03"
+    },
+    {
+      "fingerprint": "17fc3c48b9778e1ca23c49d21c3f43a2d5bbd708e9fcf53420c9f2aad82c6b3a",
+      "detector": "URI",
+      "path": "tests/apps/web/connector-browser.unit.test.ts",
+      "reason": "The URIs are negative test fixtures for disallowed JavaScript and file URL schemes.",
+      "approved_by": "AIR Office maintainer (delegated security cleanup, 2026-11-03)",
+      "review_by": "2027-11-03"
+    },
+    {
+      "fingerprint": "537237f3ba01bbfa6c0ab983b133d5d825cb4f8426a16ebac4feb2675f7639c1",
+      "detector": "URI",
+      "path": "apps/desktop/resources/workers/web-search/_internal/ddgs/http_client.py",
+      "reason": "The vendored package documentation contains a placeholder proxy example using example.com; it is not a configured endpoint or credential.",
+      "approved_by": "AIR Office maintainer (delegated security cleanup, 2026-11-03)",
+      "review_by": "2027-11-03"
+    },
+    {
+      "fingerprint": "c97625ad781eda860f7685209e0ba74e0876e0e176210bf5c373be30db034643",
+      "detector": "URI",
+      "path": "apps/desktop/resources/workers/web-search/_internal/ddgs-9.16.0.dist-info/METADATA",
+      "reason": "This packaged metadata repeats the vendored package documentation's placeholder example proxy URL.",
+      "approved_by": "AIR Office maintainer (delegated security cleanup, 2026-11-03)",
+      "review_by": "2027-11-03"
+    }
+  ]
+}

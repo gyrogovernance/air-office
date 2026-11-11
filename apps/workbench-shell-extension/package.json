@@ -1,0 +1,26 @@
+{
+  "name": "shell",
+  "displayName": "AIR Office Code",
+  "description": "Welcome page and chrome for Code inside AIR Office.",
+  "version": "1.0.0",
+  "publisher": "airoffice",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./extension.js",
+  "browser": "./extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "airoffice.shell.showWelcome",
+        "title": "AIR Office: Show Code Welcome"
+      }
+    ]
+  }
+}

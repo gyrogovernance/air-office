@@ -1,0 +1,16 @@
+{
+  "name": "@office/automations",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@office/calendar": "workspace:*",
+    "@office/contracts": "workspace:*",
+    "@office/jobs": "workspace:*",
+    "@office/vault": "workspace:*"
+  },
+  "exports": {
+    "./domain": "./src/automations.domain.public.ts",
+    "./service": "./src/automations.service.public.ts"
+  }
+}

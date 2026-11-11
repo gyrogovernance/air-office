@@ -1,0 +1,461 @@
+.air-office-editor-shell {
+  --editor-block-gutter: 64px;
+  --editor-inline-padding: 16px;
+  position: relative;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  margin-inline: auto;
+  color: var(--text-strong);
+  font-family: var(--font-sans);
+}
+
+/*
+ * Match the shared Guides/chat prose scale from @office/ui-kit/base so the
+ * stage editor, Guides, and chat read as one typographic family.
+ */
+.air-office-lobe-editor {
+  --common-font-size: calc(var(--text-md) * var(--document-scale, 1));
+  --common-line-height: 1.75;
+  --common-header-multiple: 1;
+  --common-margin-multiple: 1.5;
+  --lobe-markdown-font-size: calc(var(--text-md) * var(--document-scale, 1));
+  --lobe-markdown-line-height: 1.75;
+  --lobe-markdown-margin-multiple: 1.5;
+  --listitem-marker-font-family: var(--font-sans);
+  width: 100%;
+  min-width: 0;
+  min-height: 360px;
+  font-family: var(--font-sans) !important;
+  font-size: calc(var(--text-md) * var(--document-scale, 1));
+  line-height: 1.75;
+  color: var(--text-body);
+}
+
+.air-office-lobe-editor [contenteditable='true'],
+.air-office-lobe-editor [contenteditable='true'] :where(:not(code):not(pre):not(kbd):not(samp)) {
+  font-family: var(--font-sans) !important;
+}
+
+.air-office-lobe-editor [contenteditable='true'] {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  min-height: 360px;
+  /* Keep the writing column balanced around Lobe's left block controls. */
+  padding: var(--space-4) var(--editor-block-gutter) var(--space-6) var(--editor-block-gutter);
+  outline: none;
+  overflow-wrap: anywhere;
+  color: var(--text-body);
+  caret-color: var(--accent);
+}
+.air-office-lobe-editor [data-placeholder] {
+  padding-inline: var(--editor-block-gutter) !important;
+}
+.air-office-lobe-editor div:has(> .air-office-note-placeholder) {
+  box-sizing: border-box;
+  inset-inline: 0;
+  width: 100%;
+  margin: 0;
+  padding: var(--space-4) var(--editor-block-gutter);
+  text-align: center;
+}
+.air-office-lobe-editor [contenteditable='true']::before {
+  inset-inline-start: var(--editor-block-gutter) !important;
+  inset-inline-end: var(--editor-block-gutter) !important;
+}
+
+.air-office-lobe-editor [contenteditable='true'] :is(h1, h2, h3, h4, h5, h6) {
+  margin-block: 0.8em 0.45em;
+  color: var(--text-strong);
+  font-weight: 600;
+  line-height: 1.25;
+}
+.air-office-lobe-editor [contenteditable='true'] h1 {
+  font-size: var(--text-4xl);
+  line-height: 1.11;
+}
+.air-office-lobe-editor [contenteditable='true'] h2 {
+  font-size: var(--text-3xl);
+  line-height: 1.17;
+}
+.air-office-lobe-editor [contenteditable='true'] h3 {
+  font-size: var(--text-2xl);
+  line-height: 1.25;
+}
+.air-office-lobe-editor [contenteditable='true'] h4 {
+  font-size: var(--text-xl);
+  line-height: 1.33;
+}
+.air-office-lobe-editor [contenteditable='true'] h5 {
+  font-size: var(--text-lg);
+  line-height: 1.39;
+}
+.air-office-lobe-editor [contenteditable='true'] h6 {
+  font-size: var(--text-md);
+  line-height: 1.5;
+}
+.air-office-lobe-editor [contenteditable='true'] p {
+  margin-block: 0.55em;
+}
+.air-office-lobe-editor [contenteditable='true'] a {
+  color: var(--accent-text);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.air-office-lobe-editor [contenteditable='true'] :is(strong, b) {
+  color: var(--text-strong);
+  font-weight: 600;
+}
+.air-office-lobe-editor [contenteditable='true'] :is(em, i) {
+  font-style: italic;
+}
+.air-office-lobe-editor [contenteditable='true'] :is(del, s) {
+  color: var(--text-muted);
+  text-decoration: line-through;
+}
+
+/*
+  Lobe floating chrome (link toolbar, link edit, slash menu, math editor, …)
+  paints with Ant elevated tokens. ThemeProvider sits on a body portal; map AIR
+  tokens onto that host (and the mount) so createStaticStyles surfaces never
+  resolve transparent — especially under the desktop webview where CDN theme
+  extras are CSP-blocked.
+*/
+body:has(.air-office-editor-portals),
+.air-office-editor-mount,
+.air-office-editor-portals,
+.air-office-editor-portals #lobe-ui-theme-app,
+.air-office-editor-portals [data-lobe-portal-host] {
+  --ant-font-family: var(--font-sans);
+  font-family: var(--font-sans);
+  --ant-color-bg-elevated: var(--surface-raised);
+  --ant-color-bg-container: var(--surface-raised);
+  --ant-color-bg-layout: var(--surface-inset);
+  --ant-color-border: var(--line-strong);
+  --ant-color-border-secondary: var(--line-soft);
+  --ant-color-fill: color-mix(in srgb, var(--text-strong) 12%, transparent);
+  --ant-color-fill-secondary: color-mix(in srgb, var(--text-strong) 8%, transparent);
+  --ant-color-fill-tertiary: var(--surface-hover);
+  --ant-color-fill-quaternary: var(--surface-inset);
+  --ant-color-text: var(--text-strong);
+  --ant-color-text-secondary: var(--text-body);
+  --ant-color-text-tertiary: var(--text-muted);
+  --ant-color-text-quaternary: var(--text-muted);
+  --ant-color-text-description: var(--text-muted);
+  --ant-color-text-placeholder: var(--text-muted);
+  --ant-color-icon: var(--text-body);
+  --ant-color-icon-hover: var(--text-strong);
+  --ant-box-shadow: var(--shadow-pop);
+  --ant-box-shadow-secondary: var(--shadow-pop);
+  --ant-box-shadow-tertiary: var(--shadow-pop);
+  --ant-border-radius: var(--radius-md);
+  --ant-border-radius-sm: var(--radius-sm);
+  --ant-border-radius-lg: var(--radius-lg);
+  --lobe-ring: 0 0 0 1px var(--line-soft);
+}
+
+/*
+  ThemeProvider App is a fixed, non-interactive shell on body. Lobe's portal
+  host already covers the viewport; keep the App from collapsing to 0×0 (that
+  broke table controllers that portal into `.ant-app`) while letting clicks
+  pass through empty chrome.
+*/
+.air-office-editor-portals.ant-app {
+  position: fixed;
+  inset: 0;
+  z-index: 1100;
+  width: auto !important;
+  height: auto !important;
+  min-height: 0 !important;
+  overflow: visible;
+  pointer-events: none;
+  background: transparent;
+}
+.air-office-editor-portals.ant-app > *,
+.air-office-editor-portals [data-lobe-portal-host],
+.air-office-editor-portals [data-lobe-portal-host] *,
+.air-office-editor-portals #lobe-ui-theme-app > * {
+  pointer-events: auto;
+}
+
+/* Slash / dropdown fallback when ant elevated tokens fail to paint. */
+.air-office-editor-portals div:has(> [role='menuitem']),
+.air-office-editor-portals [role='menu'] {
+  background: var(--surface-raised) !important;
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-pop);
+  color: var(--text-strong);
+}
+.air-office-editor-portals [role='menuitem'] {
+  color: var(--text-strong);
+}
+.air-office-editor-portals [role='menuitem'][data-highlighted],
+.air-office-editor-portals [role='menuitem']:hover {
+  background: var(--surface-hover);
+}
+
+/* Explicit pills for the link hover strip and the Text/Link edit card. */
+body > .lobe-flex:has([data-base-ui-tooltip-trigger]),
+.air-office-editor-mount .lobe-flex:has([data-base-ui-tooltip-trigger]),
+body > .lobe-flex:has(input[placeholder='https://enter-link-url']),
+.air-office-editor-mount .lobe-flex:has(input[placeholder='https://enter-link-url']) {
+  background: var(--surface-raised) !important;
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-pop);
+  color: var(--text-strong);
+  overflow: hidden;
+}
+body > .lobe-flex:has([data-base-ui-tooltip-trigger]) button,
+.air-office-editor-mount .lobe-flex:has([data-base-ui-tooltip-trigger]) button {
+  color: var(--text-body);
+}
+body > .lobe-flex:has([data-base-ui-tooltip-trigger]) button:hover,
+.air-office-editor-mount .lobe-flex:has([data-base-ui-tooltip-trigger]) button:hover {
+  background: var(--surface-hover);
+  color: var(--text-strong);
+}
+body > .lobe-flex:has(input[placeholder='https://enter-link-url']) input,
+.air-office-editor-mount .lobe-flex:has(input[placeholder='https://enter-link-url']) input {
+  background: var(--surface-inset);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-sm);
+  color: var(--text-strong);
+}
+.air-office-lobe-editor [contenteditable='true'] blockquote,
+.air-office-lobe-editor [contenteditable='true'] .editor_quote {
+  margin: 0.8em 0;
+  padding-inline-start: var(--space-3);
+  border-inline-start: 2px solid var(--line-strong);
+  color: var(--text-muted);
+  font-style: italic;
+}
+.air-office-lobe-editor [contenteditable='true'] :is(code, .editor_code) {
+  border-radius: var(--radius-sm);
+  padding: 1px 4px;
+  background: var(--surface-inset);
+  color: var(--text-strong);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  white-space: break-spaces;
+}
+.air-office-lobe-editor [contenteditable='true'] pre {
+  max-width: 100%;
+  overflow-x: auto;
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+  background: var(--surface-nested);
+  color: var(--text-body);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  line-height: 1.5;
+  tab-size: 2;
+}
+.air-office-lobe-editor [contenteditable='true'] pre code {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font-size: inherit;
+}
+.air-office-lobe-editor [contenteditable='true'] :is(ul, ol, .editor_listUnordered, .editor_listOrdered) {
+  padding-inline-start: 1.6em;
+}
+.air-office-lobe-editor [contenteditable='true'] ul,
+.air-office-lobe-editor [contenteditable='true'] .editor_listUnordered {
+  list-style: disc !important;
+}
+.air-office-lobe-editor [contenteditable='true'] ol,
+.air-office-lobe-editor [contenteditable='true'] .editor_listOrdered {
+  list-style: decimal !important;
+}
+/* Drop Lobe's dash pseudo-markers so list bullets match Guides/chat prose. */
+.air-office-lobe-editor [contenteditable='true'] .editor_listUnordered > .editor_listItem:not([role='checkbox'])::before {
+  content: none !important;
+  margin: 0 !important;
+}
+.air-office-lobe-editor [contenteditable='true'] li,
+.air-office-lobe-editor [contenteditable='true'] .editor_listItem {
+  list-style: inherit;
+  padding-inline-start: 0.2em;
+}
+.air-office-lobe-editor [contenteditable='true'] li + li,
+.air-office-lobe-editor [contenteditable='true'] .editor_listItem + .editor_listItem {
+  margin-block-start: var(--space-1);
+}
+.air-office-lobe-editor [contenteditable='true'] li::marker,
+.air-office-lobe-editor [contenteditable='true'] .editor_listItem::marker {
+  color: var(--text-faint);
+}
+/* Checklist markers: keep Lobe's structure, paint with AIR tokens. */
+.air-office-lobe-editor [contenteditable='true'] :is(.editor_listItemChecked, .editor_listItemUnchecked)::before {
+  border-color: var(--line-strong) !important;
+  border-radius: var(--radius-sm) !important;
+  background: var(--surface-raised) !important;
+}
+.air-office-lobe-editor [contenteditable='true'] .editor_listItemChecked::before {
+  background: var(--accent) !important;
+  border-color: transparent !important;
+}
+.air-office-lobe-editor [contenteditable='true'] hr {
+  border: 0;
+  border-block-start: 1px solid var(--line-soft);
+  margin-block: var(--space-4);
+}
+.air-office-lobe-editor [contenteditable='true'] table,
+.air-office-lobe-editor [contenteditable='true'] .editor_table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: var(--text-sm);
+  line-height: 1.5;
+}
+.air-office-editor-shell .air-office-lobe-editor .lobe-editor-table-scroll-wrapper {
+  margin-inline-end: calc(var(--editor-block-gutter) * -1);
+  scrollbar-width: thin;
+  scrollbar-color: var(--line-strong) transparent;
+}
+.air-office-editor-shell .air-office-lobe-editor .editor_table {
+  margin-inline-end: var(--editor-block-gutter);
+}
+.air-office-lobe-editor [contenteditable='true'] :is(td, th) {
+  height: auto;
+  padding: 10px 16px;
+  text-align: start;
+  vertical-align: top;
+  border: 0;
+  border-bottom: 1px solid var(--line-soft);
+}
+.air-office-lobe-editor [contenteditable='true'] th {
+  background: var(--surface-secondary, var(--surface-inset));
+  color: var(--text-muted);
+  font-size: var(--text-xs);
+  font-weight: 500;
+}
+.air-office-lobe-editor [contenteditable='true'] tr:last-child td {
+  border-bottom: 0;
+}
+.air-office-lobe-editor [contenteditable='true'] img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin-block: var(--space-3);
+  border-radius: var(--radius-md);
+}
+
+.air-office-inline-ai-bar {
+  margin: var(--space-6) var(--space-6) 0;
+  padding: var(--space-4);
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius-md);
+  background: var(--surface-inset);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+.inline-ai-input-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-width: 0;
+}
+.inline-ai-badge {
+  font-size: var(--text-md);
+  font-weight: 500;
+  color: var(--text-strong);
+}
+.inline-ai-input {
+  width: 100%;
+  min-width: 0;
+  min-height: var(--control-height);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-sm);
+  padding: var(--space-2) var(--space-3);
+  background: var(--surface-raised);
+  font: inherit;
+  font-size: var(--text-md);
+  color: var(--text-strong);
+}
+.inline-ai-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+.air-office-editor-shell :is(.inline-ai-btn, .primary-button, .secondary-button) {
+  min-height: var(--control-height);
+  padding: 0 var(--space-3);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-sm);
+  background: var(--surface-raised);
+  color: var(--text-body);
+  font: inherit;
+  font-size: var(--text-md);
+  font-weight: 500;
+  cursor: pointer;
+}
+.air-office-editor-shell :is(.inline-ai-btn, .secondary-button):hover {
+  background: var(--surface-hover);
+}
+.air-office-editor-shell :is(.inline-ai-btn.submit, .primary-button) {
+  background: var(--accent);
+  color: var(--text-on-accent);
+  border-color: transparent;
+}
+.air-office-editor-shell :is(.inline-ai-btn.submit, .primary-button):hover {
+  background: var(--accent-strong);
+}
+.air-office-editor-shell button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.air-office-editor-mount[hidden] { display: none; }
+.air-office-proposal-inline {
+  min-width: 0;
+  color: var(--text-strong);
+  background: var(--surface-raised);
+}
+.proposal-inline-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  padding: var(--space-3) var(--editor-block-gutter);
+  border-bottom: 1px solid var(--line-soft);
+  background: var(--surface-raised);
+  font-size: var(--text-sm);
+  font-weight: 600;
+}
+.proposal-inline-actions { display: flex; gap: var(--space-2); flex-wrap: wrap; }
+.proposal-stale-badge {
+  padding: var(--space-3) var(--editor-block-gutter);
+  font-size: var(--text-md);
+  color: var(--danger);
+}
+.proposal-inline-diff { padding: var(--space-4) var(--editor-block-gutter) var(--space-6); font-size: calc(var(--text-md) * var(--document-scale, 1)); line-height: 1.75; }
+.proposal-inline-diff > div:first-child { display: none; }
+.proposal-inline-diff > div:nth-child(2) > div { display: block; background: transparent; }
+.proposal-inline-diff > div:nth-child(2) > div > div { padding: 0; overflow: visible; background: transparent; }
+.proposal-inline-diff > div:nth-child(2) > div > div:has([data-proposal-empty]) { display: none; }
+.proposal-inline-diff [data-proposal-change] { padding: var(--space-2); overflow-wrap: anywhere; }
+.proposal-inline-diff [data-proposal-change='removed'] { border-inline-start: 2px solid var(--danger); background: color-mix(in srgb, var(--danger) 8%, transparent); }
+.proposal-inline-diff [data-proposal-change='added'] { border-inline-start: 2px solid var(--accent); background: color-mix(in srgb, var(--accent) 8%, transparent); }
+.proposal-change-label { display: block; color: var(--text-muted); font-size: var(--text-sm); font-weight: 600; }
+
+@container workspace (max-width: 480px) {
+  .air-office-editor-shell {
+    --editor-inline-padding: 12px;
+  }
+  .air-office-inline-ai-bar {
+    margin-inline: var(--space-4);
+    padding: var(--space-3);
+  }
+}

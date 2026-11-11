@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "id": "web-search",
+  "title": "Web search worker",
+  "purpose": "Runs the pinned DDGS metasearch library with automatic backend selection behind the providers module.",
+  "kind": "worker",
+  "lifecycle": "active",
+  "protocol_version": 1,
+  "entrypoint": "src/office_web_search/main.py",
+  "owns": ["web-search-execution"],
+  "does_not_own": ["conversation", "source-document", "collection", "credentials"],
+  "resources": { "required": ["ddgs-runtime"], "optional": [] },
+  "documentation": [".dev/air-office/02-architecture.plan.md"]
+}

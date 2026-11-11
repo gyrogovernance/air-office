@@ -1,0 +1,14 @@
+{
+  "name": "@office/workspace",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./domain": "./src/workspace.domain.public.ts",
+    "./service": "./src/workspace.service.public.ts",
+    "./ui": "./src/stage.ui.public.ts"
+  },
+  "dependencies": {
+    "@office/vault": "workspace:*"
+  }
+}

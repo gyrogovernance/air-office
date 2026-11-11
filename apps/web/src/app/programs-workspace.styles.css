@@ -1,0 +1,78 @@
+.programs-directory,
+.programs-catalog-group,
+.programs-scope-content,
+.programs-instructions,
+.programs-material,
+.programs-move {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  gap: 12px;
+}
+
+.programs-catalog-group > h2 {
+  margin: 0;
+  padding-inline: 12px;
+  overflow-wrap: anywhere;
+}
+
+.programs-directory .collection-dashboard__catalog {
+  max-height: 480px;
+}
+
+.programs-switcher {
+  padding: 12px;
+}
+
+.programs-switcher .select {
+  width: 100%;
+}
+
+.programs-preview {
+  max-height: 620px;
+}
+
+.programs-scope-content {
+  overflow-wrap: anywhere;
+}
+
+.programs-section-heading,
+.programs-actions,
+.programs-material > header {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.programs-section-heading,
+.programs-material > header {
+  justify-content: space-between;
+}
+
+.programs-section-heading > h3,
+.programs-copy {
+  margin: 0;
+}
+
+.programs-actions {
+  justify-content: flex-end;
+}
+
+.programs-copy {
+  line-height: 1.6;
+}
+
+.programs-muted {
+  color: var(--muted);
+  font-size: var(--text-sm);
+}
+
+.programs-catalog-hint {
+  margin: 0;
+  padding-inline: 12px;
+}
+
+.programs-move {
+  max-width: 320px;
+}

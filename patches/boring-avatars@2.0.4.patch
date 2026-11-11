@@ -1,0 +1,21 @@
+diff --git a/dist/index.js b/dist/index.js
+index ee828b9a08966750b429d217dfc1dc1edd590593..eff516572c8c673f619198bae87873474c234520 100644
+--- a/dist/index.js
++++ b/dist/index.js
+@@ -255,6 +255,7 @@ const S = ({ name: l, colors: r, title: i, square: a, size: h, ...n }) => {
+       ...n,
+       children: [
+         i && /* @__PURE__ */ e("title", { children: l }),
++        /* @__PURE__ */ e("defs", { children: /* @__PURE__ */ e("linearGradient", { id: `beam_gradient_${s}`, x1: "0%", y1: "0%", x2: "100%", y2: "100%", children: [/* @__PURE__ */ e("stop", { offset: "0%", stopColor: t.wrapperColor }), /* @__PURE__ */ e("stop", { offset: "100%", stopColor: t.backgroundColor })] }) }),
+         /* @__PURE__ */ e("mask", { id: s, maskUnits: "userSpaceOnUse", x: 0, y: 0, width: c, height: c, children: /* @__PURE__ */ e("rect", { width: c, height: c, rx: a ? void 0 : c * 2, fill: "#FFFFFF" }) }),
+         /* @__PURE__ */ d("g", { mask: `url(#${s})`, children: [
+           /* @__PURE__ */ e("rect", { width: c, height: c, fill: t.backgroundColor }),
+@@ -266,7 +267,7 @@ const S = ({ name: l, colors: r, title: i, square: a, size: h, ...n }) => {
+               width: c,
+               height: c,
+               transform: "translate(" + t.wrapperTranslateX + " " + t.wrapperTranslateY + ") rotate(" + t.wrapperRotate + " " + c / 2 + " " + c / 2 + ") scale(" + t.wrapperScale + ")",
+-              fill: t.wrapperColor,
++              fill: `url(#beam_gradient_${s})`,
+               rx: t.isCircle ? c : c / 6
+             }
+           ),

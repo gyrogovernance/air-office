@@ -1,0 +1,20 @@
+{
+ "name": "@office/providers",
+ "version": "0.1.0",
+ "private": true,
+ "type": "module",
+  "dependencies": {
+  "@ag-ui/core": "^1.0.2",
+  "@github/copilot-sdk": "1.0.28",
+  "@office/contracts": "workspace:*",
+  "@office/vault": "workspace:*",
+  "jose": "6.2.12"
+ },
+ "exports": {
+  "./domain": "./src/providers.domain.public.ts",
+  "./service": "./src/providers.service.public.ts",
+  "./lemonade-status": "./src/lemonade-status.service.public.ts",
+  "./lemonade-collections": "./src/lemonade-collections.service.public.ts",
+  "./lemonade-management": "./src/lemonade-status.service.public.ts"
+ }
+}

@@ -1,0 +1,95 @@
+# Product package for Apple Silicon only (aarch64-apple-darwin).
+# Target: unsigned Electron DMG/zip + Install.command helper.
+# No Apple Developer ID / notarization.
+#
+# Requires arm64 (or universal) external/sqlite-vec/vec0.dylib — the tree pins
+# a universal binary so this job and the Intel job share one file.
+# Runs on macos-15 (arm64) so web-search/documents freezes match Silicon.
+# build:desktop:mac:arm sets TARGET=aarch64-apple-darwin for Lemonade + service.
+name: Build macOS Apple Silicon
+
+on:
+  workflow_dispatch:
+  workflow_call:
+
+concurrency:
+  group: macos-arm-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: aarch64-apple-darwin (Electron)
+    runs-on: macos-15
+    timeout-minutes: 180
+    permissions:
+      contents: read
+    env:
+      NODE_OPTIONS: --max-old-space-size=8192
+      CSC_IDENTITY_AUTO_DISCOVERY: 'false'
+      CSC_IDENTITY: ''
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Confirm Apple Silicon runner
+        run: |
+          set -euo pipefail
+          uname -m
+          test "$(uname -m)" = "arm64"
+          sw_vers
+          xcodebuild -version
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: .bun-version
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+
+      - name: Verify Apple Silicon packaging pins
+        run: |
+          set -euo pipefail
+          test -f external/sqlite-vec/vec0.dylib
+          lipo external/sqlite-vec/vec0.dylib -verify_arch arm64
+          shasum -a 256 external/sqlite-vec/vec0.dylib
+
+      - name: Cache web-search prepare (primp wheel + frozen worker)
+        uses: actions/cache@v5
+        with:
+          path: |
+            workers/web-search/.venv
+            workers/web-search/build
+            workers/web-search/dist
+          key: web-search-macos-arm64-${{ hashFiles('workers/web-search/src/**', 'workers/web-search/requirements.txt', '.vendor/primp-2.0.1-air.1.tar.gz', 'tools/prepare-web-search.entry.ts') }}
+
+      - name: Install JS dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Build desktop product (Apple Silicon DMG/zip)
+        run: bun run build:desktop:mac:arm
+
+      - name: Stage Mac installer helper
+        run: |
+          set -euo pipefail
+          ls -la dist/desktop
+          test -n "$(find dist/desktop -maxdepth 1 -name 'AIR-Office-*.dmg' -o -name 'AIR-Office-*.zip' | head -n 1)"
+          INSTALLER="dist/desktop/Install AIR Office.command"
+          cp "apps/desktop/macos/Install AIR Office.command" "$INSTALLER"
+          perl -pi -e 's/\r\n/\n/g' "$INSTALLER"
+          chmod +x "$INSTALLER"
+          ls -la dist/desktop
+
+      - name: Upload Apple Silicon package + installer
+        uses: actions/upload-artifact@v6
+        with:
+          name: air-office-macos-arm64
+          path: |
+            dist/desktop/AIR-Office-*.dmg
+            dist/desktop/AIR-Office-*.zip
+            dist/desktop/Install AIR Office.command
+          if-no-files-found: error
+          retention-days: 14

@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://air-office.dev/contracts/rich-document.schema.json",
+  "title": "AIR Office rich document",
+  "description": "An AIR envelope around a native Lobe editor body. There is no format-version field; a note is native when it carries body, or inbound (awaiting one-time conversion) when it still carries pre-native content.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["format", "id", "title", "updatedAt", "attachments"],
+  "properties": {
+    "format": { "const": "air-office.rich-document" },
+    "id": { "type": "string", "minLength": 1 },
+    "title": { "type": "string" },
+    "updatedAt": { "type": "string", "format": "date-time" },
+    "body": {
+      "type": "object",
+      "description": "Native Lobe editor JSON, e.g. { root: { ...nodes, id: 'root' } }.",
+      "required": ["root"],
+      "properties": { "root": { "$ref": "#/$defs/lobeNode" } },
+      "additionalProperties": true
+    },
+    "content": {
+      "description": "Pre-native content read for one-time conversion: a tree object or a block array. Never written by AIR.",
+      "oneOf": [
+        { "type": "object" },
+        { "type": "array", "items": { "type": "object" } }
+      ]
+    },
+    "attachments": { "type": "array", "items": { "$ref": "#/$defs/attachment" } },
+    "path": { "type": "string", "minLength": 1, "description": "Vault-relative path to the canonical *.note.json." },
+    "programSlug": { "type": "string", "minLength": 1 },
+    "slug": { "type": "string", "minLength": 1 },
+    "projection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["markdownPath", "sourceJsonHash", "markdownHash"],
+      "properties": {
+        "markdownPath": { "type": "string", "minLength": 1 },
+        "sourceJsonHash": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+        "markdownHash": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+      }
+    }
+  },
+  "oneOf": [
+    { "required": ["body"] },
+    { "required": ["content"] }
+  ],
+  "$defs": {
+    "lobeNode": {
+      "type": "object",
+      "description": "A native Lobe/Lexical serialized node. Fields are owned by the editor; AIR does not constrain node internals beyond identity.",
+      "properties": {
+        "id": { "type": ["string", "number"] },
+        "type": { "type": ["string", "null"] },
+        "children": { "type": "array", "items": { "$ref": "#/$defs/lobeNode" } },
+        "text": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "attachment": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "name", "mediaType", "size", "dataUrl"],
+      "properties": { "id": { "type": "string" }, "name": { "type": "string" }, "mediaType": { "type": "string" }, "size": { "type": "integer", "minimum": 0, "maximum": 2000000 }, "dataUrl": { "type": "string", "pattern": "^data:[^;]+;base64," } }
+    }
+  }
+}

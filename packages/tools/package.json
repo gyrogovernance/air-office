@@ -1,0 +1,18 @@
+{
+  "name": "@office/tools",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@modelcontextprotocol/client": "2.3.1",
+    "@office/contracts": "workspace:*",
+    "@office/vault": "workspace:*"
+  },
+  "exports": {
+    "./domain": "./src/tools.domain.public.ts",
+    "./service": "./src/tools.service.public.ts",
+    "./connector": "./src/remote-tool-connector.adapter.ts",
+    "./oauth": "./src/mcp-oauth.service.ts",
+    "./lean-files": "./src/lean-file-tools.adapter.ts"
+  }
+}

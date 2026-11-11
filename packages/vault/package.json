@@ -1,0 +1,24 @@
+{
+  "name": "@office/vault",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./domain": "./src/vault.domain.public.ts",
+    "./host": "./src/vault.host.public.ts",
+    "./service": "./src/vault.service.public.ts",
+    "./note": "./src/note-projection.domain.public.ts",
+    "./ics": "./src/ics.codec.public.ts",
+    "./automation": "./src/automation-yaml.codec.public.ts",
+    "./frontmatter": "./src/frontmatter.codec.public.ts",
+    "./jsonl": "./src/jsonl.codec.public.ts",
+    "./settings": "./src/settings.codec.public.ts",
+    "./settings-authority": "./src/vault-settings.authority.public.ts",
+    "./portable": "./src/vault-portable.public.ts",
+    "./atomic": "./src/atomic-write.adapter.ts",
+    "./sources": "./src/sources.codec.public.ts"
+  },
+  "dependencies": {
+    "@office/contracts": "workspace:*"
+  }
+}
