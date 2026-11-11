@@ -60,11 +60,23 @@ jobs:
             workers/web-search/build
             workers/web-search/dist
           key: web-search-windows-x64-${{ hashFiles('workers/web-search/src/**', 'workers/web-search/requirements.txt', '.vendor/primp-2.0.1-air.1.tar.gz', 'tools/prepare-web-search.entry.ts') }}
+          save-always: true
+
+      - name: Cache Electron downloads
+        uses: actions/cache@v5
+        with:
+          path: |
+            ~/AppData/Local/electron/Cache
+            ~/AppData/Local/electron-builder/Cache
+          key: electron-windows-x64-${{ hashFiles('apps/desktop/package.json', 'bun.lock') }}
+          save-always: true
 
       - name: Install JS dependencies
         run: bun install --frozen-lockfile
 
       - name: Build desktop product (Windows NSIS)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: bun run build:desktop:windows
 
       - name: List and check installer

@@ -3,6 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gyrogovernance/air-office.git"
+  },
   "main": "./out/main/index.js",
   "exports": {
     ".": "./out/main/index.js"
@@ -12,10 +16,10 @@
     "dev": "bun run scripts/run-electron-vite.entry.ts dev",
     "build": "bunx electron-vite build",
     "preview": "bun run scripts/run-electron-vite.entry.ts preview",
-    "pack": "bunx electron-builder --config electron-builder.yml",
-    "pack:win": "bunx electron-builder --win --x64 --config electron-builder.yml -c.electronVersion=45.2.3",
-    "pack:mac:intel": "bunx electron-builder --mac --x64 --config electron-builder.yml -c.electronVersion=43.8.4",
-    "pack:mac:arm": "bunx electron-builder --mac --arm64 --config electron-builder.yml -c.electronVersion=45.2.3"
+    "pack": "bunx electron-builder --config electron-builder.yml --publish never",
+    "pack:win": "bunx electron-builder --win --x64 --config electron-builder.yml -c.electronVersion=45.2.3 --publish never",
+    "pack:mac:intel": "bunx electron-builder --mac --x64 --config electron-builder.yml -c.electronVersion=43.8.4 --publish never",
+    "pack:mac:arm": "bunx electron-builder --mac --arm64 --config electron-builder.yml -c.electronVersion=45.2.3 --publish never"
   },
   "dependencies": {},
   "devDependencies": {

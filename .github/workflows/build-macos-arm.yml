@@ -65,6 +65,17 @@ jobs:
             workers/web-search/build
             workers/web-search/dist
           key: web-search-macos-arm64-${{ hashFiles('workers/web-search/src/**', 'workers/web-search/requirements.txt', '.vendor/primp-2.0.1-air.1.tar.gz', 'tools/prepare-web-search.entry.ts') }}
+          # Keep the expensive primp/PyInstaller outputs even when a later pack step fails.
+          save-always: true
+
+      - name: Cache Electron downloads
+        uses: actions/cache@v5
+        with:
+          path: |
+            ~/Library/Caches/electron
+            ~/Library/Caches/electron-builder
+          key: electron-macos-arm64-${{ hashFiles('apps/desktop/package.json', 'bun.lock') }}
+          save-always: true
 
       - name: Install JS dependencies
         run: bun install --frozen-lockfile

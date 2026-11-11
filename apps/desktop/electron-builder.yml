@@ -26,6 +26,8 @@ asar: true
 asarUnpack:
   - '**/*.{node,dll,dylib,so,exe}'
 forceCodeSigning: false
+# Unsigned packaging only. Publish/updater metadata is out of band until signing exists.
+publish: null
 # Clears CopyFiles overwrite locks on Windows upgrades (see scripts/after-pack.entry.cjs).
 afterPack: scripts/after-pack.entry.cjs
 nsis:
