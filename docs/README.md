@@ -4,7 +4,7 @@
 | --- | --- |
 | [specifications.md](specifications.md) | Product specification, architecture, stack, reference libraries, closed-exchange records |
 | [guides.md](guides.md) | Desktop and from-source install, workplace use |
-| [sovereignty.md](sovereignty.md) | Privacy, local data paths, safety, security, exports, applicable laws |
+| [sovereignty.md](sovereignty.md) | Privacy, PII practices, deletion, content policy, exports, laws, security |
 
 ## Project governance
 

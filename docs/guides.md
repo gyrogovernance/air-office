@@ -78,5 +78,11 @@ Public desktop builds target Windows x64 and macOS (Apple Silicon and Intel). Pa
 Are model weights included in the installer?
 No. The installer includes software that can run models on the machine (Lemonade). You supply or download the weights into the profile `models` folder.
 
+How do I delete my data?
+Delete notes and chats in the workplace, forget dialogue-memory units from the Gyroscopic Reasoning method UI if you use that feature, and use Settings → workspace to export and/or clear personal workspace content. Details: [sovereignty.md](sovereignty.md).
+
+What content am I allowed to store?
+Do not use AIR Office for illegal content. Private files stay on your computer under your control. Community contributions on GitHub follow the [Code of Conduct](../CODE_OF_CONDUCT.md). Full policy: [sovereignty.md](sovereignty.md).
+
 How do I contribute code?
 Fork the repository on GitHub, then follow [CONTRIBUTING.md](../CONTRIBUTING.md) and the [Code of Conduct](../CODE_OF_CONDUCT.md).
