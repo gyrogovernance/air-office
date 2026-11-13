@@ -8,8 +8,7 @@ The cached crates.io archive's SHA-256 matched the previous Cargo.lock checksum:
 the C out-pointer is mutable and is passed by mutable reference. The original
 fix is [gtk-rs/gtk-rs-core#1343](https://github.com/gtk-rs/gtk-rs-core/pull/1343).
 
-Remove this override once the Linux Tauri dependency graph supports a fixed
-upstream glib version. The unchanged package version may still be identified
-as vulnerable by advisory scanners; do not suppress that advisory without
-checking this backport and the actual build. Linux runtime verification remains
-required.
+This override is unused by the current Electron desktop host. Keep it only while
+a Linux native dependency graph still needs the backport. The unchanged package
+version may still be identified as vulnerable by advisory scanners; do not
+suppress that advisory without checking this backport and the actual build.

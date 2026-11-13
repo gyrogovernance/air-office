@@ -79,7 +79,7 @@ async function pidOnPort(port: number): Promise<number | null> {
   }
 }
 
-/** Stale packaged / Tauri sidecars that hold the shared data directory. */
+/** Stale packaged sidecars that hold the shared data directory. */
 async function reclaimOrphanSidecars(): Promise<void> {
   if (process.platform === 'win32') return;
   try {

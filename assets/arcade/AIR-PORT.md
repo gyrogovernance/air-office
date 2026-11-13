@@ -29,8 +29,7 @@ offers Games, sound and the upstream game's toolbar actions. It forwards clicks
 to the game's actual buttons and mirrors their labels/disabled state; native
 game toolbars are hidden. Existing game menus and rules remain upstream.
 Desktop CSP permits same-origin WebAssembly loading for Box2D games, without
-enabling arbitrary JavaScript eval. Tauri supplies hashes for static inline HTML
-scripts during packaging.
+enabling arbitrary JavaScript eval.
 No runtime CDN is required. The optional upstream external-games section is
 disabled by upstream's SHOW_FRANKFORCE=false. Source/credit links remain external.
 
