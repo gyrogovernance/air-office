@@ -1,7 +1,9 @@
 import type { ModelReasoningOptions } from '@office/contracts/chat';
 import type { ModelRegistryEntry } from '@office/providers/service';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { createServiceClient } from '../shared/service-client.hook';
 import { resolveServiceBase } from '../shared/service-endpoint.hook';
+import { staticDemoBuild } from '../static-demo/static-demo.flag';
 
 const localProvider: ProviderDescriptor = { id: 'local-replay', models: ['local-replay'] };
 const selectionStorageKey = 'air-office:selected-model';
@@ -53,6 +55,7 @@ export interface ProviderCatalogState {
 }
 
 async function fetchBootstrapToken(base: string, signal: AbortSignal): Promise<string> {
+  if (staticDemoBuild()) return 'static-demo';
   const response = await fetch(`${base}/bootstrap`, { method: 'POST', headers: { origin: window.location.origin }, signal });
   if (!response.ok) throw new Error('AIR Office service is unavailable.');
   return (await response.json() as { token: string }).token;
@@ -64,8 +67,12 @@ async function fetchBootstrapToken(base: string, signal: AbortSignal): Promise<s
  * the replay model is offered there and nowhere else.
  */
 export function useDemoMode(): boolean {
-  const [demo, setDemo] = useState(false);
+  const [demo, setDemo] = useState(() => staticDemoBuild());
   useEffect(() => {
+    if (staticDemoBuild()) {
+      setDemo(true);
+      return;
+    }
     const controller = new AbortController();
     void resolveServiceBase()
       .then((base) => fetch(`${base}/bootstrap`, { method: 'POST', headers: { origin: window.location.origin }, signal: controller.signal }))
@@ -100,11 +107,23 @@ export function useProviderCatalog(): ProviderCatalogState {
     const active = new AbortController(); controller.current = active;
     setLoading(true);
     try {
-      const base = await resolveServiceBase();
-      const token = await fetchBootstrapToken(base, active.signal);
-      const response = await fetch(`${base}/api/v1/providers`, { headers: { authorization: `Bearer ${token}` }, signal: active.signal });
-      if (!response.ok) throw new Error('The provider catalog could not be loaded.');
-      const loaded = (await response.json() as { providers: ProviderDescriptor[] }).providers;
+      let loaded: ProviderDescriptor[];
+      let defaults: { defaults?: { chatProvider?: string | null; chatModel?: string | null } } | null = null;
+      if (staticDemoBuild()) {
+        // Static Pages builds have no loopback service; the seeded client answers these routes.
+        const client = createServiceClient();
+        loaded = (await client.json<{ providers: ProviderDescriptor[] }>('/api/v1/providers')).providers;
+        defaults = await client.json<{ defaults?: { chatProvider?: string | null; chatModel?: string | null } }>('/api/v1/workspace-defaults').catch(() => null);
+      } else {
+        const base = await resolveServiceBase();
+        const token = await fetchBootstrapToken(base, active.signal);
+        const response = await fetch(`${base}/api/v1/providers`, { headers: { authorization: `Bearer ${token}` }, signal: active.signal });
+        if (!response.ok) throw new Error('The provider catalog could not be loaded.');
+        loaded = (await response.json() as { providers: ProviderDescriptor[] }).providers;
+        defaults = await fetch(`${base}/api/v1/workspace-defaults`, { headers: { authorization: `Bearer ${token}` }, signal: active.signal })
+          .then((result) => result.ok ? result.json() as Promise<{ defaults?: { chatProvider?: string | null; chatModel?: string | null } }> : null)
+          .catch(() => null);
+      }
       if (generation !== epoch.current) return;
       const next = loaded;
       setProviders(next.map((provider) => ({ ...provider, images: provider.capabilities && typeof provider.capabilities === 'object' && 'images' in provider.capabilities ? (provider.capabilities as { images: boolean }).images : provider.images })));
@@ -112,9 +131,6 @@ export function useProviderCatalog(): ProviderCatalogState {
       // explicit choice in the composer is never replaced by the default. A
       // default the user changed in the settings is applied, because that is
       // an explicit choice too.
-      const defaults = await fetch(`${base}/api/v1/workspace-defaults`, { headers: { authorization: `Bearer ${token}` }, signal: active.signal })
-        .then((result) => result.ok ? result.json() as Promise<{ defaults?: { chatProvider?: string | null; chatModel?: string | null } }> : null)
-        .catch(() => null);
       const providerId = defaults?.defaults?.chatProvider ?? null;
       const modelId = defaults?.defaults?.chatModel ?? null;
       const defaultKey = providerId && modelId ? `${providerId}:${modelId}` : '';

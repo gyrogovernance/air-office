@@ -2,6 +2,7 @@ import type { ChatEventEnvelope, ChatRunRequest, UserInputRequestPayload } from 
 import { initialChatRunState, reduceChatEvent } from '@office/chat/domain';
 import type { ChatRunState } from '@office/chat/domain';
 import { resolveServiceBase } from '../shared/service-endpoint.hook';
+import { staticDemoBuild } from '../static-demo/static-demo.flag';
 
 /**
  * Transport for one chat run: authenticate against the local service, start the
@@ -35,6 +36,9 @@ function describeStreamFailure(reason: unknown, fallback: string): Error {
 }
 
 export async function streamRun({ request, signal, onEvent, onApproval, onUserInput }: RunStreamInput): Promise<RunStreamResult> {
+  if (staticDemoBuild()) {
+    throw new Error('Chat send is not available in the static website demo.');
+  }
   const serviceBase = await resolveServiceBase();
   let bootstrap: Response;
   try {

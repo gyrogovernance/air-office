@@ -55,6 +55,9 @@ function emptyFor(pathname: string): unknown {
   if (pathname.includes('/market/sources')) return { sources: [] };
   if (pathname.includes('/memory')) return { items: [] };
   if (pathname.includes('/rich-documents')) return { documents: [] };
+  if (pathname.endsWith('/documents') || pathname.includes('/documents/')) return { documents: [] };
+  if (pathname.includes('/knowledge/embedding-model')) return { model: '', revision: '', dimensions: 0, mode: 'demo' };
+  if (pathname.includes('/knowledge/index-status')) return { current: null, configured: { model: '', dimensions: 0, metric: '', chunkerVersion: '' }, rebuildRequired: false };
   if (pathname.includes('/workspace/nodes')) return { nodes: [] };
   if (pathname.includes('/search')) return { results: [] };
   if (pathname.includes('/jobs')) return { jobs: [] };
@@ -134,10 +137,13 @@ function handle(method: string, path: string, bodyText?: string): Response {
     if (history) return jsonResponse(clone(history));
     return jsonResponse({ conversation: null, messages: [], hasEarlier: false, hasLater: false, leafId: null });
   }
-  if (conversationId && pathname === `/api/v1/conversations/${encodeURIComponent(conversationId)}` && upper === 'GET') {
+  if (conversationId && upper === 'GET' && (pathname === `/api/v1/conversations/${conversationId}` || pathname === `/api/v1/conversations/${encodeURIComponent(conversationId)}`)) {
     const graph = state.conversationsById[conversationId];
     if (graph) return jsonResponse(clone(graph));
     return jsonResponse({ error: { message: 'Conversation not found.' } }, 404);
+  }
+  if (pathname === '/api/v1/local-ai/operations' && upper === 'POST') {
+    return jsonResponse({ result: { data: [] } });
   }
   if (conversationId && (pathname.endsWith('/messages') || pathname.endsWith('/turns')) && upper === 'POST') {
     const graph = state.conversationsById[conversationId] ?? { conversation: { id: conversationId, messages: [] } };

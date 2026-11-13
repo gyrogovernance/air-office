@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Button, Card, Input, TextArea, Separator } from '@heroui/react';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { Loading01Icon, Settings01Icon, Share02Icon, Wrench01Icon } from '@hugeicons/core-free-icons';
@@ -7,7 +7,6 @@ import { SelectField } from '../../shared/select-field.component';
 import { LocalAiCollections, type CollectionModelChoice } from './local-ai-collections.component';
 import { LocalAiRuntimeUpdate } from './local-ai-runtime-update.component';
 
-const defaultClient = createServiceClient();
 type Operation = (value: Record<string, unknown>) => Promise<unknown>;
 function record(value: unknown): value is Record<string, unknown> { return value !== null && typeof value === 'object' && !Array.isArray(value); }
 function rows(value: unknown, key: string): Record<string, unknown>[] {
@@ -28,7 +27,8 @@ const fields = [
   { key: 'log_level', label: 'Troubleshooting log level', type: 'enum', min: 0 },
 ] as const;
 
-export function LocalAiPanels({ operation, client = defaultClient }: { operation: Operation; client?: ServiceClient }) {
+export function LocalAiPanels({ operation, client }: { operation: Operation; client?: ServiceClient }) {
+  const resolvedClient = useMemo(() => client ?? createServiceClient(), [client]);
   const [models, setModels] = useState<CollectionModelChoice[]>([]);
   const [aliases, setAliases] = useState<Record<string, unknown>[]>([]);
   const [jobs, setJobs] = useState<Record<string, unknown>[]>([]);
@@ -52,7 +52,7 @@ export function LocalAiPanels({ operation, client = defaultClient }: { operation
     if (configResult.status === 'fulfilled' && record(configResult.value)) setConfig(record(configResult.value.saved) ? configResult.value.saved : configResult.value);
     if (results.some((result) => result.status === 'rejected')) setError('Some advanced settings could not be refreshed. Try again when Local AI is ready.');
   }
-  useEffect(() => { mounted.current = true; void refresh(); return () => { mounted.current = false; }; }, [client]);
+  useEffect(() => { mounted.current = true; void refresh(); return () => { mounted.current = false; }; }, [resolvedClient]);
   async function run(value: Record<string, unknown>, success: string) {
     if (working.current) return;
     working.current = true; setBusy(true); setError(''); setNotice('');
@@ -65,7 +65,7 @@ export function LocalAiPanels({ operation, client = defaultClient }: { operation
     {error && <p role="alert">{error}</p>}{notice && <p role="status">{notice}</p>}
     <Button variant="secondary" size="sm" isDisabled={busy} onPress={() => void refresh()}>Refresh advanced settings</Button>
     <Card render={(props) => <section {...props} />} variant="secondary" className="rounded-2xl p-3 gap-3"><h3 className="settings-block-heading"><HugeiconsIcon icon={Share02Icon} size={18} aria-hidden="true" />Model groups and routing</h3><Separator /><p>A model group combines several models behind one name, or routes each request to the model that fits it. These group models, not your documents. Collections of documents are configured under Knowledge.</p>
-      <LocalAiCollections models={models} operation={async (value) => (await client.json<{ result: unknown }>('/api/v1/local-ai/collections/operations', { method: 'POST', body: JSON.stringify(value) })).result} onSaved={() => { void refresh(); window.dispatchEvent(new Event('office-models-changed')); }} />
+      <LocalAiCollections models={models} operation={async (value) => (await resolvedClient.json<{ result: unknown }>('/api/v1/local-ai/collections/operations', { method: 'POST', body: JSON.stringify(value) })).result} onSaved={() => { void refresh(); window.dispatchEvent(new Event('office-models-changed')); }} />
       <h4 className="settings-subheading">Aliases</h4><ul className="model-job-list">{aliases.map((item) => { const name = String(item.alias ?? item.name ?? ''); return <Card key={name} render={(props) => {
         const { ref, ...rest } = props;
         return <li {...(rest as React.LiHTMLAttributes<HTMLLIElement>)} />;

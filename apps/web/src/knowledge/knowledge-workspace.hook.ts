@@ -101,9 +101,9 @@ export function useKnowledgeWorkspace(): KnowledgeWorkspaceState {
       setEmbeddingRevision(loadedEmbedding.revision);
       setEmbeddingDimensions(loadedEmbedding.dimensions);
       setEmbeddingMode(loadedEmbedding.mode);
-      setCollections(loadedCollections.collections);
-      setDocuments(loadedDocuments.documents);
-      setJobs(loadedJobs.jobs);
+      setCollections(Array.isArray(loadedCollections.collections) ? loadedCollections.collections : []);
+      setDocuments(Array.isArray(loadedDocuments.documents) ? loadedDocuments.documents : []);
+      setJobs(Array.isArray(loadedJobs.jobs) ? loadedJobs.jobs : []);
       const loadedStatuses = await Promise.all(loadedCollections.collections.map(async (collection) => [collection.id, await client.json<Record<string, unknown>>(`/api/v1/knowledge/index-status?collectionId=${encodeURIComponent(collection.id)}`)] as const));
       setIndexStatuses(Object.fromEntries(loadedStatuses) as typeof indexStatuses);
       setError('');

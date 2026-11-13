@@ -20,7 +20,6 @@ import { useModelVisibility } from './model-visibility.hook';
 
 type RuntimeStatus = { state: string; release: string; instanceId: string; generation: number; baseOrigin: string; systemInfo: unknown; health?: unknown };
 type Connection = ModelConnection & { credentialConfigured?: boolean };
-const client = createServiceClient();
 const capabilityIcons = { chat: Chat01Icon, mic: Mic01Icon, volume: VolumeUpIcon, image: Image01Icon } as const;
 const protocolLabels = { ollama: 'Ollama', 'openai-compatible': 'OpenAI compatible', 'openai-responses': 'OpenAI Responses', 'azure-openai': 'Azure OpenAI', anthropic: 'Anthropic', gemini: 'Gemini' } satisfies Record<ModelConnection['kind'], string>;
 const templates = [
@@ -38,6 +37,7 @@ const templates = [
 ] satisfies Pick<ModelConnection, 'name' | 'kind' | 'baseUrl'>[];
 
 export function ModelsWorkspace({ scope, onBrowseModels, onUseModel, onOpenMedia }: { scope: 'local' | 'cloud' | 'runtime'; onBrowseModels?: () => void; onUseModel?: (model: string) => void; onOpenMedia?: () => void }) {
+  const client = useMemo(() => createServiceClient(), []);
   const [serviceBase, setServiceBase] = useState(() => currentServiceBase() ?? developmentServiceBase);
   const [runtimeStatus, setRuntimeStatus] = useState<RuntimeStatus | null>(() => {
     const native = typeof window !== 'undefined' ? window.__AIR_LEMONADE_STATUS__ : undefined;
