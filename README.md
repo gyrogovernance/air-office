@@ -11,7 +11,7 @@ An AI-native desktop workspace for agentic research and knowledge management, bu
 ![Local-first](https://img.shields.io/badge/data-local--first-555555?style=flat-square)
 ![Microsoft Copilot SDK](https://img.shields.io/badge/agent-Microsoft%20Copilot%20SDK-111827?style=flat-square)
 
-[About](#about) · [Capabilities & Services](#capabilities--services) · [Products & Workflows](#products--workflows) · [Security & Privacy](#security--privacy) · [Alpha release](#alpha-release) · [Community](#community) · [Citation](#citation)
+[About](#about) · [Capabilities & Services](#capabilities--services) · [Products & Workflows](#products--workflows) · [Security & Privacy](#security--privacy) · [Documentation](#documentation) · [Alpha release](#alpha-release) · [Community](#community) · [Citation](#citation)
 
 ---
 
@@ -112,7 +112,7 @@ Craft Standards package skills, agents, and Actions you can enable for structure
 
 Workspace records stay on your computer. Choose local models for on-machine inference or cloud providers for their models and tools. Hosted providers and enabled connectors receive only what each request needs.
 
-Export conversations and notes when you need portable copies. Connecting a folder authorizes that root, and disconnecting it does not delete its files. In Settings and chat you control which tools run and whether changes ask for approval first.
+Export conversations and notes when you need portable copies. Connecting a folder authorizes that root, and disconnecting it does not delete its files. In Settings and chat you control which tools run and whether changes ask for approval first. A fuller privacy and data-control summary is in [docs/sovereignty.md](docs/sovereignty.md).
 
 ### Release Audit
 
@@ -125,6 +125,17 @@ The release review uses:
 - [Semgrep:](https://semgrep.dev/) Scans source code for security flaws using custom patterns.
 - [CodeQL:](https://codeql.github.com/) Performs deep semantic analysis on source code.
 - [SkillSpector:](https://github.com/NVIDIA/SkillSpector) Evaluates shipped Lab skills.
+
+---
+
+## Documentation
+
+Technical documentation for operators and contributors:
+
+- [Documentation index](docs/README.md)
+- [Specifications](docs/specifications.md)
+- [Guides](docs/guides.md)
+- [Sovereignty](docs/sovereignty.md)
 
 ---
 

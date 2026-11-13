@@ -27,6 +27,6 @@ We will acknowledge receipt when we can and keep you informed of the status of t
 
 AIR Office stores workspace data locally and can call local models, hosted providers, and optional connectors. Reports that involve credential handling, local filesystem authorization, chat tool permissions, dependency supply chain, or desktop packaging are especially useful.
 
-Chat tool path zones (Keys, Library, System) and Code folder rules are documented in [docs/architecture/library-zones.md](docs/architecture/library-zones.md).
+Privacy, local data control, and operator oversight are summarized in [docs/sovereignty.md](docs/sovereignty.md).
 
 Out of scope for private security reports: feature requests, general bugs that do not create a security risk, and speculative issues without a practical impact.
